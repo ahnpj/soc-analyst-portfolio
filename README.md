@@ -1,5 +1,5 @@
 # SOC Analyst Portfolio
-Hey there! Welcome to my SOC Analyst Portfolio — this is where I share the hands-on stuff I’ve been working on to get ready for a real Security Operations Center role. Inside, you’ll find everything from sample incident reports to playbooks and labs that show how I approach threat detection, incident response, and general blue team work.
+Hey there! Welcome to my SOC Analyst Portfolio — this is where I share the hands-on stuff I’ve been working on to get ready for a real Security Operations Center role. Inside, you’ll find everything from sample incident reports to playbooks and labs that show how I approach threat detection, incident response, and general blue team work. This repo is my way of showing I’m serious about the work and ready to jump in.
 
 **What’s Inside?**<br>
 
@@ -29,9 +29,6 @@ Hands-on stuff from platforms like TryHackMe or virtual labs I set up myself. In
 * Using frameworks like MITRE ATT&CK<br>
 
 * Documenting work clearly for teammates<br>
-
-**About Me**<br>
-I’m an aspiring SOC analyst who’s passionate about cybersecurity and learning all the things that keep companies safe. This repo is my way of showing I’m serious about the work and ready to jump in.
 
 **A Few Notes**<br>
 * Everything here is practice or simulated — no real company data.<br>
