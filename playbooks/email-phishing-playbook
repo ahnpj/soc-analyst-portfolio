@@ -6,7 +6,7 @@
 * Alert from secure email gateway (e.g., Proofpoint, Microsoft Defender)
 * Suspicious email detected in SIEM (e.g., keyword or IOC match)
 
-🧭 **Step-by-Step Response**
+🧭 **Step-by-Step Response** 
 1. _Initial Triage_
 * Task 1: Confirm email source	
   * Tool/Platform: Email headers analysis
