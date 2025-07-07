@@ -1,11 +1,15 @@
-🔍 **Overview:**
-* Respond to a suspected phishing email reported by an end-user or detected by an email security gateway.
+# 🛡️ Playbook: Email Phishing Attempt
 
-🚨 **Trigger:**
+## 📘 Overview
+This playbook outlines a structured approach to identify, contain, and remediate phishing email incidents, leveraging email gateway tools, endpoint detection, and user awareness to minimize risk and prevent credential compromise. Respond to a suspected phishing email reported by an end-user or detected by an email security gateway.
+## 📍 Detection
+
+#### ✅ Common Indicators & Triggers
 * User-reported suspicious email (via phishing button or ticket)
 * Alert from secure email gateway (e.g., Proofpoint, Microsoft Defender)
 * Suspicious email detected in SIEM (e.g., keyword or IOC match)
 
+## 🚨 Response Procedure
 🧭 **Step-by-Step Response** 
 1. _Initial Triage_
 * Task 1: Confirm email source	
