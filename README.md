@@ -1,7 +1,7 @@
 # SOC Analyst Portfolio
 Hey there! Welcome to my SOC Analyst Portfolio — this is where I share the hands-on stuff I’ve been working on to get ready for a real Security Operations Center role. Inside, you’ll find everything from sample incident reports to playbooks and labs that show how I approach threat detection, incident response, and general blue team work.
 
-**What’s Inside?**
+**What’s Inside?**<br>
 incident-reports/
 Realistic write-ups where I walk through how I’d handle things like phishing attempts, suspicious logins, or malware alerts — kind of like the reports you’d write after investigating an incident.
 
