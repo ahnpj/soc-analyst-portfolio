@@ -59,7 +59,9 @@ This playbook outlines a structured approach to identify, contain, and remediate
 * Task 4: Conduct user awareness
   * Description: Targeted training for affected users
 
-📊 **Metrics & KPIs**
+## 🔁 Resources, Recovery, and Follow-up
+
+📊 **Metrics & KPIs to Look For**
 * Time to detect (TTD)
 * Time to contain (TTC)
 * Number of affected users
