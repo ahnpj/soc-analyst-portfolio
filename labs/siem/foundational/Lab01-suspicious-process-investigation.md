@@ -1,12 +1,9 @@
 # Lab 01 – SIEM Basics: Suspicious Process Investigation
 
 ## Overview
-This beginner-level lab introduced the fundamentals of working with a Security Information and Event Management (SIEM) dashboard.  
-The goal was to investigate suspicious activity alerts generated within a Windows environment, focusing on processes such as `cmd.exe` and `chrome.exe`.  
-
-By analyzing event logs, correlating alerts, and pivoting into user and host details, I practiced the workflow of a SOC analyst responding to potential threats.
-
-The SIEM dashboard triggered an alert for suspicious `cmd.exe` execution.
+In this foundational SIEM lab, I practiced investigating an automatically triggered alert inside a security dashboard.  
+The SIEM flagged a suspicious process execution (`customminer.exe`), requiring correlation with logs to determine the responsible user and host.  
+The lab concluded by validating whether the detection was a **true positive** or **false positive**, mir
 
 <p align="left">
   <img src="images/lab01/lab01-siem-foundational-figure.01-alert.png" 
@@ -17,31 +14,47 @@ The SIEM dashboard triggered an alert for suspicious `cmd.exe` execution.
 </p>
 
 ## Objectives
-- Learn how SIEM dashboards present high-level alerts from raw event logs.
-- Investigate a triggered alert and trace it back to the underlying Event ID.
-- Identify the suspicious process responsible (`cmd.exe`) and differentiate it from normal processes.
-- Correlate process execution with the user account and hostname involved.
-- Practice triaging events to decide if further escalation would be needed.
+- Review SIEM alerts and pivot into underlying event data.  
+- Identify the suspicious process (`customminer.exe`) that triggered the alert.  
+- Attribute the event to a specific **user account** and **hostname**.  
+- Compare the event to the SIEM detection rule that flagged it.  
+- Assess whether the event should be classified as a **true positive**.  
+- Document findings in a structured, analyst-style report.  
 
 ---
 
-## Steps Performed
-1. Accessed the SIEM dashboard and reviewed an alert for **suspicious process activity**.
-2. Drilled into the correlated **Windows Event ID** to see underlying log data.
-3. Extracted the **process name** (`cmd.exe`) and compared it with expected behavior.
-4. Identified the **user account** that launched the process.
-5. Verified the **hostname** of the affected endpoint.
-6. Documented findings as if preparing for escalation to Tier 2.
+## Investigation Steps
+1. Opened the SIEM dashboard and triggered suspicious activity.  
+2. Observed the process flagged in the **Process Name panel**: `customminer.exe`.  
+3. Drilled into the correlated event logs to identify the **responsible user account**.  
+4. Confirmed the **hostname** of the suspect machine.  
+5. Examined the detection rule against the suspicious process.  
+6. Evaluated whether the event represented a **true positive** versus normal activity.  
+7. Retrieved the lab flag to conclude the investigation.  
 
 ---
 
 ## Findings
-- Process flagged: `cmd.exe`
-- Associated account: `jsmith`
-- Hostname: `WORKSTATION01`
-- Behavior: Launch of command prompt outside of normal administrative workflow.
 
----
+- **Suspicious process:** `cudominer.exe`  
+- **User account:** `Chris.fort`  
+- **Hostname:** `HR_02`  
+- **Rule match:** Matched SIEM detection for mining activity  
+- **Classification:** **True Positive** – confirmed malicious crypto miner execution  
+
+<p align="left">
+  <img src="images/lab01/lab01-siem-foundational-figure.02-event-log.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 2 – Event Log Correlation for Suspicious Process</em>
+</p>
+
+The SIEM event logs display process creation activity from multiple hosts within the **cybertees.local** domain.  
+Among the entries, the process `cudominer.exe` stands out as abnormal. Unlike standard processes such as `MicrosoftEdgeSH.exe`, `javaws.exe`, or `quicktime.exe`, the suspicious process was executed from a temporary directory:  
+
+`C:\Users\Chris.Fort\temp\cudominer.exe`
+
 
 ## Key Takeaways
 - SIEM alerts are **starting points**, not conclusions — analysts must pivot into logs for context.  
