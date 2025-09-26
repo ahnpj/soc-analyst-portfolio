@@ -15,7 +15,6 @@ The SIEM dashboard triggered an alert for suspicious `cmd.exe` execution.
        width="600"><br>
   <em>Figure 1: Suspicious process alert in SIEM dashboard</em>
 </p>
----
 
 ## Objectives
 - Learn how SIEM dashboards present high-level alerts from raw event logs.
