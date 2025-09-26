@@ -6,6 +6,10 @@ The goal was to investigate suspicious activity alerts generated within a Window
 
 By analyzing event logs, correlating alerts, and pivoting into user and host details, I practiced the workflow of a SOC analyst responding to potential threats.
 
+The SIEM dashboard triggered an alert for suspicious `cmd.exe` execution.
+
+![SIEM alert](images/lab01-siem-foundational-01-alert.png)
+
 ---
 
 ## Objectives
