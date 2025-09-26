@@ -8,8 +8,13 @@ By analyzing event logs, correlating alerts, and pivoting into user and host det
 
 The SIEM dashboard triggered an alert for suspicious `cmd.exe` execution.
 
-![SIEM alert](images/Lab01/lab01-siem-foundational-01-alert.png)
-
+<p align="center">
+  <img src="images/Lab01/lab01-siem-foundational-figure.01-alert.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 1: Suspicious process alert in SIEM dashboard</em>
+</p>
 ---
 
 ## Objectives
