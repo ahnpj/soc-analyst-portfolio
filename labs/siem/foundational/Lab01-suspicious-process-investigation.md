@@ -55,6 +55,19 @@ Among the entries, the process `cudominer.exe` stands out as abnormal. Unlike st
 
 `C:\Users\Chris.Fort\temp\cudominer.exe`
 
+## Detection Rule
+
+The alert was triggered based on a predefined SIEM correlation rule.  
+This rule monitors **process creation events** (`EventID 4688`) from `WindowsEventLogs` where the process name contains mining-related keywords (`miner` or `crypt`).  
+
+<p align="left">
+  <img src="images/lab01/lab01-siem-foundational-figure.03-rule.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 3 – SIEM Rule Used to Detect Potential CryptoMiner Activity</em>
+</p>
+
 
 ## Key Takeaways
 - SIEM alerts are **starting points**, not conclusions — analysts must pivot into logs for context.  
