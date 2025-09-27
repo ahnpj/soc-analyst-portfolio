@@ -36,7 +36,7 @@ index="main"
 | sort - count
 ```
 <p align="left">
-  <img src="" 
+  <img src="images/lab02/lab02-siem-foundational-figure.01-splunk.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
