@@ -36,7 +36,7 @@ index="main"
 | sort - count
 ```
 <p align="left">
-  <img src="images/lab02/lab02-siem-foundational-figure.01-splunk.png?raw=true&v=2" 
+  <img src="images/lab01-splunk-figure.01.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
@@ -72,7 +72,7 @@ index="main" action=failed
 ```
 
 <p align="left">
-  <img src="images/lab02/lab02-siem-foundational-figure.02-splunk.png?raw=true&v=2" 
+  <img src="images/lab01-splunk-figure.02.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
@@ -107,7 +107,7 @@ index="main" Source_Country="United States"
 | sort - count
 ```
 <p align="left">
-  <img src="images/lab02/lab02-siem-foundational-figure.03-splunk.png?raw=true&v=2" 
+  <img src="images/lab01-splunk-figure.03.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
@@ -141,7 +141,7 @@ index="main" action=teardown protocol=tcp (port=443 OR dest_port=443)
 | sort - count
 ```
 <p align="left">
-  <img src="images/lab02/lab02-siem-foundational-figure.04-splunk.png?raw=true&v=2" 
+  <img src="images/lab01-splunk-figure.04.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
@@ -175,7 +175,7 @@ index="main"
 | sort - count
 ```
 <p align="left">
-  <img src="images/lab02/lab02-siem-foundational-figure.05-splunk.png?raw=true&v=2" 
+  <img src="images/lab01-splunk-figure.05.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
