@@ -35,6 +35,14 @@ index="main"
 | stats count by UserName, Source_Country 
 | sort - count
 ```
+<p align="left">
+  <img src="images/lab02/lab02-siem-foundational-figure.01-splunk.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 1: Suspicious process in SIEM dashboard</em>
+</p>
+
 **Good for**  
 
 - Detecting unusual geolocation behavior (e.g., a user logging in from multiple foreign countries).  
