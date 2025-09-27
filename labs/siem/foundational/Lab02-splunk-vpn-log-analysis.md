@@ -76,7 +76,7 @@ index="main" action=failed
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
-  <em>Figure 2: This screenshot displays a Splunk search filtered for events where <strong>action=failed</strong>. Events are aggregated by <strong>UserName</strong> and <strong></strong>Source_ip</strong>, making it possible to identify repeated login failures tied to specific accounts and source IPs. This is a common use case for detecting brute-force attempts or credential stuffing.</em>
+  <em>Figure 2: This screenshot displays a Splunk search filtered for events where <strong>action=failed</strong>. Events are aggregated by <strong>UserName</strong> and <strong>Source_ip</strong>, making it possible to identify repeated login failures tied to specific accounts and source IPs. This is a common use case for detecting brute-force attempts or credential stuffing.</em>
 </p>
 
 **Good for**  
