@@ -1,4 +1,4 @@
-# Lab: Windows CLI Basics — File Discovery, Network & Process Investigation
+# Lab: Windows CMD Basics — File Discovery, Network & Process Investigation
 
 ## Objective
 Practice core Windows CLI skills used in host triage:
