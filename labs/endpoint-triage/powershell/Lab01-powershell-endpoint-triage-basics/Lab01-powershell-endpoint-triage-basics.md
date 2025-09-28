@@ -120,7 +120,8 @@ I practiced chaining commands together with pipes, sorting files by size, filter
     - I also practiced filtering by extension, like `Get-ChildItem | Where-Object -Property Extension -eq ".txt"` which returned only .txt files from the directory I ran it in.
 - `Select-Object` was useful when I only needed a subset of properties, reducing noise.
     - For example, `Get-ChildItem | Select-Object Name, Length` gave me a clean list of just file names (`Name`) and sizes (`Length`).  
-- `Select-String` was chosen to replicate log searches, similar to `grep`, helping me locate strings of interest (like suspicious indicators).
+- I used `Select-String` to looks for text patterns inside files, similar to how `grep` works in Unix/Linux or `findstr` works in Windows CMD was chosen to replicate log searches. I figured this could be good in helping me locate strings of interest (like suspicious indicators).
+    - For example, as part of the exercise, I got to run the command `Select-String -Path .\captain-hat.txt -Pattern "hat"` which searched the file `captain-hat.txt` for the text "hat". It returned the line in the file that contain the word "hat". By default, it seemed to have also showed the line number and highlighted the matched text. 
 - I also learned about comparison operators (`-ne`, `-gt`, `-ge`, `-lt`, and `-le`) which let me filter objects based on numeric or conditional criteria, such as finding files greater than a certain size.  
 
 ### Why This Matters
