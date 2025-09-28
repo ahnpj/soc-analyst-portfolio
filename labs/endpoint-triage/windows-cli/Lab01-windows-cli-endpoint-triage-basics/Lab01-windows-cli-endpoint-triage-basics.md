@@ -89,14 +89,14 @@ netstat -abon
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
-  <em>Figure 5</em>
+  <em>Figure 4</em>
 </p>
 <p align="left">
   <img src="images/windows-cli-endpoint-triage-basics-netstat-listening.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
-  <em>Figure 4</em>
+  <em>Figure 5</em>
 </p>
 
 This step is crucial: it **maps listeners to processes**, telling us *which* PID is bound to a suspicious or sensitive port.
