@@ -92,6 +92,18 @@ This skill translates to **log analysis, evidence collection, and forensic tasks
 
 ### What I Did
 I practiced chaining commands together with pipes, sorting files by size, filtering by extension, and even searching text within files. This is where PowerShell’s object-oriented design really showed its strength.
+- I learned that piping lets me connect commands together so the output of one becomes the input of the next, building a chain of operations.  
+  - The pipe symbol `|` works in Windows and Linux shells, but in PowerShell it’s more powerful because it passes objects, not just text.  
+  - Since those objects include properties and methods, I can filter, sort, and interact with the data directly instead of only passing along raw text.  
+
+<p align="left">
+  <img src="images/powershell-endpoint-triage-basics.02.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 2: Example of me using piping in PowerShell. The first command `Get-ChildItem -Path C:\Users` lists all directories under `C:\Users`. In the second command, I piped the results of `Get-ChildItem` into `Sort-Object Length` to sort the output by size, showing how PowerShell can pass objects through the pipeline for further processing.  
+</em>
+</p>
 
 ### Commands I Used
 - `Get-ChildItem | Sort-Object Length`
@@ -101,10 +113,15 @@ I practiced chaining commands together with pipes, sorting files by size, filter
 - `Select-String -Path .\captain-hat.txt -Pattern "hat"`
 
 ### Why I Used These Commands
-- I used `Sort-Object` to quickly identify unusually large files.  
-- `Where-Object` let me narrow down results to specific file types or names.  
+- I used `Sort-Object` to quickly identify unusually large files.
+    - `Where-Object` let me narrow down results to specific file types or names.  
+      - For example, `Get-ChildItem | Where-Object -Property Name -like "ship*"` helped me filter for files with names containing "ship".  
+      - I also practiced filtering by extension, like `Get-ChildItem | Where-Object -Property Extension -eq ".txt"`.  
+- `Where-Object` let me narrow down results to specific file types or names.
+    -  For example, `Get-ChildItem | Select-Object Name, Length` gave me a clean list of just file names and sizes.  
 - `Select-Object` was useful when I only needed a subset of properties, reducing noise.  
 - `Select-String` was chosen to replicate log searches, similar to `grep`, helping me locate strings of interest (like suspicious indicators).
+- I also learned about comparison operators (`-ne`, `-gt`, `-ge`, `-lt`, and `-le`) which let me filter objects based on numeric or conditional criteria, such as finding files greater than a certain size.  
 
 ### Why This Matters
 Instead of manually checking each file, I automated the process:  
