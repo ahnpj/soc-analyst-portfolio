@@ -29,7 +29,8 @@ I started by connecting to the target lab machine via SSH and launching PowerShe
 
 ### Why I Used These Commands
 - `Get-Command` and `Get-Help` gave me immediate ways to discover and understand commands without external documentation.  
-- Using `Get-Alias` helped bridge familiarity with older CLI commands (`dir`, `ls`, `cat`).  
+- Using `Get-Alias` helped bridge familiarity with older CLI commands (`dir`, `ls`, `cat`).
+- `Get-Command -CommandType Function` to display only the available commands of type “function”.
 - `Find-Module` and `Install-Module` let me explore how PowerShell can be extended for tasks like **Active Directory management or cloud automation**.
 
 ### Why This Matters
