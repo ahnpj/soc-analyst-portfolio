@@ -114,12 +114,12 @@ I practiced chaining commands together with pipes, sorting files by size, filter
 
 ### Why I Used These Commands
 - I used `Sort-Object` to quickly identify unusually large files.
-    - `Where-Object` let me narrow down results to specific file types or names.  
-      - For example, `Get-ChildItem | Where-Object -Property Name -like "ship*"` helped me filter for files with names containing "ship".  
-      - I also practiced filtering by extension, like `Get-ChildItem | Where-Object -Property Extension -eq ".txt"`.  
+    - For example, `Get-ChildItem | Sort-Object Length` gave me a list of file names in order of size.  
 - `Where-Object` let me narrow down results to specific file types or names.
-    -  For example, `Get-ChildItem | Select-Object Name, Length` gave me a clean list of just file names and sizes.  
-- `Select-Object` was useful when I only needed a subset of properties, reducing noise.  
+    - For example, `Get-ChildItem | Where-Object -Property Name -like "ship*"` helped me filter for files with names containing "ship".  
+    - I also practiced filtering by extension, like `Get-ChildItem | Where-Object -Property Extension -eq ".txt"`.
+- `Select-Object` was useful when I only needed a subset of properties, reducing noise.
+    - For example, `Get-ChildItem | Select-Object Name, Length` gave me a clean list of just file names and sizes.  
 - `Select-String` was chosen to replicate log searches, similar to `grep`, helping me locate strings of interest (like suspicious indicators).
 - I also learned about comparison operators (`-ne`, `-gt`, `-ge`, `-lt`, and `-le`) which let me filter objects based on numeric or conditional criteria, such as finding files greater than a certain size.  
 
