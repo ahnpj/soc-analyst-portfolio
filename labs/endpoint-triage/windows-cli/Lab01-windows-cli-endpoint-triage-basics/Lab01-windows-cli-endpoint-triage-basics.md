@@ -27,7 +27,13 @@ type flag.txt
 THM{CLI_POWER}
 ```
 
-*(Screenshot: lab2ob2.png)*
+<p align="left">
+  <img src="images/windows-cli-endpoint-triage-basics-flag-discovery.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 1</em>
+</p>
 
 ---
 
@@ -41,7 +47,20 @@ tasklist /FI "imagename eq sshd.exe"
 ```
 
 This confirmed multiple instances of **sshd.exe** (example PIDs seen: `1612`, `3108`, `540`).  
-*(Screenshots: lab2ob3.png, lab2ob3pic2.png)*
+<p align="left">
+  <img src="images/windows-cli-endpoint-triage-basics-tasklist-help.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 2</em>
+</p>
+<p align="left">
+  <img src="images/windows-cli-endpoint-triage-basics-tasklist-sshd.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 3</em>
+</p>
 
 ---
 
@@ -65,7 +84,20 @@ netstat -abon
 - `TCP 0.0.0.0:22` in **LISTENING** state, owned by **[sshd.exe]**, PID **1612**  
 - Additional services listening (e.g., `RpcSs` on `135`, `TermService` on `3389`), each with their associated PID
 
-*(Screenshots: netstat output — see attached images)*
+<p align="left">
+  <img src="images/windows-cli-endpoint-triage-basics-netstat-abon.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 5</em>
+</p>
+<p align="left">
+  <img src="images/windows-cli-endpoint-triage-basics-netstat-listening.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 4</em>
+</p>
 
 This step is crucial: it **maps listeners to processes**, telling us *which* PID is bound to a suspicious or sensitive port.
 
@@ -99,12 +131,6 @@ In my session, port 22 remained listening under a different PID (`1612`), which 
 
 ---
 
-## Screenshots Referenced
-- **lab2ob2.png** — Flag discovery in `Treasure\Hunt` (`type flag.txt` → `THM{CLI_POWER}`)  
-- **lab2ob3.png**, **lab2ob3pic2.png** — `tasklist` usage and filtering for `sshd.exe`  
-- **netstat outputs** — `netstat -abon` showing listeners, executables, and owning PIDs
-
----
 
 ## Next Steps
 - Expand to **PowerShell** for scripted process/port correlation and logging.  
