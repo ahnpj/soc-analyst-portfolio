@@ -18,6 +18,11 @@ I started by connecting to the target lab machine via SSH and launching PowerShe
 - `Find-Module -Name "PowerShell*"`
 - `Install-Module -Name PowerShellGet`
 
+### Why I Used These Commands
+- `Get-Command` and `Get-Help` gave me immediate ways to discover and understand commands without external documentation.  
+- Using `Get-Alias` helped bridge familiarity with older CLI commands (`dir`, `ls`, `cat`).  
+- `Find-Module` and `Install-Module` let me explore how PowerShell can be extended for tasks like **Active Directory management or cloud automation**.
+
 ### Why This Matters
 This exercise helped me build the foundation for all future tasks. For example:  
 - `Get-Command` and `Get-Help` are my go-to references when I don’t remember exact syntax.  
@@ -44,6 +49,12 @@ Here I explored the file system — listing directories, moving around, creating
 - `Move-Item`
 - `Get-Content`
 
+### Why I Used These Commands
+- `Get-ChildItem` and `Set-Location` allowed me to navigate directories just like in CMD, but with more flexibility.  
+- `New-Item` simplified both file and folder creation with one command.  
+- `Remove-Item`, `Copy-Item`, and `Move-Item` gave me precise control for cleanup and reorganization.  
+- `Get-Content` was essential for quickly reading text files like logs or configs during analysis.
+
 ### Why This Matters
 I got practice in performing file operations in a structured way:  
 - `New-Item` handles both files and folders, simplifying automation.  
@@ -67,6 +78,12 @@ I practiced chaining commands together with pipes, sorting files by size, filter
 - `Get-ChildItem | Select-Object Name, Length`
 - `Select-String -Path .\captain-hat.txt -Pattern "hat"`
 
+### Why I Used These Commands
+- I used `Sort-Object` to quickly identify unusually large files.  
+- `Where-Object` let me narrow down results to specific file types or names.  
+- `Select-Object` was useful when I only needed a subset of properties, reducing noise.  
+- `Select-String` was chosen to replicate log searches, similar to `grep`, helping me locate strings of interest (like suspicious indicators).
+
 ### Why This Matters
 Instead of manually checking each file, I automated the process:  
 - Sorting by size lets me quickly identify unusually large or suspicious files.  
@@ -88,6 +105,12 @@ I retrieved system information, checked for local users, and pulled detailed net
 - `Get-LocalUser`
 - `Get-NetIPConfiguration`
 - `Get-NetIPAddress`
+
+### Why I Used These Commands
+- `Get-ComputerInfo` gave me a comprehensive baseline snapshot of the OS and hardware.  
+- `Get-LocalUser` let me identify which accounts exist — key for spotting suspicious or hidden users.  
+- `Get-NetIPConfiguration` provided networking info at a glance.  
+- `Get-NetIPAddress` gave me specific IP assignment details, useful when investigating anomalies.
 
 ### Why This Matters
 These commands provided me with:  
@@ -111,6 +134,12 @@ I moved into monitoring mode — checking processes, services, open connections,
 - `Get-NetTCPConnection`
 - `Get-FileHash`
 
+### Why I Used These Commands
+- `Get-Process` helped me monitor active processes to spot unusual resource usage.  
+- `Get-Service` revealed if attackers had tampered with system services.  
+- `Get-NetTCPConnection` was essential for identifying unauthorized or suspicious outbound network connections.  
+- `Get-FileHash` allowed me to verify the integrity of key files, confirming whether they had been altered.
+
 ### Why This Matters
 - `Get-Process` shows CPU/memory usage — key for spotting rogue processes.  
 - `Get-Service` reveals which services are running or disabled. Attackers often tamper with these.  
@@ -131,6 +160,11 @@ I wrapped up by practicing PowerShell scripting, focusing on how to automate rep
 - `Get-Help Invoke-Command -examples`
 - `Invoke-Command -FilePath script.ps1 -ComputerName Server01`
 - `Invoke-Command -ComputerName Server01 -ScriptBlock { Get-Culture }`
+
+### Why I Used These Commands
+- `Get-Help` gave me real-world examples of how to structure remote execution commands.  
+- `Invoke-Command -FilePath` allowed me to run full scripts remotely, which is powerful in enterprise settings.  
+- `Invoke-Command -ScriptBlock` gave me a quick way to run inline commands on remote machines without needing a script file.
 
 ### Why This Matters
 - I learned how scripts can save time and reduce human error by automating repetitive tasks.  
