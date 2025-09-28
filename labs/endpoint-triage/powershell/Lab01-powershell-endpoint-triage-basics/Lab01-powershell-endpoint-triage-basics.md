@@ -9,6 +9,15 @@ This lab report documents my hands-on work with PowerShell. Each section demonst
 ### What I Did
 I started by connecting to the target lab machine via SSH and launching PowerShell. Once inside, I explored how PowerShell structures its commands with the `Verb-Noun` format. I then practiced discovering available commands and getting help on their usage.
 
+<p align="left">
+  <img src="images/powershell-endpoint-triage-basics.01.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 1</em>
+</p>
+
+
 ### Commands I Used
 - `powershell`
 - `Get-Command`
