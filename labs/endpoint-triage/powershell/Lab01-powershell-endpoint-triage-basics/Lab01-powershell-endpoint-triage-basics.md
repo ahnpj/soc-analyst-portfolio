@@ -67,6 +67,9 @@ Here I explored the file system — listing directories, moving around, creating
 ### Why I Used These Commands
 - `Get-ChildItem` and `Set-Location` allowed me to navigate directories just like in CMD, but with more flexibility.
   - I learned that similar to the `dir` command in Windows CMD or the `ls` command in Linux Bash, I learned that `Get-ChildItem` in PowerShell performs the same function by listing files and directories. When used with the `-Path` parameter, it can display the contents of a specific location, and if no path is provided, it defaults to showing the contents of the current working directory.
+  - I used `Get-ChildItem -Path C:\Users` to test my learning and understand the syntax.
+      - Running it with the explicit `-Path` parameter helped me confirm how PowerShell structures commands and how arguments are passed.  
+      - This reinforced the `Verb-Noun` syntax and gave me practice applying what I learned beyond just using `Get-ChildItem` by itself.  
 - `New-Item` simplified both file and folder creation with one command.  
   - I learned that this is the PowerShell way to handle what would normally be `mkdir` (make directory) or `echo > file.txt`/`touch file.txt` in Linux Bash, and `mkdir` or `copy nul file.txt` in CMD.  
 - `Remove-Item`, `Copy-Item`, and `Move-Item` gave me precise control for cleanup and reorganization.  
