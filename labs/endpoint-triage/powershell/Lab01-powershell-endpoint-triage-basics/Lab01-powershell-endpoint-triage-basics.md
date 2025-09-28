@@ -28,7 +28,7 @@ I started by connecting to the target lab machine via SSH and launching PowerShe
 - `Install-Module -Name PowerShellGet`
 
 ### Why I Used These Commands
-- `Get-Command` and `Get-Help` gave me immediate ways to discover and understand commands without external documentation.  
+- `Get-Command` and `Get-Help` gave me immediate ways to discover and understand commands without external documentation. I used `Get-Command` both by itself to see everything available, and by appending options like `-CommandType Cmdlet` or `-CommandType Function` to focus on specific types of commands. This helped me quickly learn what was native to PowerShell versus what was defined as functions. Get-Help gave me syntax, parameters, and examples I could try out directly. I also used `Get-Alias` to connect familiar commands like `dir` to their actual PowerShell equivalents (`Get-ChildItem`), which made it easier to transition from CMD to PowerShell.
 - Using `Get-Alias` helped bridge familiarity with older CLI commands (`dir`, `ls`, `cat`).
 - `Get-Command -CommandType Function` to display only the available commands of type “function”.
 - `Find-Module` and `Install-Module` let me explore how PowerShell can be extended for tasks like **Active Directory management or cloud automation**.
