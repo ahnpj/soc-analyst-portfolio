@@ -3,8 +3,6 @@
 This repository contains a collection of hands-on cybersecurity labs I’ve built to practice **SIEM analysis, network traffic investigation, scanning/recon, and playbook documentation**.  
 Each lab is designed to **increase in complexity and depth as the lab number goes up**. For example, `Lab01` focuses on introductory concepts, while `Lab02` and higher require more advanced investigation, correlation, and analysis skills.
 
----
-
 <details>
 <summary><strong>📂 Repository Structure</strong></summary>
 
@@ -24,6 +22,8 @@ labs/
   playbooks/
 ```
 </details>
+
+---
 
 
 ## 🔎 Lab Highlights
