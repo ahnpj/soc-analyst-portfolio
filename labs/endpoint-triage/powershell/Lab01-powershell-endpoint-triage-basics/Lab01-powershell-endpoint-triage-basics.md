@@ -114,25 +114,69 @@ I practiced chaining commands together with pipes, sorting files by size, filter
 
 ### Why I Used These Commands
 - I used `Sort-Object` to sort the current working directory by size (`Length`). I figured thid could be good to quickly identify unusually large files.
-    - For example, `Get-ChildItem | Sort-Object Length` gave me a list of file names in order of size.  
+    - For example, `Get-ChildItem | Sort-Object Length` gave me a list of file names in order of size. (Figure 2)
 - `Where-Object` let me narrow down results to specific file types or names.
-    - For example, `Get-ChildItem | Where-Object -Property Name -like "ship*"` helped me filter for files with names containing "ship".  
+    - For example, `Get-ChildItem | Where-Object -Property Name -like "ship*"` helped me filter for files with names containing "ship".
     - I also practiced filtering by extension, like `Get-ChildItem | Where-Object -Property Extension -eq ".txt"` which returned only .txt files from the directory I ran it in.
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.03.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 3</em>
+</p>
+
 - `Select-Object` was useful when I only needed a subset of properties, reducing noise.
-    - For example, `Get-ChildItem | Select-Object Name, Length` gave me a clean list of just file names (`Name`) and sizes (`Length`).  
+    - For example, `Get-ChildItem | Select-Object Name, Length` gave me a clean list of just file names (`Name`) and sizes (`Length`).
+ 
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.04.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 4</em>
+</p>
+
 - I used `Select-String` to looks for text patterns inside files, similar to how `grep` works in Unix/Linux or `findstr` works in Windows CMD was chosen to replicate log searches. I figured this could be good in helping me locate strings of interest (like suspicious indicators).
-    - For example, as part of the exercise, I got to run the command `Select-String -Path .\captain-hat.txt -Pattern "hat"` which searched the file `captain-hat.txt` for the text "hat". It returned the line in the file that contain the word "hat". By default, it seemed to have also showed the line number and highlighted the matched text. 
+    - For example, as part of the exercise, I got to run the command `Select-String -Path .\captain-hat.txt -Pattern "hat"` which searched the file `captain-hat.txt` for the text "hat". It returned the line in the file that contain the word "hat". By default, it seemed to have also showed the line number and highlighted the matched text.
+ 
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.05.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 5</em>
+</p>
+
 - I also learned about comparison operators (`-ne`, `-gt`, `-ge`, `-lt`, and `-le`) which let me filter objects based on numeric or conditional criteria, such as finding files greater than a certain size.  
 
 
 #### Challenge
 At the end of this section, there was a hands-on challenge that asked me to retrieve only the items in the current directory with a size greater than 100.  
 I solved it using the following command: `Get-Children | Where-Object -Property Length -gt 100`
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.06.edited.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 6</em>
+</p>
+
 - `Get-ChildItem` → lists all files and directories in the current location (similar to dir in CMD or ls in Linux).
 - `|` (pipe) → takes the output of Get-ChildItem and sends it into the next command for filtering.
 - `Where-Object` → evaluates each item coming through the pipeline and only keeps those that meet a condition.
 - `-Property Length` → specifies the property to evaluate, in this case the file size (in bytes).
 - `-gt 100` → comparison operator meaning “greater than 100.” This ensures only items larger than 100 bytes are returned.
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.07.edited.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 7</em>
+</p>
 
 ### Why This Matters
 Instead of manually checking each file, I automated the process:  
