@@ -372,6 +372,13 @@ This matched the shady user’s motto from his account description. The service 
 
 **`p1r4t3-s-compass`**  
 
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.17.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 17</em>
+
 This confirmed that the service had been tampered with, and the correct service name was `p1r4t3-s-compass`.
 
  <p align="center">
@@ -380,6 +387,7 @@ This confirmed that the service had been tampered with, and the correct service 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
   <em>Figure 16 (Answer)</em>
+
 ### Real-World Value
 
 This mirrors what I’d do as an analyst during **threat hunting or incident response**, where checking processes, services, and connections is often step one.
