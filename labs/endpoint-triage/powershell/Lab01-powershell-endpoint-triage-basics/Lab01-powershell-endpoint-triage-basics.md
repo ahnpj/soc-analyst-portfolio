@@ -363,7 +363,25 @@ I did not need to discover this by running the command in the lab; instead, I wa
        width="600"><br>
   <em>Figure 16</em>
 
+
+For this challenge, I ran the `Get-Service` cmdlet to list all services on the system. While reviewing the output, I noticed an unusual `DisplayName` that stood out from the rest:  
+
+**"A merry life and a short one"**  
+
+This matched the shady user’s motto from his account description. The service associated with this altered `DisplayName` was:  
+
+**`p1r4t3-s-compass`**  
+
+This confirmed that the service had been tampered with, and the correct service name was `p1r4t3-s-compass`.
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.16.answer.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 16 (Answer)</em>
 ### Real-World Value
+
 This mirrors what I’d do as an analyst during **threat hunting or incident response**, where checking processes, services, and connections is often step one.
 
 ---
