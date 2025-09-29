@@ -211,6 +211,58 @@ These commands provided me with:
 - A list of all local accounts, which is critical for detecting hidden or unauthorized users.  
 - Networking details including DNS and gateway configuration — the same data often checked during incident response.  
 
+#### Hidden Treasure Challenge
+
+At the end of this section there was a hands-on challenge to find a “secret” file in the user `p1r4t3`’s home folder.
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.11.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 8</em>
+</p>
+
+I started by changing directories to `C:\Users` with `Set-Location` to locate the user `p1r4te`.  
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.8.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 9</em>
+</p>
+
+I listed the contents with `Get-ChildItem` and discovered a directory called `hidden-treasure-chest`. Then, I changed into that directory using `Set-Location`, ran `Get-ChildItem` again, and saw a `.txt` file named `big-treasure.txt`.
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.9.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 10</em>
+</p>
+
+Finally, I opened the file with `Get-Content big-treasure.txt` and retrieved the answer to the lab challenge.
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.10.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 11</em>
+</p>
+
+Woohoo!
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.12.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 12</em>
+</p>
+
 ### Real-World Value
 This aligns with **host auditing and reconnaissance**. For example, if I suspect persistence mechanisms or hidden accounts, I can use these commands to validate the system baseline.
 
