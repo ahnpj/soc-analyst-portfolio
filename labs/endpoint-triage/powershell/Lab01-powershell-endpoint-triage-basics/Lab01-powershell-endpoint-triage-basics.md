@@ -297,6 +297,72 @@ I moved into monitoring mode — checking processes, services, open connections,
   - Since the lab required verifying the integrity of the `ship-flag.txt` file, I ran `Get-FileHash -Path .\ship-flag.txt` to generate its SHA256 hash. The command returned a unique hash value (`54D2EC3C12BF3DBA25B95EB0BEB376052295AF53A22BA8E60D444880073D48F2`) that can be used to confirm the authenticity of the file.
   - Using file hashing like this is especially valuable for real-time monitoring and analysis in security operations. By continuously checking file hashes against known-good values (or comparing them to threat intelligence databases), analysts can quickly detect tampering, malware infection, or unauthorized file changes. This makes it a practical tool for ensuring integrity and spotting potential compromise during live investigations.
 
+#### Challenge Questions
+
+In this part of the lab, I was presented with the following questions:
+
+1. **In the previous task, you found a marvellous treasure carefully hidden in the target machine. What is the hash of the file that contains it?**
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.13.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 13</em>
+
+  I ran the follow commands in order:
+  - `Set-Location C:\Users\p1r4t3` to navigate to the target machine directory (from previous challenge).
+  - `Get-ChildItem` to list files and directories.
+  - `SetLocation hidden-treasure-chest` to open the directory that contained the file I required for this question
+  - `Get-FileHash big-treasure.txt` to obtain the hash value of the file `big-treasure.txt`
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.14.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 14</em>
+
+  First try? Woo!
+   <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.13.answer.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 13 (Answer)</em>
+
+2. **What property retrieved by default by `Get-NetTCPConnection` contains information about the process that has started the connection?**
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.15.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 15</em>
+
+
+The question asked which property retrieved by default by `Get-NetTCPConnection` contains information about the process that has started the connection.  
+
+From my reading and review of the cmdlet documentation, I learned that the property is **`OwningProcess`**. This property provides the Process ID (PID) of the process that owns the network connection. While the `Get-NetTCPConnection` output shows the PID, this can then be mapped back to an actual process name using the `Get-Process` cmdlet if needed.  
+
+I did not need to discover this by running the command in the lab; instead, I was able to answer it directly from the reading material that explained how the cmdlet works and which properties it returns by default.
+ 
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.15.answer.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 15 (Answer)</em>
+
+3. **It's time for another small challenge. Some vital service has been installed on this pirate ship to guarantee that the captain can always navigate safely. But something isn't working as expected, and the captain wonders why. Investigating, they find out the truth, at last: the service has been tampered with! The shady lad from before has modified the service `DisplayName` to reflect his very own motto, the same that he put in his user description.** With this information and the PowerShell knowledge built so far, the task was to **find the service name**.
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.16.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 16</em>
+
 ### Real-World Value
 This mirrors what I’d do as an analyst during **threat hunting or incident response**, where checking processes, services, and connections is often step one.
 
