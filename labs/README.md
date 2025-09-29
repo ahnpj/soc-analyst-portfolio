@@ -33,14 +33,6 @@ labs/
 - **[Lab01 – VPN Log Analysis](labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md)**  
   *Level: Beginner* → Detecting unusual VPN login activity, analyzing login patterns by user and source country, and identifying suspicious travel or account compromise.
 
-### Endpoint Triage Labs
-#### Windows CLI/CMD
-- **[Lab01 – VPN Log Analysis](labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md)**  
-  *Level: Beginner* → Using Windows command-line tools to investigate processes, review system information, and identify suspicious activity.
-#### PowerShell
-- **[Lab01 – VPN Log Analysis](labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md)**  
-  *Level: Beginner* → Leveraging PowerShell commands to collect endpoint data, filter logs, and detect potential anomalies in process execution.
-
 ---
 
 ## 🎯 Skills Demonstrated
