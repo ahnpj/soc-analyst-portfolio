@@ -20,11 +20,11 @@ This is a **work in progress** — I’m continuing to add more labs and example
   *Level: Beginner* → Introduction to SIEM purpose, data sources, and alert workflows.  
   - **[Lab01 – Suspicious Process Investigation](labs/siem/siem-basics/Lab01-suspicious-process-investigation/Lab01-suspicious-process-investigation.md)**  
   *Level: Beginner* → Investigating abnormal process activity in logs, understanding correlation rules.  
-  - **[Lab01 – VPN Log Analysis](labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md)**  
+  - **[Lab01 – Splunk VPN Log Analysis](labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md)**  
   *Level: Beginner* → Detecting unusual VPN login activity, analyzing login patterns by user and source country, and identifying suspicious travel or account compromise.
-  - **[Lab01 – VPN Log Analysis](labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md)**  
+  - **[Lab01 – Windows CMD/CLI Basics](labs/endpoint-triage/windows-cli/Lab01-windows-cli-endpoint-triage-basics/Lab01-windows-cli-endpoint-triage-basics.md)**  
   *Level: Beginner* → Using Windows command-line tools to investigate processes, review system information, and identify suspicious activity.
-  - **[Lab01 – VPN Log Analysis](labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md)**  
+  - **[Lab01 – PowerShell Basics](labs/siem/endpoint-triage/powershell/Lab01-powershell-endpoint-triage-basics/Lab01-powershell-endpoint-triage.basics.md)**  
   *Level: Beginner* → Leveraging PowerShell commands to collect endpoint data, filter logs, and detect potential anomalies in process execution.
 
 ---
