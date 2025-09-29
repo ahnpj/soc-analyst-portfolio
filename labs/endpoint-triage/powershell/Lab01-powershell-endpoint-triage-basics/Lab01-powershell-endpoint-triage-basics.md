@@ -201,7 +201,7 @@ I retrieved system information, checked for local users, and pulled detailed net
 
 ### Why I Used These Commands
 - `Get-ComputerInfo` gave me a comprehensive baseline snapshot of the OS and hardware.  
-- `Get-LocalUser` let me identify which accounts exist — key for spotting suspicious or hidden users.  
+- `Get-LocalUser` let me identify which accounts exist and which accounts are enabled on the target machine (indicated by `True` or `False` under the `Enabled` column) — key for spotting suspicious or hidden users.  
 - `Get-NetIPConfiguration` provided networking info at a glance, such as IP addresses, DNS servers, and configurations.
 - `Get-NetIPAddress` gave me specific IP assignment details configured on the system, useful when investigating anomalies.
 
