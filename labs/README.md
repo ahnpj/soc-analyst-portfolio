@@ -5,7 +5,8 @@ Each lab is designed to **increase in complexity and depth as the lab number goe
 
 ---
 
-## 📂 Repository Structure
+<details>
+<summary><strong>📂 Repository Structure</strong></summary>
 
 ```text
 labs/
@@ -22,8 +23,8 @@ labs/
       Lab01-windows-cli-endpoint-triage-basics
   playbooks/
 ```
+</details>
 
----
 
 ## 🔎 Lab Highlights
 
