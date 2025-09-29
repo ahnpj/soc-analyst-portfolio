@@ -280,9 +280,9 @@ I moved into monitoring mode — checking processes, services, open connections,
 - `Get-FileHash`
 
 ### Why I Used These Commands
-- `Get-Process` helped me monitor active processes to spot unusual resource usage.  
-- `Get-Service` revealed if attackers had tampered with system services.  
-- `Get-NetTCPConnection` was essential for identifying unauthorized or suspicious outbound network connections.  
+- `Get-Process` helped me monitor active processes, which seems to be helpful in spotting unusual resource usage.  
+- `Get-Service` revealed a table of services that are running, stopped, or paused. Would be helpful in indentifying if attackers had tampered with system services.  
+- `Get-NetTCPConnection` displayed all current TCP connections at the time, which essentially gives insights into both local and remote endpoints. Would be essential for identifying unauthorized or suspicious outbound network connections.  
 - `Get-FileHash` allowed me to verify the integrity of key files, confirming whether they had been altered.
 
 ### Why This Matters
@@ -290,6 +290,12 @@ I moved into monitoring mode — checking processes, services, open connections,
 - `Get-Service` reveals which services are running or disabled. Attackers often tamper with these.  
 - `Get-NetTCPConnection` gives visibility into open network connections — crucial for uncovering backdoors or suspicious outbound traffic.  
 - `Get-FileHash` verifies if a file has been altered (tampered with malware, for example).
+    - I navigated into the captain-cabin directory using `Set-Location -Path captain\Documents\captain-cabin`. Once inside, I listed all files with `Get-ChildItem`, which revealed three text files:
+        - `captain-boots.txt`
+        - `captain-hat.txt`
+        - `ship-flag.txt`
+  - Since the lab required verifying the integrity of the `ship-flag.txt` file, I ran `Get-FileHash -Path .\ship-flag.txt` to generate its SHA256 hash. The command returned a unique hash value (`54D2EC3C12BF3DBA25B95EB0BEB376052295AF53A22BA8E60D444880073D48F2`) that can be used to confirm the authenticity of the file.
+  - Using file hashing like this is especially valuable for real-time monitoring and analysis in security operations. By continuously checking file hashes against known-good values (or comparing them to threat intelligence databases), analysts can quickly detect tampering, malware infection, or unauthorized file changes. This makes it a practical tool for ensuring integrity and spotting potential compromise during live investigations.
 
 ### Real-World Value
 This mirrors what I’d do as an analyst during **threat hunting or incident response**, where checking processes, services, and connections is often step one.
