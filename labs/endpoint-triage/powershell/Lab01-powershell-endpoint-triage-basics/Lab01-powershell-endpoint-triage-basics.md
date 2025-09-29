@@ -174,7 +174,7 @@ At the end of this section, there was a hands-on challenge that asked me to retr
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
-  <em>Figure 7</em>
+  <em>Figure 7: Woohoo!</em>
 </p>
 
 ### Why This Matters
