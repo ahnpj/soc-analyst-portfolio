@@ -153,8 +153,7 @@ I practiced chaining commands together with pipes, sorting files by size, filter
 
 
 #### Challenge
-At the end of this section, there was a hands-on challenge that asked me to retrieve only the items in the current directory with a size greater than 100.  
-I solved it using the following command: `Get-Children | Where-Object -Property Length -gt 100`
+At the end of this section, there was a hands-on challenge that asked me to retrieve only the items in the current directory with a size greater than 100. I solved it using the following command: `Get-Children | Where-Object -Property Length -gt 100`
 
  <p align="center">
   <img src="images/powershell-endpoint-triage-basics.06.edited.png" 
