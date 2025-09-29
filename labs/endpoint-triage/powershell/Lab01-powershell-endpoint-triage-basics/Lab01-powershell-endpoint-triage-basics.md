@@ -226,7 +226,7 @@ At the end of this section there was a hands-on challenge to find a “secret”
 I started by changing directories to `C:\Users` with `Set-Location` to locate the user `p1r4te`.  
 
  <p align="center">
-  <img src="images/powershell-endpoint-triage-basics.8.png" 
+  <img src="images/powershell-endpoint-triage-basics.08.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -236,7 +236,7 @@ I started by changing directories to `C:\Users` with `Set-Location` to locate th
 I listed the contents with `Get-ChildItem` and discovered a directory called `hidden-treasure-chest`. Then, I changed into that directory using `Set-Location`, ran `Get-ChildItem` again, and saw a `.txt` file named `big-treasure.txt`.
 
  <p align="center">
-  <img src="images/powershell-endpoint-triage-basics.9.png" 
+  <img src="images/powershell-endpoint-triage-basics.09.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
