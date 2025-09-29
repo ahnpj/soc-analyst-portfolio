@@ -16,8 +16,24 @@ This is a **work in progress** — I’m continuing to add more labs and example
 - **labs/**  
   Hands-on labs where I dig into SIEM data, practice log analysis, and build investigation workflows.  
   Currently includes:  
-  - *SIEM Basics* → intro to SIEM concepts and suspicious process investigation.  
-  - *Splunk Labs* → analyzing VPN login activity, identifying suspicious patterns.  
+### SIEM Basics
+- **[Lab01 – Intro to SIEM](labs/siem/siem-basics/Lab01-intro-to-siem/Lab01-intro-to-siem.md)**  
+  *Level: Beginner* → Introduction to SIEM purpose, data sources, and alert workflows.  
+
+- **[Lab01 – Suspicious Process Investigation](labs/siem/siem-basics/Lab01-suspicious-process-investigation/Lab01-suspicious-process-investigation.md)**  
+  *Level: Beginner* → Investigating abnormal process activity in logs, understanding correlation rules.  
+
+### Splunk Labs
+- **[Lab01 – VPN Log Analysis](labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md)**  
+  *Level: Beginner* → Detecting unusual VPN login activity, analyzing login patterns by user and source country, and identifying suspicious travel or account compromise.
+
+### Endpoint Triage Labs
+#### Windows CLI/CMD
+- **[Lab01 – VPN Log Analysis](labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md)**  
+  *Level: Beginner* → Using Windows command-line tools to investigate processes, review system information, and identify suspicious activity.
+#### PowerShell
+- **[Lab01 – VPN Log Analysis](labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md)**  
+  *Level: Beginner* → Leveraging PowerShell commands to collect endpoint data, filter logs, and detect potential anomalies in process execution.
 
 ---
 
