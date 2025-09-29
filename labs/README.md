@@ -15,6 +15,11 @@ labs/
       Lab01-suspicious-process-investigation/
     splunk/
       Lab01-splunk-vpn-log-analysis/
+  end-point-triage/
+    powershell/
+      Lab01-powershell-endpoint-triage-basics
+    windows-cli
+      Lab01-windows-cli-endpoint-triage-basics
   playbooks/
 ```
 
