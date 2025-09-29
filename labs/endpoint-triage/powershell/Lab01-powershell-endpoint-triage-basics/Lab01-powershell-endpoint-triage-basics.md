@@ -124,6 +124,16 @@ I practiced chaining commands together with pipes, sorting files by size, filter
     - For example, as part of the exercise, I got to run the command `Select-String -Path .\captain-hat.txt -Pattern "hat"` which searched the file `captain-hat.txt` for the text "hat". It returned the line in the file that contain the word "hat". By default, it seemed to have also showed the line number and highlighted the matched text. 
 - I also learned about comparison operators (`-ne`, `-gt`, `-ge`, `-lt`, and `-le`) which let me filter objects based on numeric or conditional criteria, such as finding files greater than a certain size.  
 
+
+#### Challenge
+At the end of this section, there was a hands-on challenge that asked me to retrieve only the items in the current directory with a size greater than 100.  
+I solved it using the following command: `Get-Children | Where-Object -Property Length -gt 100`
+- `Get-ChildItem` → lists all files and directories in the current location (similar to dir in CMD or ls in Linux).
+- `|` (pipe) → takes the output of Get-ChildItem and sends it into the next command for filtering.
+- `Where-Object` → evaluates each item coming through the pipeline and only keeps those that meet a condition.
+- `-Property Length` → specifies the property to evaluate, in this case the file size (in bytes).
+- `-gt 100` → comparison operator meaning “greater than 100.” This ensures only items larger than 100 bytes are returned.
+
 ### Why This Matters
 Instead of manually checking each file, I automated the process:  
 - Sorting by size lets me quickly identify unusually large or suspicious files.  
