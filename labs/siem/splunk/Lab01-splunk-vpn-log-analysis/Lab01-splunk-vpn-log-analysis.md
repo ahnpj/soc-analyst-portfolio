@@ -14,7 +14,7 @@ Events live in **`index="main"`** and are **JSON-formatted**, so I use **`spath`
 ---
 
 ## Dataset & Commands (what they are and why I use them)
-- **Index**: `index="main"` → The logical bucket that stores these VPN events. If you search the wrong index, you’ll return 0 results.  
+- **`index="main"`** → The logical bucket that stores these VPN events. If you search the wrong index, you’ll return 0 results.  
 - **`spath`** → Parses JSON so nested fields (e.g., `Source_Country`, `UserName`) become searchable/reportable.  
 - **`stats`** → Aggregates records (e.g., `count by UserName`) to summarize and rank activity.  
 - **`search`** → Filters results with conditions (e.g., `action=teardown`).  
