@@ -414,6 +414,25 @@ I wrapped up by practicing PowerShell scripting, focusing on how to automate rep
 - Remote execution is especially important: with `Invoke-Command`, I could push commands to multiple systems at once.  
 - This is applicable in both defensive tasks (running IOC scans across a network) and offensive testing (enumerating systems).
 
+#### Challenge
+At the end of this section, there was a hands-on challenge that asked me to execute the **Get-Service** command on a remote computer named *RoyalFortune*.
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.18.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 18</em>
+
+In this exercise, I used the **Invoke-Command** cmdlet to execute the **Get-Service** command on a remote computer named *RoyalFortune*. The full command I ran was: `Invoke-Command -ComputerName RoyalFortune -ScriptBlock { Get-Service }`
+
+ <p align="center">
+  <img src="images/powershell-endpoint-triage-basics.18.answer.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 18 (Answer)</em>
+
 ### Real-World Value
 This demonstrates I can **scale operations across environments**. Recruiters should see this as a practical skill: I’m not only comfortable with individual commands, but also capable of designing and running scripts to automate security workflows.
 
