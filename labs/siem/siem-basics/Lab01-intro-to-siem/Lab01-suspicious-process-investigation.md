@@ -3,7 +3,7 @@
 ## Overview
 In this foundational SIEM lab, I practiced investigating an automatically triggered alert inside a security dashboard.  
 The SIEM flagged a suspicious process execution (`customminer.exe`), requiring correlation with logs to determine the responsible user and host.  
-The lab concluded by validating whether the detection was a **true positive** or **false positive**, mir
+The lab concluded by validating whether the detection was a **true positive** or **false positive**, mirroring incident investigation.
 
 <p align="left">
   <img src="images/lab01-siem-foundational-figure.01-alert.png" 
