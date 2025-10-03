@@ -34,7 +34,7 @@ At the end of this portion of the lab, a question asked me to determine how many
   <img src="images/lab02-splunk-data-manipulation-figure01.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
-       width="1000"><br>
+       width="500"><br>
   <em>Figure 1</em>
 </p>
 
@@ -44,7 +44,7 @@ After entering the directory, I used the `ls` command to list its contents. The 
   <img src="images/lab02-splunk-data-manipulation-figure02.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
-       width="1000"><br>
+       width="500"><br>
   <em>Figure 2</em>
 </p>
 
