@@ -1,4 +1,4 @@
-# Splunk Data Processing and Manipulation Lab
+# Splunk Data Processing and Manipulation Lab (Basics)
 
 ## Task 1 - Introduction
 
