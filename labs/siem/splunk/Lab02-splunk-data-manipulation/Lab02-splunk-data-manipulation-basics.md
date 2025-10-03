@@ -49,7 +49,7 @@ After entering the directory, I used the `ls` command to list its contents. The 
 </p>
 
 **Q:** How many Python scripts are present in the `/Downloads/scripts/` directory?  
-**A (example):** There are 3 scripts: `authentication_logs`, `purchase-details`, and `vpnlogs`.  
+**A** There are 3 scripts: `authentication_logs`, `purchase-details`, and `vpnlogs`.  
 
 ### What I Learned
 This exercise reinforced how to quickly navigate through the Linux file system and inspect directories using commands like `cd` and `ls`. It also reminded me that while most Python scripts are saved with a `.py` extension, technically any file could contain Python code if it starts with a proper line (e.g., #!/usr/bin/python3). However, in practical scenarios and exams, the `.py` extension is the standard indicator.
