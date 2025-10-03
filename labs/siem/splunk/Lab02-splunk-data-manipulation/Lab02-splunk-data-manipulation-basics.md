@@ -5,6 +5,8 @@
 ### Overview
 This lab focuses on learning how data is processed, parsed, and manipulated in Splunk to extract meaningful insights and perform effective analysis of machine-generated data. These skills are critical for a security analyst, as they directly support identifying and responding to threats, investigating incidents, and monitoring system health.
 
+I started by reviewing the lab’s introduction, which outlined the learning objectives for the exercises ahead. The lab emphasized how Splunk handles event parsing, the role of configuration files such as `inputs.conf`, `props.conf`, and `transforms.conf`, and how to use these files to extract and filter fields. I paid attention to the context of why parsing is so critical for a SOC analyst: poorly parsed logs can lead to incomplete data, false negatives, or gaps in investigations. This task didn’t involve hands-on commands yet, but it set the stage by showing me what I would be practicing.  
+
 ### Learning Objectives
 By the end of this lab, I will understand:
 - How events are parsed in Splunk.  
@@ -29,23 +31,25 @@ I assumed the role of a SOC Analyst at a company called **CyberT**. The scenario
 - **Extracting Custom Fields:** Removing redundant fields in web logs.
 
 ### What I Did
-I connected to the Splunk lab environment and navigated to the `/Downloads/scripts` directory, which contained the log scripts we would analyze. Scripts are provided in `/Downloads/scripts/` and commands are executed as a root user.  
+I assumed the role of a SOC analyst working at a fictional company, where my task was to process and transform logs coming from a custom source. The lab simulated realistic issues I would encounter, such as events not breaking correctly, multi-line logs being treated as separate events instead of one, and sensitive information like credit card numbers appearing in raw logs. I connected to the lab machine, navigated to the `/Downloads/scripts` directory, and noted that all the scripts I’d be working with were stored there for me to analyze. Scripts are provided in `/Downloads/scripts/` and commands are executed as a root user.  
 
 ### Challenge / Question
 **Q:** How many Python scripts are present in the `/Downloads/scripts/` directory?  
 **A (example):** There are 3 scripts: `authentication_logs`, `purchase-details`, and `vpnlogs`.  
 
 ### What I Learned
-I realized that SOC analysts don’t just visualize logs but also **shape how logs are ingested and stored** to ensure compliance and usability.
+I realized that SOC analysts don’t just visualize logs but also **shape how logs are ingested and stored** to ensure compliance and usability. I learned that Splunk doesn’t magically parse everything correctly on its own — it requires tuning. Analysts are responsible for identifying when logs are being ingested improperly and then correcting the configuration so that logs are searchable, compliant, and actionable. This reinforced how important it is for me to understand not only how to search data but also how to prepare data for Splunk to ingest in the first place. 
 
 ---
 
 ## Task 3 - Splunk Data Processing Overview
 
 ### What I Did
-I went through a six-step process to configure Splunk parsing:
+I walked through the high-level process Splunk uses to parse data. First, I studied how Splunk needs to understand the format of incoming data, whether it’s JSON, XML, syslog, or CSV. Next, I saw how every dataset is assigned a sourcetype, which tells Splunk what parsing rules to apply. I then worked with examples of how to configure the `props.conf` file to bind a sourcetype to a source path, and how to define regular expressions for extracting fields. The provided configuration snippets showed me how to write stanzas in `props.conf` and attach field extractions using `EXTRACT-field = regex`. Finally, I looked at the importance of saving the file, restarting Splunk, and validating by running searches to confirm whether the extracted fields were working as intended.
 
 #### Steps
+I went through a six-step process to configure Splunk parsing:
+
 1. **Understand the Data Format**  
    Splunk supports multiple formats (CSV, JSON, XML, syslog). I examined data formats (CSV, JSON, syslog, XML) and identified relevant fields. I examined data formats (CSV, JSON, syslog, XML) and identified relevant fields.
 
@@ -79,16 +83,18 @@ I ran queries to confirm my configurations.
 **A (example):** It defines parsing settings for sourcetypes and data sources, including field extractions and event boundaries.  
 
 ### What I learned
-I learned the **step-by-step flow of parsing in Splunk** and how `props.conf` is a key file for defining sourcetypes and regex extractions.
+I learned that parsing in Splunk is a structured pipeline that begins with ingestion and continues through sourcetype assignment, regex extraction, and validation. The `props.conf` file is central to this process, acting as the instruction manual for Splunk on how to handle each dataset. I also learned that without proper configuration, Splunk would ingest data as raw text, making searches much less useful.
 
 ---
 
 ## Task 4 - Exploring Splunk Configuration Files
 
 ## What I Did
-I explored several important configuration files in Splunk and tested examples:
+I explored multiple configuration files to understand their roles. I practiced writing examples for `inputs.conf` to ingest log files, `props.conf` to define field extractions, and `transforms.conf` to enrich data by creating new fields. I also looked at `indexes.conf`, which determines where the data is stored, and `outputs.conf`, which controls how data is sent to other Splunk instances. Finally, I learned about `authentication.conf`, which enables features like LDAP authentication. I also examined the different stanza types in Splunk, such as `[sourcetype]`, `REPORT`, `EXTRACT`, and `TIME_PREFIX`, which define how events are processed and indexed. 
 
 ### Key Config Files
+I explored several important configuration files in Splunk and tested examples:
+
 - **inputs.conf** – Defines data input and how data is ingested.  
 ```conf
 [monitor:///path/to/logfile.log]  
@@ -153,14 +159,14 @@ authSettings = LDAP
 **A:** inputs.conf.  
 
 ### What I Learned
-I learned the **division of responsibilities**: `inputs.conf` ingests, `props.conf` parses, `transforms.conf` manipulates, `indexes.conf` stores, and `outputs.conf` forwards.
+I learned that each configuration file has a unique responsibility, and together they create the entire ingestion and parsing pipeline. Knowing which file to modify is critical to solving problems quickly. I also learned that stanza-based configuration is extremely powerful, allowing very granular control over parsing behavior with just a few lines of configuration. I learned the **division of responsibilities**: `inputs.conf` ingests, `props.conf` parses, `transforms.conf` manipulates, `indexes.conf` stores, and `outputs.conf` forwards.
 
 ---
 
 ## Task 5 - Creating a Simple Splunk App
 
 ### What I Did
-I created a Splunk app to practice log ingestion and app configuration.
+I created my own Splunk app called `DataApp`. First, I started the Splunk service from `/opt/splunk` using the `bin/splunk start` command and logged in with the provided credentials. Once inside the Splunk web interface, I navigated to the Apps section and created a new app with fields like name, folder path, author, and description. To simulate log ingestion, I created a simple Python script called `samplelogs.py` that printed a single log line. I placed this script in the `bin` directory of the app. Next, I created an `inputs.conf` file that told Splunk to execute the script every five seconds, sending its output to the `main` index with a sourcetype of `testing`. Finally, I restarted Splunk to apply the changes.  
 
 ### Steps
 1. **Start Splunk**  
@@ -202,16 +208,17 @@ I created a Splunk app to practice log ingestion and app configuration.
 
 ### What I Learned
 I learned how Splunk apps organize configurations and that `inputs.conf` scripts can **simulate live log ingestion**.
+I learned how Splunk apps provide a modular way to manage configuration and how they can be used to simulate log ingestion for testing. Writing even a simple script and configuring `inputs.conf` gave me a clear picture of how Splunk consumes and indexes events in real time. I also learned the importance of restarting Splunk to make new configurations effective. It was cool to see how Splunk apps organize configurations and that `inputs.conf` scripts can **simulate live log ingestion**.
 
 ---
 
 ## Task 6 - Event Boundaries (vpnlogs)
 
 ### What I Did
-I worked with `vpnlogs` to address event boundary issues. This lab introduced a problem where Splunk was grouping multiple events together incorrectly.
+I worked with the `vpnlogs` script, which generated VPN connection and disconnection events. After placing the script into the app’s `bin` directory, I configured an `inputs.conf` entry to ingest it into Splunk. When I searched the ingested data, I noticed that Splunk did not break the events correctly, treating multiple log lines as one. To fix this, I created a regular expression that matched the words `DISCONNECT` or `CONNECT` at the end of each line. I updated `props.conf` to include `MUST_BREAK_AFTER = (DISCONNECT|CONNECT)` and enabled line merging with `SHOULD_LINEMERGE = true`. After restarting Splunk, I confirmed that each event was being properly broken at the correct boundary. 
 
 ### Problem
-Splunk groups multiple events together incorrectly.  
+This lab introduced a problem where Splunk was grouping multiple events together incorrectly.
 
 ### Steps
 - Copied `vpnlogs` into `/bin` and configured `inputs.conf`:  
@@ -249,25 +256,18 @@ MUST_BREAK_AFTER = (DISCONNECT|CONNECT)
 **Q4:** Disable line merging? → SHOULD_LINEMERGE=false  
 
 ### What I Learned
-I learned how to **fix event boundaries using regex** and why `SHOULD_LINEMERGE` matters.
+I learned how important it is to configure event boundaries so Splunk can distinguish between separate events. Regex-based rules in `props.conf` give me precise control over where events start and end. This is essential because improper event breaking can cause searches and dashboards to misinterpret the data. 
 
 ---
 
 ## Task 7 - Parsing Multi-line Events
 
 ### What I Did
-- Worked with `authentication_logs` script.  
-- Configured `inputs.conf`:  
-   ```
-   [script:///opt/splunk/etc/apps/DataApp/bin/authentication_logs]
-   index = main
-   sourcetype = auth_logs
-   host = auth_server
-   interval = 5
-   ```
+Next, I worked with the `authentication_logs` script, which generated multi-line log entries. After ingesting the logs using `inputs.conf`, I noticed that Splunk incorrectly treated the logs as multiple events. To fix this, I configured `props.conf` to merge lines and only break events when a line started with `[Authentication]`. This was done using `BREAK_ONLY_BEFORE = \[Authentication\]` along with `SHOULD_LINEMERGE = true`. Restarting Splunk and re-running the search showed me that the multi-line logs were now captured correctly as single events.  
 
 ### Problem
-`authentication_logs` produce multi-line events split incorrectly.  
+`authentication_logs` produce multi-line events split incorrectly. Worked with `authentication_logs` script.  
+
 
 ### Steps
 - Configured inputs.conf  
@@ -297,17 +297,17 @@ BREAK_ONLY_BEFORE = \[Authentication\]
 **Q2:** Which regex pattern was used? → \[Authentication\]  
 
 ### What I Learned
-I learned that **multi-line logs need careful regex stanzas** and that Splunk can incorrectly split them unless configured.
+I learned that multi-line events are a common challenge in Splunk, especially for logs like authentication or application errors that span several lines. Using the right regex and stanza settings in `props.conf` ensures these logs remain intact, preventing data fragmentation.  
 
 ---
 
 ## Task 8 - Masking Sensitive Data
 
 ### What I Did
-Used `purchase-details` script to simulate credit card logs.
+I worked with the `purchase-details` script, which generated logs containing credit card numbers. These logs were ingested into Splunk using an `inputs.conf` configuration. To fix event boundaries, I wrote a regex that broke events after a 4-digit sequence. After confirming the events were structured properly, I used the `SEDCMD` setting in `props.conf` to mask the credit card numbers. My regex replaced the full numbers with `XXXX-XXXX-XXXX-XXXX`. Restarting Splunk showed that the sensitive information was masked in the search results.
 
 ### Problem
-Purchase logs include credit card numbers.  
+Purchase logs include credit card numbers. Used `purchase-details` script to simulate credit card logs.
 
 ### Steps
 - Used `purchase-details` script to simulate credit card logs.
@@ -333,17 +333,17 @@ Purchase logs include credit card numbers.
 **Q2:** What is the SEDCMD regex? → s/\d{4}-\d{4}-\d{4}-\d{4}/XXXX-XXXX-XXXX-XXXX/g  
 
 ### What I Learned
-I learned that **SEDCMD works like Unix sed**, allowing field anonymization for compliance with PCI DSS and HIPAA.
+I learned that Splunk provides built-in mechanisms to anonymize sensitive data at ingestion time. The `SEDCMD` setting works like the Unix `sed` command, applying regex replacements before indexing the data. This ensures compliance with standards like PCI DSS and HIPAA while still preserving logs for analysis.
 
 ---
 
 ## Task 9 - Extracting Custom Fields
 
 ### What I Did
-- Worked with `vpn_logs`. 
+I returned to the `vpnlogs` dataset to practice extracting custom fields. Using regex, I captured the username with `User:\s(\w+\s\w+)` and created a stanza in `transforms.conf` that formatted the result into a `Username` field. I then updated `props.conf` to apply this transform and created a `fields.conf` entry to mark the new field as indexed. After restarting Splunk, I validated that usernames were extracted. I then extended the regex to capture not only the username but also the server and action fields, using `User:\s(\w+\s\w+),.+Server:\s(.+),.+Action:\s(\w+)`. I updated the transform and fields configuration to include these fields and confirmed that Splunk extracted them successfully. 
 
 ### Problem
-VPN logs don’t auto-extract fields (`username`, `server`, `action`).  
+VPN logs don’t auto-extract fields (`username`, `server`, `action`). Worked with `vpn_logs`. 
 
 ### Steps
 - Regex to capture username:  
@@ -383,7 +383,7 @@ VPN logs don’t auto-extract fields (`username`, `server`, `action`).
 **Q3:** How many unique CC values? → Example: 4  
 
 ### What I Learned
-I learned how to **extract custom fields using regex and transforms.conf**. This is critical for enriching events so they can be queried effectively in Splunk searches.
+I learned that custom field extraction is one of the most powerful aspects of Splunk. Using regex in `transforms.conf` and `props.conf` allows me to create new, meaningful fields from raw log text. This makes searches much more efficient, since I can query structured fields rather than relying on free-text search.
 
 ---
 
@@ -399,6 +399,8 @@ In this lab, I practiced how to configure Splunk to parse and manipulate data by
 These skills are critical for SOC Analysts to properly analyze and secure log data.  
 
 ### What I Did
+I reviewed all the work I had completed in the lab. I practiced defining event boundaries, parsing multi-line logs, masking sensitive information, and extracting custom fields. I also built a simple Splunk app to simulate log ingestion, which tied together all the configurations I had practiced. Each task built upon the last, giving me a realistic view of the types of parsing and ingestion issues a SOC analyst faces.  
+
 I reviewed all the steps I performed:
 - Defined event boundaries with regex and props.conf.
 - Parsed multi-line events.
