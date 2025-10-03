@@ -12,13 +12,7 @@ By the end of this lab, I will understand:
 - How events are parsed in Splunk.  
 - The importance of configuration files such as **inputs.conf**, **transforms.conf**, and **props.conf**.  
 - How to extract custom fields and apply them as filters.  
-- How to identify timestamps in event logs.  
-
-### Challenge / Question
-**Q:** Why is event parsing important in Splunk from a security perspective?  
-**A (example):** Event parsing ensures that raw machine data is structured in a way that allows me to search, filter, and correlate logs. Without parsing, it would be difficult to detect anomalies, track user activity, or investigate incidents efficiently.  
-
-
+- How to identify timestamps in event logs. 
 ---
 
 ## Task 2 - Scenario and Lab Instructions
@@ -31,14 +25,34 @@ I assumed the role of a SOC Analyst at a company called **CyberT**. The scenario
 - **Extracting Custom Fields:** Removing redundant fields in web logs.
 
 ### What I Did
-I assumed the role of a SOC analyst working at a fictional company, where my task was to process and transform logs coming from a custom source. The lab simulated realistic issues I would encounter, such as events not breaking correctly, multi-line logs being treated as separate events instead of one, and sensitive information like credit card numbers appearing in raw logs. I connected to the lab machine, navigated to the `/Downloads/scripts` directory, and noted that all the scripts I’d be working with were stored there for me to analyze. Scripts are provided in `/Downloads/scripts/` and commands are executed as a root user.  
+I assumed the role of a SOC analyst working at a fictional company, where my task was to process and transform logs coming from a custom source. The lab simulated realistic issues I would encounter, such as events not breaking correctly, multi-line logs being treated as separate events instead of one, and sensitive information like credit card numbers appearing in raw logs. I connected to the lab machine, navigated to the `/Downloads/scripts` directory, and noted that all the scripts I’d be working with were stored there for me to analyze. Scripts are provided in `/Downloads/scripts/` and commands are executed as a root user. I worked within a Linux environment (confirmed by the ubuntu@tryhackme prompt, which indicates an Ubuntu-based Linux system).  
 
 ### Challenge / Question
+At the end of this portion of the lab, a question asked me to determine how many Python scripts were present in the ~/Downloads/scripts directory. Since I already knew the target location, I navigated directly to it by running: `cd Downloads/scripts`.
+
+<p align="left">
+  <img src="images/lab02-splunk-data-manipulation-figure01.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 1</em>
+</p>
+
+After entering the directory, I used the `ls` command to list its contents. The output showed three items: `authentication_logs`, `purchase-details`, and `vpnlogs`. None of these files had the typical `.py` extension, which is what I usually expect Python scripts to have. But the question asked how many scripts there were at this directory path, so I concluded that there were three Python scripts in this directory.
+
+<p align="left">
+  <img src="images/lab02-splunk-data-manipulation-figure02.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 2</em>
+</p>
+
 **Q:** How many Python scripts are present in the `/Downloads/scripts/` directory?  
 **A (example):** There are 3 scripts: `authentication_logs`, `purchase-details`, and `vpnlogs`.  
 
 ### What I Learned
-I realized that SOC analysts don’t just visualize logs but also **shape how logs are ingested and stored** to ensure compliance and usability. I learned that Splunk doesn’t magically parse everything correctly on its own — it requires tuning. Analysts are responsible for identifying when logs are being ingested improperly and then correcting the configuration so that logs are searchable, compliant, and actionable. This reinforced how important it is for me to understand not only how to search data but also how to prepare data for Splunk to ingest in the first place. 
+This exercise reinforced how to quickly navigate through the Linux file system and inspect directories using commands like `cd` and `ls`. It also reminded me that while most Python scripts are saved with a `.py` extension, technically any file could contain Python code if it starts with a proper line (e.g., #!/usr/bin/python3). However, in practical scenarios and exams, the `.py` extension is the standard indicator.
 
 ---
 
