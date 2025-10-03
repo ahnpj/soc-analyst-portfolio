@@ -1,4 +1,4 @@
-# Lab 01 – Splunk VPN Log Analysis
+# Lab 01 – Splunk VPN Log Analysis (Basics)
 
 ## Overview
 This lab analyzes VPN logs in Splunk to surface behaviors a SOC analyst cares about: remote access volume, who is most active, where connections originate, and whether there are stability or misuse indicators.  
