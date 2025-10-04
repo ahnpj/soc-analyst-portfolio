@@ -270,7 +270,7 @@ Here is a quick table I created to loosely defines some common stanzas and provi
 | KV_MODE | Key-value parsing | KV_MODE = json |
 
 ### Challenge / Question
-At the end of this portion of the lab, a question asked me to determine how many Python scripts were present in the ~/Downloads/scripts directory. Since I already knew the target location, I navigated directly to it by running: `cd Downloads/scripts`.
+At the end of this portion of the lab, a question asked me to determine how many Python scripts were present in the ~/Downloads/scripts directory. Since I already knew the target location, I navigated directly to it by running: `cd Downloads/scripts.
 
 <p align="left">
   <img src="images/lab02-splunk-data-manipulation-figure03.png?raw=true&v=2" 
@@ -281,16 +281,16 @@ At the end of this portion of the lab, a question asked me to determine how many
 </p>
 
 **Q1:** Which stanza breaks events after a provided pattern?  
-**A:** LINE_BREAKER.  
+**A:** `BREAK_ONLY_AFTER` 
 
 **Q2:** Which stanza specifies the pattern for line breaks?  
-**A:** LINE_BREAKER.  
+**A:** `LINE_BREAKER` 
 
 **Q3:** Which config defines transformations?  
-**A:** transforms.conf.  
+**A:** `transforms.conf`  
 
 **Q4:** Which config defines inputs?  
-**A:** inputs.conf.  
+**A:** `inputs.conf`  
 
 ### What I Learned
 I learned that each configuration file has a unique responsibility, and together they create the entire ingestion and parsing pipeline. Knowing which file to modify is critical to solving problems quickly. I also learned that stanza-based configuration is extremely powerful, allowing very granular control over parsing behavior with just a few lines of configuration. I learned the **"division of responsibilities"**: `inputs.conf` ingests, `props.conf` parses, `transforms.conf` manipulates, `indexes.conf` stores, and `outputs.conf` forwards. I also learned about how "stanzas" in Splunk configuration files is essentially a section within a `.conf` file that defines specific behavior or rules.
