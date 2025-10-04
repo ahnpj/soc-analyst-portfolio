@@ -155,5 +155,6 @@ This repo will continue to grow as I add more content, including:
 
 ## Note
 
-All work here is practice and simulation — no real company data is included.  
+All work here is practice and simulation — no real company data is included.
+<br></br>
 I’m using this repo to document my learning journey and showcase how I approach **SOC analyst tasks step by step**. Feedback and suggestions are always welcome!
