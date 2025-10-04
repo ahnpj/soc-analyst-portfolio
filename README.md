@@ -9,15 +9,9 @@ This is a **work in progress** — I’m continuing to add more labs and example
 
 ## 📂 What’s Inside
 
-**Playbooks → (playbooks/)**  
-  Step-by-step response guides I’ve written for common security events.  
-  These are structured like SOC playbooks to help with incident triage, investigation, and response.  
-
-
-
-**Labs → (labs/)**  
-  Hands-on labs where I dig into SIEM data, practice log analysis, and build investigation workflows.  
-  Currently includes:
+<h3>Labs → (labs/)</h3> Hands-on labs where I dig into SIEM data, practice log analysis, and build investigation workflows. 
+Currently includes:
+<br/><br/>
   
 <!--
     - SIEM
@@ -85,7 +79,9 @@ This is a **work in progress** — I’m continuing to add more labs and example
 
 </details>
 
-
+### **Playbooks → (playbooks/)**  
+  Step-by-step response guides I’ve written for common security events.  
+  These are structured like SOC playbooks to help with incident triage, investigation, and response.  
 
 ---
 
