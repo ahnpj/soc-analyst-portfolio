@@ -238,11 +238,17 @@ server = remote_indexer:9997
 - `server = remote_indexer:9997` is telling Splunk which specific index servers within the group to send the data.
 
 
-<b>(6) authentication.conf</b> – Managed and configured authentication.  
+<b>(6) authentication.conf</b> – Manages and configures authentication settings. Below is an example `authentication.conf` file:
+
 ```conf
 [authentication]  
-authSettings = LDAP  
+authSettings = LDAP
+[authenticationLDAP]
+SSLEnabled = true 
 ```
+
+- The `[authentication]` section is telling Splunk which authentication method to use. In this example, it's `LDAP`.
+- The `[authenticationLDAP]` section defines how LDAP is configured. So `SSLEnabled` says to use SSL/TLS encryption when connecting to an LDAP server. This is crucial because without SSL, login credentials would be sent in cleartext.
 
 ### Common Stanzas
 | Stanza | Explanation | Example |
