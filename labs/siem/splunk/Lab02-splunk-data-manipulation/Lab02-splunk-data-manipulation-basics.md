@@ -95,7 +95,7 @@ EXTRACT-field2 = regular_expression2
 
 ### (WAIT): Quick Personal Side Experiment For Step 4
 
-I wanted to try out my own simple example to check my understanding of how field extractions work in Splunk. I made up a small log line (from a fake data source) with two users and their actions:  
+I wanted to try out my own simple example to check my understanding of how field extractions work in Splunk. I made up a small log line (from an imaginary data source) with two users and their actions:  
 ```
 user=john action=login
 user=alice action=logout
