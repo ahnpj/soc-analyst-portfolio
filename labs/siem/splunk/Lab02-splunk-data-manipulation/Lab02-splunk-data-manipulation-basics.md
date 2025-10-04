@@ -300,7 +300,9 @@ I learned that each configuration file has a unique responsibility, and together
 ## Task 5 - Creating a Simple Splunk App
 
 ### What I Did
-For this task of the lab, I created my own Splunk app called `DataApp`. First, I started the Splunk service from `/opt/splunk` using the `bin/splunk start` command and logged in with the provided credentials. Once inside the Splunk web interface, I navigated to the Apps section and created a new app with fields like name, folder path, author, and description. To simulate log ingestion, I created a simple Python script called `samplelogs.py` that printed a single log line. I placed this script in the `bin` directory of the app. Next, I created an `inputs.conf` file that told Splunk to execute the script every five seconds, sending its output to the `main` index with a sourcetype of `testing`. Finally, I restarted Splunk to apply the changes.  
+For this task of the lab, I created my own Splunk app called `DataApp`. I created a simple Splunk app to better understand how Splunk organizes and extends functionality through apps. An app in Splunk is essentially a container that holds configurations, inputs, and supporting files such as scripts or dashboards. By building a very simple sample app that outputs a test log, I was able to see how Splunk apps are structured and where they are stored in the file system. The purpose of this lab is not to build a production-ready application, but to practice the process of creating, saving, and placing files into Splunk’s app framework. This helps demonstrate how custom data sources or logic can be added into Splunk through apps, making it easier to manage specific use cases in an organized way.
+
+First, I started the Splunk service from `/opt/splunk` using the `bin/splunk start` command and logged in with the provided credentials. Once inside the Splunk web interface, I navigated to the Apps section and created a new app with fields like name, folder path, author, and description. To simulate log ingestion, I created a simple Python script called `samplelogs.py` that printed a single log line. I placed this script in the `bin` directory of the app. Next, I created an `inputs.conf` file that told Splunk to execute the script every five seconds, sending its output to the `main` index with a sourcetype of `testing`. Finally, I restarted Splunk to apply the changes.  
 
 ### Steps
 1. **Start Splunk**  
@@ -388,17 +390,6 @@ cd ..
    print("This is a sample log...")
    ```
 <p align="center">
-  <img src="images/lab02-splunk-data-manipulation-figure09.png?raw=true&v=2" 
-       alt="SIEM alert" 
-       style="border: 2px solid #444; border-radius: 6px;" 
-       width="600"><br>
-  <em>Figure 9</em>
-</p>
-
-<br></br>
-   - **(4b)** Saved as `samplelogs.py` in `/bin`. Then ran the script to test.
-
-<p align="center">
   <img src="images/lab02-splunk-data-manipulation-figure10.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -406,7 +397,38 @@ cd ..
   <em>Figure 10</em>
 </p>
 
-7. **Configure inputs.conf**  
+<br></br>
+   - **(4b)** Saved as `samplelogs.py` in `/bin`. Then ran the script to test.
+
+<p align="center">
+  <img src="images/lab02-splunk-data-manipulation-figure11.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 11</em>
+</p>
+
+5. **Configure inputs.conf**
+In this part of the lab, I created an `inputs.conf` file. The reason for doing this is because in Splunk, `inputs.conf` is the configuration file that tells Splunk what data to collect and how to collect it. By defining settings inside `inputs.conf`, I can specify details such as file paths, scripts, or network ports that Splunk should monitor for incoming events.
+
+For this part of the lab specifically, the goal was to simulate a real-world scenario where Splunk needs to ingest data from a custom source — in this case, the sample Python script I created earlier that generates simple log messages. By setting up `inputs.conf`, I'm telling Splunk to treat the output of that script as input data and begin indexing it.
+
+The purpose of this step is not just to collect fake data, but to understand how Splunk apps bundle configurations that control data ingestion. In production, different apps use their own `inputs.conf` files to define how logs from servers, applications, or security tools are pulled into Splunk. This exercise helps reinforce that idea by walking through the process in a simplified example.
+
+<br></br>
+    - **(5a)** At this stage of the lab, I needed to make changes to the sample `inputs.conf` file located in Splunk’s default directory. To get there, I first navigated back to the main Splunk directory so I had a clean starting point. From there, I ran `cd /opt/splunk/etc/system/default` to move into the `default` configuration folder and used `ls` to confirm that the inputs.conf file was there. Once I saw it, I opened it with `nano inputs.conf` to begin editing.
+
+<p align="center">
+  <img src="images/lab02-splunk-data-manipulation-figure12.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 12</em>
+</p>
+
+<br></br>
+    - **(5b)** At this stage of the lab, I needed to make changes to the sample `inputs.conf` file located in Splunk’s default directory. To get there, I first navigated back to the main Splunk directory so I had a clean starting point. From there, I ran `cd /opt/splunk/etc/system/default` to move into the `default` configuration folder and used `ls` to confirm that the inputs.conf file was there. Once I saw it, I opened it with `nano inputs.conf` to begin editing.
+
    ```
    [script:///opt/splunk/etc/apps/DataApp/bin/samplelogs.py]
    index = main
@@ -415,7 +437,7 @@ cd ..
    interval = 5
    ```
 
-8. **Restart Splunk**  
+9. **Restart Splunk**  
    ```bash
    /opt/splunk/bin/splunk restart
    ```
