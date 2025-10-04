@@ -270,7 +270,7 @@ Here is a quick table I created to loosely defines some common stanzas and provi
 | KV_MODE | Key-value parsing | KV_MODE = json |
 
 ### Challenge / Question
-At the end of this portion of the lab, a question asked me to determine how many Python scripts were present in the ~/Downloads/scripts directory. Since I already knew the target location, I navigated directly to it by running: `cd Downloads/scripts.
+At the end of this task (task 4) of the lab, I was presented with a few questions that quizzed me on stanzas and configuration files.
 
 <p align="left">
   <img src="images/lab02-splunk-data-manipulation-figure03.png?raw=true&v=2" 
