@@ -61,7 +61,75 @@ Currently includes:
 <h3>Playbooks → (playbooks/)</h3> Step-by-step response guides I’ve written for common security events. These are structured like SOC playbooks to help with incident triage, investigation, and response.
 Currently includes:
 <br/><br/>
+<details>
+<summary><b>Account Lockouts</b></summary>
 
+> - <a href="playbooks/account-lockout-investigation-playbook.md">Account lockouts</a><br/>
+>Troubleshoot repeated account lockouts and investigate potential account compromise.
+</details>
+
+<details>
+  
+<summary><b>Alert Triage Escalation</b></summary>
+
+> - <a href="playbooks/alert-triage-escalation-playbook.md">Alert Escalation</a><br/>
+>Process for analyzing security alerts, prioritizing incidents, and escalating appropriately.
+
+</details>
+
+<details>
+  
+<summary><b>Data Exfiltration Investigation</b></summary>
+
+> - <a href="playbooks/data-exfiltration-investigation-playbook.md">Data Exfiltration Investigation</a><br/>
+>Identify and respond to suspicious data transfers or large unauthorized uploads.
+
+</details>
+
+<details>
+  
+<summary><b>Email Phishing Attempt</b></summary>
+
+> - <a href="playbooks/email-phishing-playbook.md">Email Phishing Attempt</a><br/>
+>Identify, contain, and remediate phishing email incidents.
+
+</details>
+
+<details>
+  
+<summary><b>Malware Detection and Response</b></summary>
+
+> - <a href="playbooks/malware-detection-response-playbook.md">Malware Detection and Response</a><br/>
+>Steps to identify, isolate, and remediate malware infections on endpoints to minimize impact.
+
+</details>
+
+<details>
+  
+<summary><b>Suspicious Network Traffic Analysis</b></summary>
+
+> - <a href="playbooks//suspicious-network-traffic-analysis-playbook.md">Suspicious Network Traffic Analysis</a><br/>
+>Detect and investigate anomalies in network traffic such as unexpected outbound connections.
+
+</details>
+
+<details>
+  
+<summary><b>Suspicious Login or Access Attempt</b></summary>
+
+> - <a href="playbooks/unauthorized-access-detection-playbook.md">Suspicious Login or Access Attempt</a><br/>
+>Identify, respond to, and mitigate unauthorized or suspicious login attempts on production systems or cloud platforms.
+
+</details>
+
+<details>
+  
+<summary><b>Unauthorized USB Device Detection</b></summary>
+
+> - <a href="playbooks/unauthorized-usb-detection-playbook.md">Unauthorized USB Device Detection</a><br/>
+>Investigate alerts triggered by unknown USB devices connecting to endpoints.
+
+</details>
 
 ---
 
