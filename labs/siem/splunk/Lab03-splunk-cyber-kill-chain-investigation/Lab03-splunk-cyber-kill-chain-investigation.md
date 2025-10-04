@@ -6,7 +6,9 @@
 ## Introduction to Incident Handling
 
 ### Overview / Objective
-This introductory task established the context of the lab and defined what constitutes a **security incident**. The objective was to understand how an incident impacts confidentiality, integrity, or availability (CIA) and how **Splunk**, functioning as a Security Information and Event Management (SIEM) system, supports the incident‑handling process.
+The objective was to understand how an incident impacts confidentiality, integrity, or availability (CIA) and how **Splunk**, functioning as a Security Information and Event Management (SIEM) system, supports the incident‑handling process.
+
+In this lab, I conducted a full end-to-end investigation of a simulated cyber incident using Splunk as my primary analysis tool. The scenario involved a web server defacement attack against `imreallynotbatman.com`, hosted by the fictional company Wayne Enterprises. My objectives were to trace the adversary’s actions through each stage of the **Lockheed Martin Cyber Kill Chain**, identify the attacker’s tactics, techniques, and procedures (TTPs), and correlate activity across multiple data sources such as HTTP logs, IDS alerts, and Sysmon telemetry. Throughout the lab, I performed detailed Splunk queries to uncover reconnaissance behavior, brute-force authentication attempts, malware installation, command and control (C2) communication, and the final defacement of the target system. Each query was analyzed line-by-line to understand what it revealed about the attacker’s behavior and how it maps to MITRE ATT&CK techniques. The overall objective was to strengthen my ability to think like a SOC analyst — connecting raw log data to broader threat frameworks, applying NIST SP 800-61 principles, and producing an actionable, evidence-based incident report. This lab emphasized not only technical proficiency with Splunk but also structured analytical thinking, documentation, and professional reporting skills critical to cybersecurity operations.
 
 ### Environment & Prerequisites
 - Splunk Enterprise environment pre‑configured with the `botsv1` dataset.  
@@ -52,6 +54,8 @@ The task strengthened my understanding that incident handling is continuous. Eve
 
 ### Overview / Objective
 This task introduced the simulated incident at **Wayne Enterprises**, where the domain `imreallynotbatman.com` was defaced. My objective was to understand the environment, available data, and how attacker behavior maps to the **Lockheed Martin Cyber Kill Chain**.
+
+This part of the lab established the context of the lab and defined what constitutes a **security incident**. 
 
 ### Data Sources
 - `stream:http` – Network flows.  
