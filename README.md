@@ -19,7 +19,7 @@ Currently includes:
 > <details>
 > <summary>SIEM Basics</summary>
 >
-> - <a href="labs/siem/siem-basics/Lab01-suspicious-process-investigation/Lab01-suspicious-process-investigation.md">Lab01 – Suspicious Process Investigation</a><br/>
+> - <a href="labs/siem/siem-basics/Lab01-intro-to-siem/Lab01-suspicious-process-investigation.md">Lab01 – Suspicious Process Investigation</a><br/>
 >   <em>Level: Beginner</em> → Investigating abnormal process activity in logs, understanding correlation rules.
 >
 > </details>
@@ -27,7 +27,7 @@ Currently includes:
 > <details>
 > <summary>Splunk</summary>
 >
-> - <a href="labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis.md">Lab01 – Splunk VPN Log Analysis</a><br/>
+> - <a href="labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis-basics.md>Lab01 – Splunk VPN Log Analysis</a><br/>
 >   <em>Level: Beginner</em> → Detecting unusual VPN login activity, analyzing login patterns by user and source country, and identifying suspicious travel or account compromise.
 > - <a href="labs/siem/splunk/Lab02-splunk-data-manipulation/Lab02-splunk-data-manipulation-basics.md">Lab02 – Splunk Data Manipulation</a><br/>
 >   <em>Level: Beginner</em> → Understanding how Splunk processes, parses, and manipulates machine-generated data using configuration files (inputs.conf, props.conf, transforms.conf) to ensure accurate field extraction and reliable analysis for security investigations.
