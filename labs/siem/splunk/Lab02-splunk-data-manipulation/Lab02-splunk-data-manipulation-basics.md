@@ -212,12 +212,16 @@ FORMAT = new_field::$1
   - `REPORT-extract_user = extract_user` pulls and runs the `extract_user` transform rule from the `transforms.conf` file.
 
 
-<b>(4) indexes.conf</b> – Index management, which basically manages index storage: 
+<b>(4) indexes.conf</b> – Index management, which basically manages index storage. I learned that Splunk stores data in indexes, which are like separate folders of events from a data source. It basically tells Splunk where to store the data and how to do it. Below is an example `indexes.conf` file:
+
 ```conf
 [my_index]  
 homePath = $SPLUNK_DB/my_index/db  
-coldPath = $SPLUNK_DB/my_index/colddb  
+coldPath = $SPLUNK_DB/my_index/colddb
 ```
+
+- `homePath` is telling Splunk where recent data should be stored.
+- `coldPath` is telling Splunk where to move aged data (past certain thresholds).
 
 <b>(5) outputs.conf</b> – Forwarded events by sending events to remote indexers.
 ```conf
