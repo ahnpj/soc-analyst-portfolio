@@ -85,7 +85,7 @@ This setup phase emphasized the importance of situational awareness before ana
 
 ---
 
-## 🧩 Task 1 – Reconnaissance Phase
+## Task 1 – Reconnaissance Phase
 
 ### Overview / Objective
 The objective was to detect early reconnaissance activity targeting `imreallynotbatman.com`. Reconnaissance is the first phase of the Cyber Kill Chain, where adversaries gather intelligence about targets.
