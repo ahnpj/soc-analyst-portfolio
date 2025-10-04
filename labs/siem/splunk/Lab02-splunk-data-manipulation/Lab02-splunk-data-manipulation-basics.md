@@ -257,6 +257,8 @@ I learned that each configuration file has a specific purpose and all of them wo
 ### Stanzas
 In this lab, I also learned about stanzas in Splunk configuration files. A stanza is essentially a section within a `.conf` file that defines specific behavior or rules. Each stanza has a name (like `[sourcetype]`, `[REPORT]`, or `[TRANSFORMS]`) and contains settings that control how Splunk processes data. For example, I saw how stanzas such as `TIME_PREFIX` and `TIME_FORMAT` help Splunk correctly identify timestamps, while `LINE_BREAKER` and `SHOULD_LINEMERGE` determine how raw events are split into individual lines. Other stanzas like `REPORT` and `EXTRACT` use regular expressions to pull out fields, and `KV_MODE` can automatically extract key/value pairs. Understanding these gave me a clearer picture of how Splunk’s parsing pipeline works and how flexible it is when dealing with different log formats.
 
+Here is a quick table I created to loosely defines some common stanzas and provides an example of how it might appear in configuration files:
+
 | Stanza | Explanation | Example |
 |--------|-------------|---------|
 | sourcetype | Defines data source format | [apache:access] |
