@@ -31,7 +31,7 @@ This is a **work in progress** — I’m continuing to add more labs and example
           - **[Lab01 – Windows CMD/CLI Basics](labs/endpoint-triage/windows-cli/Lab01-windows-cli-endpoint-triage-basics/Lab01-windows-cli-endpoint-triage-basics.md)**  
   *Level: Beginner* → Using Windows command-line tools to investigate processes, review system information, and identify suspicious activity.
         - PowerShell
-          - **[Lab01 – PowerShell Basics](labs/endpoint-triage/powershell/Lab01-powershell-endpoint-triage-basics/Lab01-powershell-endpoint-triage.basics.md)**  
+          - **[Lab01 – PowerShell Basics](labs/endpoint-triage/powershell/Lab01-powershell-endpoint-triage-basics/Lab01-powershell-endpoint-triage-basics.md)**  
   *Level: Beginner* → Leveraging PowerShell commands to collect endpoint data, filter logs, and detect potential anomalies in process execution.
 
 
