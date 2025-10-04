@@ -300,7 +300,7 @@ I learned that each configuration file has a unique responsibility, and together
 ## Task 5 - Creating a Simple Splunk App
 
 ### What I Did
-I created my own Splunk app called `DataApp`. First, I started the Splunk service from `/opt/splunk` using the `bin/splunk start` command and logged in with the provided credentials. Once inside the Splunk web interface, I navigated to the Apps section and created a new app with fields like name, folder path, author, and description. To simulate log ingestion, I created a simple Python script called `samplelogs.py` that printed a single log line. I placed this script in the `bin` directory of the app. Next, I created an `inputs.conf` file that told Splunk to execute the script every five seconds, sending its output to the `main` index with a sourcetype of `testing`. Finally, I restarted Splunk to apply the changes.  
+For this task of the lab, I created my own Splunk app called `DataApp`. First, I started the Splunk service from `/opt/splunk` using the `bin/splunk start` command and logged in with the provided credentials. Once inside the Splunk web interface, I navigated to the Apps section and created a new app with fields like name, folder path, author, and description. To simulate log ingestion, I created a simple Python script called `samplelogs.py` that printed a single log line. I placed this script in the `bin` directory of the app. Next, I created an `inputs.conf` file that told Splunk to execute the script every five seconds, sending its output to the `main` index with a sourcetype of `testing`. Finally, I restarted Splunk to apply the changes.  
 
 ### Steps
 1. **Start Splunk**  
@@ -308,21 +308,86 @@ I created my own Splunk app called `DataApp`. First, I started the Splunk servic
    cd /opt/splunk
    bin/splunk start
    ```
+I changed into the Splunk installation directory with `cd /opt/splunk` (this is where third-party apps are commonly placed on Linux). From there I started Splunk by running sudo bin/splunk start. The bin folder contains the Splunk executable, so running Splunk start launches the Splunk server processes (the splunkd web server). I hit permission errors when trying to start it without elevated rights, so I prefixed the command with `sudo` to run it as superuser. The console showed the web server coming up and printed the access URL — “The Splunk web interface is at http://tryhackme:8000”, which is the address to open in a browser to reach the running Splunk instance.
 
-2. **Login**  
+
+2. **Login**
    - Username: `splunk`
    - Password: `splunk123`
 
-3. **Create App**  
-   I named the app `DataApp`, located at `/opt/splunk/etc/apps/DataApp`.
+3. **Create App**
+    - **(3a)** After reaching the Splunk instance via FireFox, I clicked the gear icon next to **Apps** which landed me to a page where there was a table of applications where I could manage them.
 
-4. **Write Python Script for Sample Logs**  
+<p align="center">
+  <img src="images/lab02-splunk-data-manipulation-figure04.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 4</em>
+</p>
+
+<br></br>
+    - **(3b)** Then, I clicked the **[Create app]** button on the top right.
+
+<p align="center">
+  <img src="images/lab02-splunk-data-manipulation-figure05.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 5</em>
+</p>
+
+<br></br>
+    - **(3d)** I was redirected to a page where I can add details for my Splunk app. I named the app and folder name **DataApp**, located at `$SPLUNK_HOME/etc/apps/`. I gave it version **1.0.0** as is the first version of this sample app. Lastly, I filled in the remaining details like my name for the **Author**, and a quick **Description**.
+
+<p align="center">
+  <img src="images/lab02-splunk-data-manipulation-figure06.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 6</em>
+</p>
+
+<br></br>
+    - **(3e)** I was brought back to the Apps page where you manage all Splunk apps, and saw the app that I've just created: **DataApp**.
+
+<p align="center">
+  <img src="images/lab02-splunk-data-manipulation-figure07.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 7</em>
+</p>
+
+<br></br>
+    - **(3f)** I clicked **[Launch App]** under the **Actions** column, which evidently showed that no activity has been logged. **I went ahead and wrote a Python Script for sample logs in step 4.**
+    
+<p align="center">
+  <img src="images/lab02-splunk-data-manipulation-figure08.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 8</em>
+</p>
+
+<br></br>
+    - **(3g)** Before moving to the next step, I stepped back into the Linux terminal (bash shell) and entered the following commands to locate the newly created sample app **from step 3(f)**:
+
+<p align="center">
+  <img src="images/lab02-splunk-data-manipulation-figure09.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 9</em>
+</p>
+
+6. **Write Python Script for Sample Logs**  
    ```python
    print("This is a sample log...")
    ```  
    Saved as `samplelogs.py` in `/bin`.
 
-5. **Configure inputs.conf**  
+7. **Configure inputs.conf**  
    ```
    [script:///opt/splunk/etc/apps/DataApp/bin/samplelogs.py]
    index = main
@@ -331,7 +396,7 @@ I created my own Splunk app called `DataApp`. First, I started the Splunk servic
    interval = 5
    ```
 
-6. **Restart Splunk**  
+8. **Restart Splunk**  
    ```bash
    /opt/splunk/bin/splunk restart
    ```
