@@ -250,7 +250,13 @@ SSLEnabled = true
 - The `[authentication]` section is telling Splunk which authentication method to use. In this example, it's `LDAP`.
 - The `[authenticationLDAP]` section defines how LDAP is configured. So `SSLEnabled` says to use SSL/TLS encryption when connecting to an LDAP server. This is crucial because without SSL, login credentials would be sent in cleartext.
 
-### Common Stanzas
+Although these are not all of the configuration files Splunk provides, these are the ones I focused on in this lab. In particular, I got to learn about `inputs.conf`, `props.conf`, `transforms.conf`, `indexes.conf`, `outputs.conf`, and a small piece of `authentication.conf` to understand how parsing, routing, storage, forwarding, and authentication work together. Splunk also has many other configuration files that handle tasks such as server settings (`server.conf`), limits (`limits.conf`), deployment (`deploymentclient.conf`), and more. For the scope of this lab, however, I concentrated on the files most relevant to the data pipeline and authentication basics.
+
+I learned that each configuration file has a specific purpose and all of them work together.
+
+### Stanzas
+In this lab, I also learned about stanzas in Splunk configuration files. A stanza is essentially a section within a `.conf` file that defines specific behavior or rules. Each stanza has a name (like `[sourcetype]`, `[REPORT]`, or `[TRANSFORMS]`) and contains settings that control how Splunk processes data. For example, I saw how stanzas such as `TIME_PREFIX` and `TIME_FORMAT` help Splunk correctly identify timestamps, while `LINE_BREAKER` and `SHOULD_LINEMERGE` determine how raw events are split into individual lines. Other stanzas like `REPORT` and `EXTRACT` use regular expressions to pull out fields, and `KV_MODE` can automatically extract key/value pairs. Understanding these gave me a clearer picture of how Splunk’s parsing pipeline works and how flexible it is when dealing with different log formats.
+
 | Stanza | Explanation | Example |
 |--------|-------------|---------|
 | sourcetype | Defines data source format | [apache:access] |
@@ -262,6 +268,16 @@ SSLEnabled = true
 | KV_MODE | Key-value parsing | KV_MODE = json |
 
 ### Challenge / Question
+At the end of this portion of the lab, a question asked me to determine how many Python scripts were present in the ~/Downloads/scripts directory. Since I already knew the target location, I navigated directly to it by running: `cd Downloads/scripts`.
+
+<p align="left">
+  <img src="images/lab02-splunk-data-manipulation-figure03.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 3</em>
+</p>
+
 **Q1:** Which stanza breaks events after a provided pattern?  
 **A:** LINE_BREAKER.  
 
@@ -275,7 +291,7 @@ SSLEnabled = true
 **A:** inputs.conf.  
 
 ### What I Learned
-I learned that each configuration file has a unique responsibility, and together they create the entire ingestion and parsing pipeline. Knowing which file to modify is critical to solving problems quickly. I also learned that stanza-based configuration is extremely powerful, allowing very granular control over parsing behavior with just a few lines of configuration. I learned the **division of responsibilities**: `inputs.conf` ingests, `props.conf` parses, `transforms.conf` manipulates, `indexes.conf` stores, and `outputs.conf` forwards.
+I learned that each configuration file has a unique responsibility, and together they create the entire ingestion and parsing pipeline. Knowing which file to modify is critical to solving problems quickly. I also learned that stanza-based configuration is extremely powerful, allowing very granular control over parsing behavior with just a few lines of configuration. I learned the **"division of responsibilities"**: `inputs.conf` ingests, `props.conf` parses, `transforms.conf` manipulates, `indexes.conf` stores, and `outputs.conf` forwards. I also learned about how "stanzas" in Splunk configuration files is essentially a section within a `.conf` file that defines specific behavior or rules.
 
 ---
 
