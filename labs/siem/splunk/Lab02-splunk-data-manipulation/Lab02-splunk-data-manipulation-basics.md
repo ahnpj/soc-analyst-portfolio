@@ -70,8 +70,9 @@ I went through a six-step process to configure Splunk parsing:
 2. **Identify the Sourcetype**  
    The sourcetype tells Splunk how to parse and interpret the data. It essentially represents the format of the data being indexed. I learned that the **sourcetype** is essential for parsing, as it tells Splunk how to handle a specific dataset.
 
-3. **Configure props.conf**
-In this step of the task, I learned that you can use the configuration file (example in lab: `props.conf`) to defined data parsing settings for specific sourcetypes and data sources. I also learned how to assign a sourcetype to a data source by first defining the path of the data source, and then defining its sourcetype. 
+3. **Configure props.conf**  
+   In this step of the task, I learned that you can use the configuration file (example in lab: `props.conf`) to defined data parsing settings for specific sourcetypes and data sources. I also learned how to assign a sourcetype to a data source by first defining the path of the data source, and then defining its sourcetype.
+   
    This command template binds the path to a sourcetype.
 
 ```conf
