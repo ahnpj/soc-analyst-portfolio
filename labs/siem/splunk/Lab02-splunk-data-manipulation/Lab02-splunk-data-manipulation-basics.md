@@ -146,45 +146,86 @@ I learned that parsing in Splunk is a structured pipeline that begins with inges
 ## Task 4 - Exploring Splunk Configuration Files
 
 ## What I Did
-I explored multiple configuration files to understand their roles. I practiced writing examples for `inputs.conf` to ingest log files, `props.conf` to define field extractions, and `transforms.conf` to enrich data by creating new fields. I also looked at `indexes.conf`, which determines where the data is stored, and `outputs.conf`, which controls how data is sent to other Splunk instances. Finally, I learned about `authentication.conf`, which enables features like LDAP authentication. I also examined the different stanza types in Splunk, such as `[sourcetype]`, `REPORT`, `EXTRACT`, and `TIME_PREFIX`, which define how events are processed and indexed. 
+In this task of the lab, I explored multiple configuration files to understand their roles. I practiced writing examples for `inputs.conf` to ingest log files, `props.conf` to define field extractions, and `transforms.conf` to enrich data by creating new fields. I also looked at `indexes.conf`, which determines where the data is stored, and `outputs.conf`, which controls how data is sent to other Splunk instances. Finally, I learned about `authentication.conf`, which enables features like LDAP authentication. I also examined the different stanza types in Splunk, such as `[sourcetype]`, `REPORT`, `EXTRACT`, and `TIME_PREFIX`, which define how events are processed and indexed. 
 
 ### Key Config Files
-I explored several important configuration files in Splunk and tested examples:
+I learned about several important configuration files in Splunk and tested examples:
 
-- **inputs.conf** – Defines data input and how data is ingested.  
+<b>(1) inputs.conf</b> - Defines data input, where that data lives, and how data is ingested. Below is an example `inputs.conf` file.
+
 ```conf
 [monitor:///path/to/logfile.log]  
 sourcetype = my_sourcetype  
 ```
 
-- **props.conf** – Defines parsing rules and controls field extractions and parsing. 
+<b>(2) props.conf</b>– Defines parsing rules and controls field extractions and parsing. This is the configuration file I worked with in task 3. 
+
 ```conf
 [my_sourcetype]  
 EXTRACT-field1 = regex1  
 EXTRACT-field2 = regex2  
 ```
 
-- **transforms.conf** – Defines transformations.  
+<b>(3) transforms.conf</b> -  Defines transformations. I was confused what "transformation" actually meant, but learned that it's simply a rule that tells Splunk how to change or process data. It is similar to `props.conf` except `transforms.conf` is the actual rule for transformations, whereas `props.conf` defines when and where to apply a transformation. The following is an example block of a `transform.conf` file. As a simple example comparison, `transforms.conf` says "here's the rule on how to extract users" and `props.conf` says "now apply those rules to these logs".
+
 ```conf
 [add_new_field]  
 REGEX = existing_field=(.*)  
 FORMAT = new_field::$1  
 ```
 
-- **indexes.conf** – Index management, which basically manages index storage: 
+  - **(3-A)** I thought about this configuration file a little more and imagined a data source that contains a log entry:
+`user=john action=login`, which in practice, could look a little more like this: `192.168.1.45 - - [04/Oct/2025:09:34:56 -0400] "GET /index.html HTTP/1.1" 200 1024 user=john`
+    - `192.168.1.45` is the client IP address
+    - `-` is a placeholder that shows the "name" of the remote user, which I learned is called "identd". I also learned that in practice, almost nobody uses this, so it's just a single `-`. The second instance of `-` would show the username if the web server `john` is connected to required login or authentication.
+    - `[04/Oct/2025:09:34:56 -0400` is the timestamp. The `-0400` represents time zone, which is the offset from UTC.
+    - `GET /index.html HTTP/1.1" is using the `GET` HTTP method for data retrieval from the web server. It's also requesting resources from `/index.html`. `HTTP/1.1` is the web protocol and version number.
+    - `200` is a HTTP status code returned by the web server and means success. Other commonly known HTTP status codes are `404` (Not Found) and `500` (Server Error)
+    - `1024` is the response size in bytes, but only for the body and doesn't include headers. This just means 1024 bytes were retrieved and sent back to the client, `john`.
+    - `user=john` is a custom field and provides a value. In this case, it would be the client's name making the request.
+
+- **(3-B)** If I wanted to pull the username as a searchable field, I'd modify the `transforms.conf` file by defining an `extract_user` rule:
+
+  ```conf
+  [extract_user]
+  REGEX = user=(\w+)
+  FORMAT = user::$1
+  ```
+
+  - `[extract_user]` represents the name of the rule/transformation.
+  - `REGEX = user=(\w+)` is the regular expression Splunk will look for inside the log.
+    - `user=` is the literal text in the log.
+    - `(\w+)` matches the word that comes after `user=`.
+  - `FORMAT = user::$1` tells Splunk how to store the captured value as a field.
+    - `user::` means the field name will be `user`.
+    - `$1` means “take the first capture group from the regex” (e.g., `john`).
+
+
+- **(3-C)** Now if I wanted to apply these rules to a log file:
+
+  ```conf
+  [source_type]
+  REPORT-extract_user = extract_user
+  ```
+
+  - `[source_type]` is what I discussed in task 3, which is basically the format of the data being indexed, which also tells Splunk how to parse and interpret the data.
+  - `REPORT-extract_user = extract_user` pulls and runs the `extract_user` transform rule from the `transforms.conf` file.
+
+
+<b>(4) indexes.conf</b> – Index management, which basically manages index storage: 
 ```conf
 [my_index]  
 homePath = $SPLUNK_DB/my_index/db  
 coldPath = $SPLUNK_DB/my_index/colddb  
 ```
 
-- **outputs.conf** – Forwarded events by sending events to remote indexers.
+<b>(5) outputs.conf</b> – Forwarded events by sending events to remote indexers.
 ```conf
 [tcpout]  
 defaultGroup = my_indexers  
 ```
 
-- **authentication.conf** – Managed and configured authentication.  
+<b>(6) authentication.conf</b> – Managed and configured authentication.  
 ```conf
 [authentication]  
 authSettings = LDAP  
