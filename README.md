@@ -4,7 +4,9 @@ Welcome to my SOC Analyst Portfolio!
 <br></br>
 This repo is where I collect the hands-on work I’ve been doing to build practical blue team skills. My focus is on learning how to think and work like a Security Operations Center (SOC) analyst — investigating alerts, analyzing logs, and documenting clear playbooks.
 
-This is a **work in progress** — I’m continuing to add more labs and examples as I go. What you see here will grow over time, with each lab building in complexity and depth (Lab01 = fundamentals, Lab02+ = more advanced scenarios).
+This is a **work in progress** — I’m continuing to add more labs and examples as I go. 
+
+**Note:** What you see here will grow over time, with each lab building in complexity and depth (Lab01 = fundamentals, Lab02+ = more advanced scenarios).
 
 ---
 
