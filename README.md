@@ -7,7 +7,7 @@ This is a **work in progress** — I’m continuing to add more labs and example
 
 ---
 
-## 📂 What’s Inside
+## What’s Inside
 
 <h3>Labs → (labs/)</h3> Hands-on labs where I dig into SIEM data, practice log analysis, and build investigation workflows. 
 Currently includes:
@@ -133,7 +133,7 @@ Currently includes:
 
 ---
 
-## 🎯 Skills Demonstrated
+## Skills Demonstrated
 
 - Reading and analyzing SIEM logs (Splunk, general SIEM concepts)  
 - Identifying suspicious or abnormal activity  
@@ -143,7 +143,7 @@ Currently includes:
 
 ---
 
-## 🚀 Roadmap / Coming Soon
+## Roadmap / Coming Soon
 
 This repo will continue to grow as I add more content, including:  
 - Additional SIEM labs (ELK stack, more Splunk scenarios)  
