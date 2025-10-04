@@ -108,8 +108,8 @@ EXTRACT-action = action=(\w+)
 The regex `user=(\w+)` will match both john and alice, and the `regex action=(\w+)` will match both login and logout.
 
 - `user=(\w+)`
-  - user= literally matches the text user= in the log.
-  - (\w+) is a capturing group.
+  - `user=` literally matches the users in the log.
+  - `(\w+)` is a capturing group.
       - `\w matches` any word character (letters a-z, A-Z, digits 0-9, and underscore _).
       - `+` means basically means "one or more."
       - Together, `\w+` captures names like `john` or `alice`.
