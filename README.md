@@ -58,9 +58,10 @@ Currently includes:
 
 </details>
 
-### **Playbooks → (playbooks/)**  
-  Step-by-step response guides I’ve written for common security events.  
-  These are structured like SOC playbooks to help with incident triage, investigation, and response.  
+<h3>Playbooks → (playbooks/)</h3> Step-by-step response guides I’ve written for common security events. These are structured like SOC playbooks to help with incident triage, investigation, and response.
+Currently includes:
+<br/><br/>
+
 
 ---
 
