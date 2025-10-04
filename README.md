@@ -35,7 +35,7 @@ Currently includes:
 > - <a href="labs/siem/splunk/Lab02-splunk-data-manipulation/Lab02-splunk-data-manipulation-basics.md">Lab02 – Splunk Data Manipulation</a><br/>
 >   <em>Level: Beginner</em> → Understanding how Splunk processes, parses, and manipulates machine-generated data using configuration files (inputs.conf, props.conf, transforms.conf) to ensure accurate field extraction and reliable analysis for security investigations.
 >- <a href="labs/siem/splunk/Lab03-splunk-cyber-kill-chain-investigation/Lab03-splunk-cyber-kill-chain-investigation.md">Lab03 – Splunk Cyber Kill Chain Investigation</a><br/>
->   <em>Level: Beginner</em> → Understanding how Splunk processes, parses, and manipulates machine-generated data using configuration files (inputs.conf, props.conf, transforms.conf) to ensure accurate field extraction and reliable analysis for security investigations.
+>   <em>Level: Intermediate</em> → Performing a complete investigation of a simulated web server defacement incident by tracing attacker activity through each phase of the Cyber Kill Chain. This includes identifying reconnaissance behavior, analyzing exploit attempts, verifying malware installation, and uncovering command-and-control (C2) communication using Splunk queries and network log data. The lab emphasizes the analytical workflow of a SOC analyst — from detecting the initial compromise to mapping adversary TTPs against frameworks like MITRE ATT&CK and NIST SP 800-61. Learners will gain hands-on experience correlating IDS alerts, HTTP traffic, and DNS records to produce actionable intelligence and document incident findings in a professional, report-ready format.
 > </details>
 
 </details>
