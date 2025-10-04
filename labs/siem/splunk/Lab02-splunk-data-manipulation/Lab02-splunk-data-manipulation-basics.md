@@ -68,36 +68,63 @@ I went through a six-step process to configure Splunk parsing:
    Splunk supports multiple formats (CSV, JSON, XML, syslog). I examined data formats (CSV, JSON, syslog, XML) and identified relevant fields. I examined data formats (CSV, JSON, syslog, XML) and identified relevant fields.
 
 2. **Identify the Sourcetype**  
-   The sourcetype tells Splunk how to parse and interpret the data. I learned that the **sourcetype** is essential for parsing, as it tells Splunk how to handle a specific dataset. I learned that the **sourcetype** is essential for parsing, as it tells Splunk how to handle a specific dataset.
+   The sourcetype tells Splunk how to parse and interpret the data. It essentially represents the format of the data being indexed. I learned that the **sourcetype** is essential for parsing, as it tells Splunk how to handle a specific dataset.
 
 3. **Configure props.conf**
-   This command binds the path to a sourcetype.
+In this step of the task, I learned that you can use the configuration file (example in lab: `props.conf`) to defined data parsing settings for specific sourcetypes and data sources. I also learned how to assign a sourcetype to a data source by first defining the path of the data source, and then defining its sourcetype. 
+   This command template binds the path to a sourcetype.
 
 ```conf
 [source::/path/to/your/data]  
 sourcetype = your_sourcetype  
 ```
+- `/path/to/your/data` is basically telling Splunk where the data source lives.
+- `sourcetype` tells Splunk the format of the data being indexed and subsequently how to parse and interpret the data.
 
 4. **Define Field Extractions**
-I wrote regex rules to extract fields like usernames or server names.
+Here, I learned that you can define regular expressions (regex) to parse (or "filter") to extract specific fields from the data, like usernames or server names.
+This command template defines the fields you want to extract from your data source:
 ```conf
 [your_sourcetype]  
 EXTRACT-field1 = regular_expression1  
 EXTRACT-field2 = regular_expression2  
 ```
+- `your_sourcetype` is the sourcetype (as described earlier)
+- `EXTRACT-field1 = regular_expression1` and `EXTRACT-field2 = regular_expression2` is basically how you would extract a single field from your data source.
+  - `field1` and `field2` are the names of a fields you want to extract, and `regular_expression1` and `regular_expression2` are the regex used to match, filter, and extract the values.
+
+I wanted to try out my own simple example to check my understanding of how field extractions work in Splunk. I made up a small log line (from a fake data source) with two users and their actions:  
+```
+user=john action=login
+user=alice action=logout
+```
+To extract these values, I would write the following in `props.conf` file:  
+
+```
+[mysourcetype]
+EXTRACT-user = user=(\w+)
+EXTRACT-action = action=(\w+)
+```
+The `regex user=(\w+)` will match both john and alice, and the `regex action=(\w+)` will match both login and logout.
+
+- `user=(\w+)`
+  - user= literally matches the text user= in the log.
+  - (\w+) is a capturing group.
+      - `\w matches` any word character (letters a-z, A-Z, digits 0-9, and underscore _).
+      - `+` means basically means "one or more."
+      - Together, `\w+` captures names like `john` or `alice`.
+- `action=(\w+)`
+  - `action=` literally matches the text action=.
+  - `(\w+)` works the same as above, capturing words like `login` and `logout`.
 
 5. **Save and Restart Splunk**
-Restarting Splunk applies all parsing changes.
+I learned after editing the configuration file, I would restart Splunk which applies all parsing changes.
 
 7. **Verify and Search Data**
-I ran queries to confirm my configurations.
-
-### Challenge / Question
-**Q:** What is the role of the `props.conf` file?  
-**A (example):** It defines parsing settings for sourcetypes and data sources, including field extractions and event boundaries.  
+I also learned that once Splunk restarts, I can search the data and verify it parsed correctly to confirm my configurations.
 
 ### What I learned
-I learned that parsing in Splunk is a structured pipeline that begins with ingestion and continues through sourcetype assignment, regex extraction, and validation. The `props.conf` file is central to this process, acting as the instruction manual for Splunk on how to handle each dataset. I also learned that without proper configuration, Splunk would ingest data as raw text, making searches much less useful.
+I learned that parsing in Splunk is a structured pipeline that begins with ingestion and continues through sourcetype assignment, regex extraction, and validation. The `props.conf` file (example configuration file) in this task  is central to this process, acting as the instruction manual for Splunk on how to handle each dataset. I also learned that without proper configuration, Splunk would ingest data as raw text, making searches much less useful.
 
 ---
 
