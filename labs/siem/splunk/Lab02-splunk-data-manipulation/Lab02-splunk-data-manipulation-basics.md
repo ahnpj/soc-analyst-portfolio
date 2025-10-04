@@ -223,11 +223,20 @@ coldPath = $SPLUNK_DB/my_index/colddb
 - `homePath` is telling Splunk where recent data should be stored.
 - `coldPath` is telling Splunk where to move aged data (past certain thresholds).
 
-<b>(5) outputs.conf</b> – Forwarded events by sending events to remote indexers.
+<b>(5) outputs.conf</b> – Forwarded events by sending events to remote indexers. It basically tells Splunk where to sent/forward data in instances where Splunk is not the final destination. It controls things like which indexers to send events to (good for load balancing, sending events to multiple targets) and which protocol to use (TCP, SSL). Example `outputs.conf` file below:
+
 ```conf
-[tcpout]  
-defaultGroup = my_indexers  
+[tcpout]
+defaultGroup = my_indexers
+[tcpout: myindexers]
+server = remote_indexer:9997
 ```
+
+- `[tcpout]` tells Splunk I'm setting up a TCP output (forwarding events via TCP]
+- `defaultGroup = my_indexers` tells Splunk that I'm sending my data to the `my_indexers` group. Side note, I learned that a group is just a nickname for a group of Splunk indexers.
+- `[tcpout: myindexers]` defines the group name. In this case, it's `myindexers`.
+- `server = remote_indexer:9997` is telling Splunk which specific index servers within the group to send the data.
+
 
 <b>(6) authentication.conf</b> – Managed and configured authentication.  
 ```conf
