@@ -93,6 +93,8 @@ EXTRACT-field2 = regular_expression2
 - `EXTRACT-field1 = regular_expression1` and `EXTRACT-field2 = regular_expression2` is basically how you would extract a single field from your data source.
   - `field1` and `field2` are the names of a fields you want to extract, and `regular_expression1` and `regular_expression2` are the regex used to match, filter, and extract the values.
 
+### (WAIT): Quick Personal Side Experiment For Step 4
+
 I wanted to try out my own simple example to check my understanding of how field extractions work in Splunk. I made up a small log line (from a fake data source) with two users and their actions:  
 ```
 user=john action=login
@@ -116,6 +118,18 @@ The regex `user=(\w+)` will match both `john` and `alice`, and the regex `action
 - `action=(\w+)`
   - `action=` literally matches the text action=.
   - `(\w+)` works the same as above, capturing words like `login` and `logout`.
+
+I wanted to try out another example, but slightly more complex, so I imagined (lol, yes just imagining) the data source contained many different users and I wanted to capture everyone whose name starts with “j”, but only when their action was specifically `login`, I could adjust the regex like this:
+```
+[mysourcetype]
+EXTRACT-j_users_login = user=(j\w+)\s+action=login
+```
+- `user=(j\w+)` captures any username starting with the letter “j” (e.g., john, james, jill, jacob).
+- `s+` would match the space or spaces after the username, so like any whitespace. The `+` is one or more of however many whitespace there is.
+- `action=login` would only match entries where the action is exactly `login`.
+
+The result would create a field listing all users whose names start with a "j" and who performed a `login` action.
+
 
 5. **Save and Restart Splunk**
 I learned after editing the configuration file, I would restart Splunk which applies all parsing changes.
