@@ -309,8 +309,7 @@ For this task of the lab, I created my own Splunk app called `DataApp`. First, I
    bin/splunk start
    ```
 I changed into the Splunk installation directory with `cd /opt/splunk` (this is where third-party apps are commonly placed on Linux). From there I started Splunk by running sudo bin/splunk start. The bin folder contains the Splunk executable, so running Splunk start launches the Splunk server processes (the splunkd web server). I hit permission errors when trying to start it without elevated rights, so I prefixed the command with `sudo` to run it as superuser. The console showed the web server coming up and printed the access URL — “The Splunk web interface is at http://tryhackme:8000”, which is the address to open in a browser to reach the running Splunk instance.
-
-
+cd ..
 2. **Login**
    - Username: `splunk`
    - Password: `splunk123`
@@ -381,11 +380,31 @@ I changed into the Splunk installation directory with `cd /opt/splunk` (this is 
   <em>Figure 9</em>
 </p>
 
-6. **Write Python Script for Sample Logs**  
+4. **Write Python Script for Sample Logs**
+
+    - **(4a)** As I learned earlier in this task, the `bin` directory contains the scripts required by the app I have just created. I switched directories to the `/bin` folder and entered `ls` to see a list of available scripts. I withheld the screenshots because it required multiple screenshots to capture the entire list of scripts. There was a sample script file that the lab left us to use. The sample script was named `samplelogs.py`. I entered the command: `nano samplelogs.py` to open the script file, then entered the following:
+
    ```python
    print("This is a sample log...")
-   ```  
-   Saved as `samplelogs.py` in `/bin`.
+   ```
+<p align="center">
+  <img src="images/lab02-splunk-data-manipulation-figure09.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 9</em>
+</p>
+
+<br></br>
+   - **(4b)** Saved as `samplelogs.py` in `/bin`. Then ran the script to test.
+
+<p align="center">
+  <img src="images/lab02-splunk-data-manipulation-figure10.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 10</em>
+</p>
 
 7. **Configure inputs.conf**  
    ```
