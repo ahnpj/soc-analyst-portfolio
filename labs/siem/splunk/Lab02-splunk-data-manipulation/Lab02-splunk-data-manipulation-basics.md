@@ -311,13 +311,13 @@ First, I started the Splunk service from `/opt/splunk` using the `bin/splunk sta
    bin/splunk start
    ```
 I changed into the Splunk installation directory with `cd /opt/splunk` (this is where third-party apps are commonly placed on Linux). From there I started Splunk by running sudo bin/splunk start. The bin folder contains the Splunk executable, so running Splunk start launches the Splunk server processes (the splunkd web server). I hit permission errors when trying to start it without elevated rights, so I prefixed the command with `sudo` to run it as superuser. The console showed the web server coming up and printed the access URL — “The Splunk web interface is at http://tryhackme:8000”, which is the address to open in a browser to reach the running Splunk instance.
-cd ..
+
 2. **Login**
    - Username: `splunk`
    - Password: `splunk123`
 
 3. **Create App**
-    - **(3a)** After reaching the Splunk instance via FireFox, I clicked the gear icon next to **Apps** which landed me to a page where there was a table of applications where I could manage them.
+  - **(3a)** After reaching the Splunk instance via FireFox, I clicked the gear icon next to **Apps** which landed me to a page where there was a table of applications where I could manage them.
 
 <p align="center">
   <img src="images/lab02-splunk-data-manipulation-figure04.png?raw=true&v=2" 
@@ -328,7 +328,7 @@ cd ..
 </p>
 
 <br></br>
-    - **(3b)** Then, I clicked the **[Create app]** button on the top right.
+  - **(3b)** Then, I clicked the **[Create app]** button on the top right.
 
 <p align="center">
   <img src="images/lab02-splunk-data-manipulation-figure05.png?raw=true&v=2" 
@@ -339,7 +339,7 @@ cd ..
 </p>
 
 <br></br>
-    - **(3d)** I was redirected to a page where I can add details for my Splunk app. I named the app and folder name **DataApp**, located at `$SPLUNK_HOME/etc/apps/`. I gave it version **1.0.0** as is the first version of this sample app. Lastly, I filled in the remaining details like my name for the **Author**, and a quick **Description**.
+  - **(3c)** I was redirected to a page where I can add details for my Splunk app. I named the app and folder name **DataApp**, located at `$SPLUNK_HOME/etc/apps/`. I gave it version **1.0.0** as is the first version of this sample app. Lastly, I filled in the remaining details like my name for the **Author**, and a quick **Description**.
 
 <p align="center">
   <img src="images/lab02-splunk-data-manipulation-figure06.png?raw=true&v=2" 
@@ -350,7 +350,7 @@ cd ..
 </p>
 
 <br></br>
-    - **(3e)** I was brought back to the Apps page where you manage all Splunk apps, and saw the app that I've just created: **DataApp**.
+  - **(3d)** I was brought back to the Apps page where you manage all Splunk apps, and saw the app that I've just created: **DataApp**.
 
 <p align="center">
   <img src="images/lab02-splunk-data-manipulation-figure07.png?raw=true&v=2" 
@@ -361,7 +361,7 @@ cd ..
 </p>
 
 <br></br>
-    - **(3f)** I clicked **[Launch App]** under the **Actions** column, which evidently showed that no activity has been logged. **I went ahead and wrote a Python Script for sample logs in step 4.**
+  - **(3e)** I clicked **[Launch App]** under the **Actions** column, which evidently showed that no activity has been logged. **I went ahead and wrote a Python Script for sample logs in step 4.**
     
 <p align="center">
   <img src="images/lab02-splunk-data-manipulation-figure08.png?raw=true&v=2" 
@@ -372,7 +372,7 @@ cd ..
 </p>
 
 <br></br>
-    - **(3g)** Before moving to the next step, I stepped back into the Linux terminal (bash shell) and entered the following commands to locate the newly created sample app **from step 3(f)**:
+  - **(3f)** Before moving to the next step, I stepped back into the Linux terminal (bash shell) and entered the following commands to locate the newly created sample app **from step 3(e)**:
 
 <p align="center">
   <img src="images/lab02-splunk-data-manipulation-figure09.png?raw=true&v=2" 
@@ -384,7 +384,7 @@ cd ..
 
 4. **Write Python Script for Sample Logs**
 
-    - **(4a)** As I learned earlier in this task, the `bin` directory contains the scripts required by the app I have just created. I switched directories to the `/bin` folder and entered `ls` to see a list of available scripts. I withheld the screenshots because it required multiple screenshots to capture the entire list of scripts. There was a sample script file that the lab left us to use. The sample script was named `samplelogs.py`. I entered the command: `nano samplelogs.py` to open the script file, then entered the following:
+  - **(4a)** As I learned earlier in this task, the `bin` directory contains the scripts required by the app I have just created. I switched directories to the `/bin` folder and entered `ls` to see a list of available scripts. I withheld the screenshots because it required multiple screenshots to capture the entire list of scripts. There was a sample script file that the lab left us to use. The sample script was named `samplelogs.py`. I entered the command: `nano samplelogs.py` to open the script file, then entered the following:
 
    ```python
    print("This is a sample log...")
@@ -409,14 +409,9 @@ cd ..
 </p>
 
 5. **Configure inputs.conf**
-In this part of the lab, I created an `inputs.conf` file. The reason for doing this is because in Splunk, `inputs.conf` is the configuration file that tells Splunk what data to collect and how to collect it. By defining settings inside `inputs.conf`, I can specify details such as file paths, scripts, or network ports that Splunk should monitor for incoming events.
+In this part of the lab, I created an `inputs.conf` file. The reason for doing this is because in Splunk, `inputs.conf` is the configuration file that tells Splunk what data to collect and how to collect it. By defining settings inside `inputs.conf`, I can specify details such as file paths, scripts, or network ports that Splunk should monitor for incoming events. For this part of the lab specifically, the goal was to simulate a real-world scenario where Splunk needs to ingest data from a custom source — in this case, the sample Python script I created earlier that generates simple log messages. By setting up `inputs.conf`, I'm telling Splunk to treat the output of that script as input data and begin indexing it. The purpose of this step is not just to collect fake data, but to understand how Splunk apps bundle configurations that control data ingestion. In production, different apps use their own `inputs.conf` files to define how logs from servers, applications, or security tools are pulled into Splunk. This exercise helps reinforce that idea by walking through the process in a simplified example.
 
-For this part of the lab specifically, the goal was to simulate a real-world scenario where Splunk needs to ingest data from a custom source — in this case, the sample Python script I created earlier that generates simple log messages. By setting up `inputs.conf`, I'm telling Splunk to treat the output of that script as input data and begin indexing it.
-
-The purpose of this step is not just to collect fake data, but to understand how Splunk apps bundle configurations that control data ingestion. In production, different apps use their own `inputs.conf` files to define how logs from servers, applications, or security tools are pulled into Splunk. This exercise helps reinforce that idea by walking through the process in a simplified example.
-
-<br></br>
-    - **(5a)** At this stage of the lab, I needed to make changes to the sample `inputs.conf` file located in Splunk’s default directory. To get there, I first navigated back to the main Splunk directory so I had a clean starting point. From there, I ran `cd /opt/splunk/etc/system/default` to move into the `default` configuration folder and used `ls` to confirm that the inputs.conf file was there. Once I saw it, I opened it with `nano inputs.conf` to begin editing.
+  - **(5a)** At this stage of the lab, I needed to make changes to the sample `inputs.conf` file located in Splunk’s default directory. To get there, I first navigated back to the main Splunk directory so I had a clean starting point. From there, I ran `cd /opt/splunk/etc/system/default` to move into the `default` configuration folder and used `ls` to confirm that the inputs.conf file was there. Once I saw it, I opened it with `nano inputs.conf` to begin editing.
 
 <p align="center">
   <img src="images/lab02-splunk-data-manipulation-figure12.png?raw=true&v=2" 
@@ -426,8 +421,7 @@ The purpose of this step is not just to collect fake data, but to understand how
   <em>Figure 12</em>
 </p>
 
-<br></br>
-    - **(5b)** At this stage of the lab, I needed to make changes to the sample `inputs.conf` file located in Splunk’s default directory. To get there, I first navigated back to the main Splunk directory so I had a clean starting point. From there, I ran `cd /opt/splunk/etc/system/default` to move into the `default` configuration folder and used `ls` to confirm that the inputs.conf file was there. Once I saw it, I opened it with `nano inputs.conf` to begin editing.
+  - **(5b)** At this stage of the lab, I needed to make changes to the sample `inputs.conf` file located in Splunk’s default directory. To get there, I first navigated back to the main Splunk directory so I had a clean starting point. From there, I ran `cd /opt/splunk/etc/system/default` to move into the `default` configuration folder and used `ls` to confirm that the inputs.conf file was there. Once I saw it, I opened it with `nano inputs.conf` to begin editing.
 
    ```
    [script:///opt/splunk/etc/apps/DataApp/bin/samplelogs.py]
@@ -437,7 +431,7 @@ The purpose of this step is not just to collect fake data, but to understand how
    interval = 5
    ```
 
-9. **Restart Splunk**  
+6. **Restart Splunk**  
    ```bash
    /opt/splunk/bin/splunk restart
    ```
