@@ -105,7 +105,7 @@ To extract these values, I would write the following in `props.conf` file:
 EXTRACT-user = user=(\w+)
 EXTRACT-action = action=(\w+)
 ```
-The `regex user=(\w+)` will match both john and alice, and the `regex action=(\w+)` will match both login and logout.
+The regex `user=(\w+)` will match both john and alice, and the `regex action=(\w+)` will match both login and logout.
 
 - `user=(\w+)`
   - user= literally matches the text user= in the log.
