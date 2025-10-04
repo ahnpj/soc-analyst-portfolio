@@ -276,7 +276,7 @@ At the end of this portion of the lab, a question asked me to determine how many
   <img src="images/lab02-splunk-data-manipulation-figure03.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
-       width="500"><br>
+       width="900"><br>
   <em>Figure 3</em>
 </p>
 
