@@ -65,7 +65,7 @@ Currently includes:
 > <details>
 > <summary>Windows CMD/CLI</summary>
 >
-> - <a href="endpoint-triage/windows-cli/Lab01-windows-cli-endpoint-triage-basics/Lab01-windows-cli-endpoint-triage-basics.md">Lab01 – Windows CMD/CLI Basics</a><br/>
+> - <a href="labs/endpoint-triage/windows-cli/Lab01-windows-cli-endpoint-triage-basics/Lab01-windows-cli-endpoint-triage-basics.md">Lab01 – Windows CMD/CLI Basics</a><br/>
 >   <em>Level: Beginner</em> → Using Windows command-line tools to investigate processes, review system information, and identify suspicious activity.
 >
 > </details>
