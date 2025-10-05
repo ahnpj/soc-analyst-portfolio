@@ -73,7 +73,19 @@ This part of the lab established the context of the lab and defined what constit
 
 ### Lab Environment Setup
 For this lab, I was provided with a virtual machine (VM) that served as the investigation environment. Once deployed, the machine was automatically assigned an IP address labeled as `MACHINE_IP`, which took approximately 3–5 minutes to initialize and become available. The VM contained all the event logs required for the investigation, specifically stored in the `index=botsv1` dataset. This dataset, released by Splunk, is designed to simulate a realistic environment for security analysis and may include real-world language or expressions. The lab’s purpose was to connect to this environment, explore the data sources and source types, and begin performing investigations based on the provided event data.
-- **Event Logs Source**: I was provided [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis.
+
+I accessed Splunk Enterprise on the target VM at `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `http://10.201.33.31` in the AttackBox browser.
+
+In Splunk’s Search & Reporting app I confirmed the index=botsv1 dataset with `index=botsv1 | stats count by sourcetype` to understand what types of data were available
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="700"><br>
+</p>
+
+- **Event Logs Source**: I was provided [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. The results showed different sourcetypes, which represent various log formats such as network, web, or host data. This helped me confirm that the dataset was properly loaded and gave me a clear view of the log sources I would be analyzing throughout the lab.
 
 #### Independent Checks
 I performed some independent, explaratory checks outside the lab instructions to validate connectivity and practice recon techniques.
@@ -185,7 +197,7 @@ All expected sourcetypes were present. Understanding these sources early streaml
 The objective was to detect early reconnaissance activity targeting `imreallynotbatman.com`. Reconnaissance is the first phase of the Cyber Kill Chain, where adversaries gather intelligence about targets.
 
 ### Step‑by‑Step Walkthrough
-I began by searching the dataset for any logs referencing the domain:
+**1)** I began by searching the dataset for any logs referencing the domain:
 
 ```spl
 index=botsv1 imreallynotbatman.com
@@ -194,23 +206,95 @@ index=botsv1 imreallynotbatman.com
 - **index=botsv1** – Restricts scope to the lab dataset. *Why:* Prevents irrelevant results.  
 - **imreallynotbatman.com** – Keyword search for the targeted domain. *Why:* Captures any events involving the compromised web server.
 
-This returned several sourcetypes, including `stream:http` and `suricata`. I refined the query to focus on HTTP traffic:
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-06.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 6</em>
+</p>
+
+This returned several sourcetypes, including `suricata`, `stream:http`, `fortigate_utm`, and `iis`. 
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-07.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 7</em>
+</p>
+
+**(2)** I refined the query to focus on HTTP traffic because the domain represents a web address. I first limited my query to `HTTP` traffic using `sourcetype=stream:http` to focus only on web communication logs and reduce unrelated results. This made the search faster and more precise, allowing me to see which source IPs had connected to that domain. The results showed two main IPs — `40.80.148.42` and `23.22.63.114`, with the first generating the majority of HTTP requests, suggesting it was the primary host involved in the connection.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-08.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 8</em>
+</p>
 
 ```spl
 index=botsv1 imreallynotbatman.com sourcetype=stream:http
 ```
+
 **Breakdown**
 - **sourcetype=stream:http** – Selects HTTP network flows. *Why:* Web traffic best illustrates enumeration behavior.  
 
-From this search, I identified two IPs (`40.80.148.42` and `23.22.63.114`) repeatedly connecting to the server. Cross‑referencing in Suricata logs showed alerts such as “ET SCAN Nmap SYN Scan,” confirming reconnaissance.
+From this search, I identified two IPs (`40.80.148.42` and `23.22.63.114`) repeatedly connecting to the server (identified via "src_ip" field in Splunk). `40.80.148.42` was by far generating the majority of the HTTP requests. So I investigated `40.80.148.42` first.
 
-📸 **Screenshot Placeholder:** Stream HTTP results highlighting source IPs and repeated requests.
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-09.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 9</em>
+</p>
+
+**(3)** I needed to validate that this was indeed a scanning attempt by `40.80.148.42`, so I narrowed my search query to Suricata logs using the query:
+
+```spl
+index=botsv1
+imreallynotbatman.com
+sourcetype:suricata
+```
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-10.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 10: This query will show the logs from the suricata log source that are from the source IP 40.80.248.42</em>
+</p>
+
+After using the Suricata IDS logs, and then filtering events generated by the source IP `40.80.148.42`, I found 46 distinct alert signatures under the `alert.signature` field. These included exploit attempts (active recon) such as Cross-Site Scripting, SQL Injection, XXE, and Shellshock (CVE-2014-6271). Most likely to test or exploit vulnerabilities. The large number of repeated detections and variety of triggered signatures confirm that this IP was performing reconnaissance and vulnerability scanning against the target host 192.168.250.70.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-11.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 11</em>
+</p>
+
+While reviewing Suricata events for source IP `40.80.148.42`, one of the first alerts observed was “SURICATA HTTP Host header invalid.” This alert typically appears when an HTTP request contains a malformed or empty Host header, which is something normal browsers rarely do. HTTP requests with empty headers are common with automated vulnerability scanners or reconnaissance tools, which sends deliberately malformed requests to see how a web server responds. The goal of this attacker was most likely to fingerprint the web application, determine how it handles unexpected inputs, and identify potential misconfigurations.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-12.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 12</em>
+</p>
+
+Because this activity doesn’t exploit a specific vulnerability but instead maps and tests the server’s behavior, it’s a strong indicator of active reconnaissance.
+
 
 ### Findings / Analysis
-`40.80.148.42` accounted for > 90 % of requests, consistent with automated scanning. Reconnaissance evidence included frequent GET requests and unusual User‑Agents.
+`40.80.148.42` accounted for over 90 % of the requests, and was consistent with automated vulnerability scanning. Active recon evidence included frequent GET requests.
 
 ### What I Learned
-This task demonstrated how correlated IDS and network logs can expose early attacker behavior. Recognizing reconnaissance helps defenders act during the earliest possible stage of an attack, aligning with **Security+ Domain 3 (Threat Detection)** and **NIST IR Phase – Identification**.
+This task demonstrated how correlated IDS and network logs can expose early attacker behavior. Recognizing reconnaissance helps defenders act during the earliest possible stage of an attack, aligning with **Security+ Domain 3 (Threat Detection)** and **NIST IR Phase – Identification** (Woohoo! Earning my CompTIA Sec+ cert was worth it).
 
 ---
 
