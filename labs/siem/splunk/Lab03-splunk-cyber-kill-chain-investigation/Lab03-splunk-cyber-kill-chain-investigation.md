@@ -223,7 +223,7 @@ This returned several sourcetypes, including `suricata`, `stream:http`, `fortiga
   <em>Figure 7</em>
 </p>
 
-<h4>(2)</h4> I refined the query to focus on HTTP traffic because the domain represents a web address. 
+<h4>(2) I refined the query to focus on HTTP traffic because the domain represents a web address.</h4>
 
 I first limited my query to `HTTP` traffic using `sourcetype=stream:http` to focus only on web communication logs and reduce unrelated results. This made the search faster and more precise, allowing me to see which source IPs had connected to that domain. The results showed two main IPs — `40.80.148.42` and `23.22.63.114`, with the first generating the majority of HTTP requests, suggesting it was the primary host involved in the connection.
 
