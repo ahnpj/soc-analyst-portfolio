@@ -202,7 +202,6 @@ The objective was to detect early reconnaissance activity targeting `imreallynot
 ```spl
 index=botsv1 imreallynotbatman.com
 ```
-**Breakdown**
 - **index=botsv1** – Restricts scope to the lab dataset. *Why:* Prevents irrelevant results.  
 - **imreallynotbatman.com** – Keyword search for the targeted domain. *Why:* Captures any events involving the compromised web server.
 
@@ -239,8 +238,6 @@ I first limited my query to `HTTP` traffic using `sourcetype=stream:http` to foc
 ```spl
 index=botsv1 imreallynotbatman.com sourcetype=stream:http
 ```
-
-**Breakdown**
 - **sourcetype=stream:http** – Selects HTTP network flows. *Why:* Web traffic best illustrates enumeration behavior.  
 
 From this search, I identified two IPs (`40.80.148.42` and `23.22.63.114`) repeatedly connecting to the server (identified via "src_ip" field in Splunk). `40.80.148.42` was by far generating the majority of the HTTP requests. So I investigated `40.80.148.42` first.
@@ -253,7 +250,7 @@ From this search, I identified two IPs (`40.80.148.42` and `23.22.63.114`)
   <em>Figure 9</em>
 </p>
 
-<h4>(3)</h4> I needed to validate that this was indeed a scanning attempt by `40.80.148.42`.
+<h4>(3) I needed to validate that this was indeed a scanning attempt by `40.80.148.42`.</h4>
 
 I started by narrowing my search query to Suricata logs using the query:
 
