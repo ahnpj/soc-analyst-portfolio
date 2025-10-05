@@ -42,8 +42,6 @@ I studied the lifecycle diagram provided and matched each phase to Splunk functi
 - **Containment & Eradication** → Blocking IPs, disabling accounts, or isolating assets.  
 - **Post‑Incident Activity** → Reporting and continuous improvement.
 
-📸 **Screenshot Placeholder:** NIST Incident Response Lifecycle diagram.
-
 ### Findings / Analysis
 Each phase is cyclical and dependent on accurate log collection. I learned how Splunk supports these by offering correlation searches, risk‑based alerting, and notable events within Enterprise Security.
 
@@ -75,6 +73,100 @@ This part of the lab established the context of the lab and defined what constit
 
 ### Lab Environment Setup
 For this lab, I was provided with a virtual machine (VM) that served as the investigation environment. Once deployed, the machine was automatically assigned an IP address labeled as `MACHINE_IP`, which took approximately 3–5 minutes to initialize and become available. The VM contained all the event logs required for the investigation, specifically stored in the `index=botsv1` dataset. This dataset, released by Splunk, is designed to simulate a realistic environment for security analysis and may include real-world language or expressions. The lab’s purpose was to connect to this environment, explore the data sources and source types, and begin performing investigations based on the provided event data.
+
+**Target:** `10.201.17.82` (deployed via TryHackMe lab UI)  
+**Context:** I deployed the target machine using the TryHackMe interface and used the provided AttackBox (attacker VM) to perform reconnaissance and basic connection tests.
+
+#### Practical Checklist I Used
+Note: The following steps were independent, exploratory checks I performed outside the lab instructions to validate connectivity and practice recon techniques.
+- Deploy the target VM via TryHackMe and copy the Target IP.  
+- Open the AttackBox and ensure I am on the lab network.  
+- Run `ping` to confirm host is up.  
+- Run `nmap` (full or targeted) to discover open ports and services.  
+- Use `curl` or the AttackBox browser to fetch web pages if HTTP(S) is available.  
+- Use `nc` to quickly test specific ports.  
+- If SSH is exposed and credentials are provided by the lab, use `ssh` for interactive access.  
+- Terminate or extend the VM when finished using the TryHackMe controls.
+
+**(1) Checking Basic Connectivity (AttackBox Linux Bash terminal)**
+My goal here is to quickly confirm  whether the target is reachable from the AttackBox (verifies network connectivity and that the VM is up).
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-02.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 2</em>
+</p>
+
+```bash
+ping -c 3 10.201.17.82
+```
+- `ping` — Sends ICMP Echo Request packets to the target to check if the host responds. Useful for basic reachability checks.
+- `-c 3` — Limits the ping to 3 ICMP packets so the test is quick and concise.
+- `10.201.17.82` — The target IP returned by the TryHackMe lab UI.
+
+**(2) Discovering Open Ports via Nmap (Attackbox Linux Bash terminal)**
+I also wanted to  enumerate which ports are open and which services are listening so I know where to focus further testing (web, SSH, custom services, etc.).
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-03.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 3</em>
+</p>
+
+Welp, that didn't work, so I just moved on for now. This is all my own confirmation check, and not necessary for this lab.
+
+```bash
+nmap -sS -sV -p- 10.201.17.82
+```
+- `nmap` — Network scanner used to discover hosts and services on a network.
+- `-sS` — TCP SYN scan (also called "half-open" scan). It sends a SYN and analyzes the response without completing the TCP handshake; it's fast and stealthier than a full connect scan.
+- `-sV` — Service/version detection. Nmap attempts to identify the service running on each open port and the software version (e.g., Apache 2.4.41).
+- `-p-` — Scan every TCP port (1–65535). Useful if you want a full port sweep rather than just common ports.
+- `10.201.17.82` — The target IP.
+
+**(3) Checking Basic Connectivity (AttackBox Linux Bash terminal)**
+My goal here is to try verifying that the web server is present, inspect response headers (server, cookies, redirects, status codes), and quickly retrieve pages for manual review or to inform later automated testing.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-04.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 4</em>
+</p>
+
+```bash
+curl -I http://10.201.17.82
+curl http://10.201.17.82/index.php
+```
+- `curl` — Command-line tool to transfer data from or to a server using various protocols (HTTP, HTTPS, FTP, etc.).
+- `-I` — Requests only the HTTP headers (HEAD request), useful for quickly seeing server type, status code, and response headers without downloading the full page.
+- `http://10.201.17.82` — The target’s web root. If a web service listens on a nonstandard port, include `:port` (for example `http://10.201.17.82:8000`).
+- `http://10.201.17.82/index.php` — Example path to fetch a specific page or endpoint to see content or responses.
+
+**(4) Testing Specific TCP Ports via netcat (AttackBox Linux Bash terminal)**
+I wanted quick verification of whether a specific port is accepting TCP connections (faster than a full nmap when you want to check individual services).
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-05.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 5</em>
+</p>
+
+```bash
+nc -vz 10.201.17.82 80
+nc -vz 10.201.17.82 22
+```
+- `nc` (netcat) — Lightweight utility for reading/writing raw TCP/UDP connections. Great for quick port checks and banner grabbing.
+- `-v` — Verbose output to show connection attempts and results.
+- `-z` — Zero-I/O mode: used for scanning/listening without sending data (useful for quick port checks).
+- `10.201.17.82 80` — Target IP and port to test (80 = HTTP).
 
 **Event Logs Source**</br>
 I was provided [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. I confirmed by running a quick baseline query:
