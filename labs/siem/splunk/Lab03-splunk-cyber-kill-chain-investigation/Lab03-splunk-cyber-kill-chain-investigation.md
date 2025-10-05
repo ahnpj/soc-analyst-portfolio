@@ -67,14 +67,17 @@ This task introduced the simulated incident at **Wayne Enterprises**, where th
 
 This part of the lab established the context of the lab and defined what constitutes a **security incident**. 
 
-### Data Sources
+### Data Sources Review
 - `stream:http` – Network flows.  
 - `iis` – Web server access logs.  
 - `suricata` – Intrusion Detection System alerts.  
 - `XmlWinEventLog:Microsoft‑Windows‑Sysmon` – Endpoint process creation and network events.
 
-### Step‑by‑Step Walkthrough
-I confirmed that the dataset `botsv1` contained all event data necessary for the analysis by running a quick baseline query:
+### Lab Environment Setup
+For this lab, I was provided with a virtual machine (VM) that served as the investigation environment. Once deployed, the machine was automatically assigned an IP address labeled as `MACHINE_IP`, which took approximately 3–5 minutes to initialize and become available. The VM contained all the event logs required for the investigation, specifically stored in the `index=botsv1` dataset. This dataset, released by Splunk, is designed to simulate a realistic environment for security analysis and may include real-world language or expressions. The lab’s purpose was to connect to this environment, explore the data sources and source types, and begin performing investigations based on the provided event data.
+
+**Event Logs Source**
+I was provided `index=botsv1`, which contained all event data necessary for the analysis. I confirmed by running a quick baseline query:
 
 ```spl
 index=botsv1 | stats count by sourcetype
@@ -82,8 +85,6 @@ index=botsv1 | stats count by sourcetype
 **Breakdown**
 - `index=botsv1` – Selects the lab’s dataset. *Why:* Ensures I’m analyzing the intended simulation logs.  
 - `stats count by sourcetype` – Summarizes total events per log type. *Why:* Verifies which sources contain the most data for subsequent deep‑dives.
-
-📸 **Screenshot Placeholder:** Splunk Data Summary table showing event distribution by sourcetype.
 
 ### Findings / Analysis
 All expected sourcetypes were present. Understanding these sources early streamlined later correlation searches across network and host data.
