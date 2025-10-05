@@ -40,7 +40,7 @@ Currently includes:
 > <details>
 > <summary>SIEM Basics</summary>
 >
-> - <a href="labs/siem/siem-basics/Lab01-intro-to-siem/Lab01-suspicious-process-investigation.md">Lab01 – Suspicious Process Investigation</a><br/>
+> - <a href="siem/siem-basics/Lab01-intro-to-siem/Lab01-suspicious-process-investigation.md">Lab01 – Suspicious Process Investigation</a><br/>
 >   <em>Level: Beginner</em> → Investigating abnormal process activity in logs, understanding correlation rules.
 >
 > </details>
