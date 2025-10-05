@@ -202,8 +202,8 @@ The objective was to detect early reconnaissance activity targeting `imreallynot
 ```spl
 index=botsv1 imreallynotbatman.com
 ```
-- **index=botsv1** – Restricts scope to the lab dataset. *Why:* Prevents irrelevant results.  
-- **imreallynotbatman.com** – Keyword search for the targeted domain. *Why:* Captures any events involving the compromised web server.
+- **index=botsv1**  –  Specifies the data source or repository (database of logs).
+- **imreallynotbatman.com**  –  Specifies the specific domain I'm investigating, like a keyword search for the targeted domain to capture any events involving the compromised (defaced) web server.
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-06.png?raw=true&v=2" 
@@ -238,7 +238,7 @@ I first limited my query to `HTTP` traffic using `sourcetype=stream:http` to foc
 ```spl
 index=botsv1 imreallynotbatman.com sourcetype=stream:http
 ```
-- **sourcetype=stream:http** – Selects HTTP network flows. *Why:* Web traffic best illustrates enumeration behavior.  
+- **sourcetype=stream:http** – Selects HTTP network flows to focus on web communication logs and investigate potential enumeration behavior.  
 
 From this search, I identified two IPs (`40.80.148.42` and `23.22.63.114`) repeatedly connecting to the server (identified via "src_ip" field in Splunk). `40.80.148.42` was by far generating the majority of the HTTP requests. So I investigated `40.80.148.42` first.
 
