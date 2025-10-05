@@ -76,15 +76,15 @@ This part of the lab established the context of the lab and defined what constit
 ### Lab Environment Setup
 For this lab, I was provided with a virtual machine (VM) that served as the investigation environment. Once deployed, the machine was automatically assigned an IP address labeled as `MACHINE_IP`, which took approximately 3–5 minutes to initialize and become available. The VM contained all the event logs required for the investigation, specifically stored in the `index=botsv1` dataset. This dataset, released by Splunk, is designed to simulate a realistic environment for security analysis and may include real-world language or expressions. The lab’s purpose was to connect to this environment, explore the data sources and source types, and begin performing investigations based on the provided event data.
 
-**Event Logs Source**
-I was provided `index=botsv1`, which contained all event data necessary for the analysis. I confirmed by running a quick baseline query:
+**Event Logs Source**</br>
+I was provided [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. I confirmed by running a quick baseline query:
 
 ```spl
 index=botsv1 | stats count by sourcetype
 ```
 **Breakdown**
-- `index=botsv1` – Selects the lab’s dataset. *Why:* Ensures I’m analyzing the intended simulation logs.  
-- `stats count by sourcetype` – Summarizes total events per log type. *Why:* Verifies which sources contain the most data for subsequent deep‑dives.
+- `index=botsv1` – Selects the lab’s dataset.  *Why:* Ensures I’m analyzing the intended simulation logs.  
+- `stats count by sourcetype` – Summarizes total events per log type.  *Why:* Verifies which sources contain the most data for subsequent deep‑dives.
 
 ### Findings / Analysis
 All expected sourcetypes were present. Understanding these sources early streamlined later correlation searches across network and host data.
@@ -153,8 +153,8 @@ Next, I filtered for HTTP POST methods to identify credential submission
 index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST
 ```
 **Breakdown**
-- **dest_ip="192.168.250.70"** – Specifies the web server. *Why:* Focuses on attacker traffic targeting the victim.  
-- **http_method=POST** – Selects requests containing form data. *Why:* POST requests typically carry credentials during authentication.
+- **dest_ip="192.168.250.70"** – Specifies the web server. *Why:*  Focuses on attacker traffic targeting the victim.  
+- **http_method=POST** – Selects requests containing form data. *Why:*  POST requests typically carry credentials during authentication.
 
 Inspecting the `form_data` field revealed multiple login attempts to `/joomla/administrator/index.php`. I used regex to extract submitted passwords:
 
