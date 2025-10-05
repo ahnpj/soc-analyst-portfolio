@@ -73,12 +73,14 @@ This part of the lab established the context of the lab and defined what constit
 
 ### Lab Environment Setup
 For this lab, I was provided with a virtual machine (VM) that served as the investigation environment. Once deployed, the machine was automatically assigned an IP address labeled as `MACHINE_IP`, which took approximately 3–5 minutes to initialize and become available. The VM contained all the event logs required for the investigation, specifically stored in the `index=botsv1` dataset. This dataset, released by Splunk, is designed to simulate a realistic environment for security analysis and may include real-world language or expressions. The lab’s purpose was to connect to this environment, explore the data sources and source types, and begin performing investigations based on the provided event data.
+- **Event Logs Source**: I was provided [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis.
 
-**Target:** `10.201.17.82` (deployed via TryHackMe lab UI)  
-**Context:** I deployed the target machine using the TryHackMe interface and used the provided AttackBox (attacker VM) to perform reconnaissance and basic connection tests.
+#### Independent Checks
+I performed some independent, explaratory checks outside the lab instructions to validate connectivity and practice recon techniques.
+- **Target:**  `10.201.17.82` (deployed via TryHackMe lab UI)  
+- **Context:**  I deployed the target machine using the TryHackMe interface and used the provided AttackBox (attacker VM) to perform reconnaissance and basic connection tests.
 
 #### Practical Checklist I Used
-Note: The following steps were independent, exploratory checks I performed outside the lab instructions to validate connectivity and practice recon techniques.
 - Deploy the target VM via TryHackMe and copy the Target IP.  
 - Open the AttackBox and ensure I am on the lab network.  
 - Run `ping` to confirm host is up.  
@@ -172,22 +174,8 @@ nc -vz 10.201.17.82 22
 - `-z` — Zero-I/O mode: used for scanning/listening without sending data (useful for quick port checks).
 - `10.201.17.82 80` — Target IP and port to test (80 = HTTP).
 
-**Event Logs Source** </br>
-
-I was provided [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. I confirmed by running a quick baseline query:
-
-```spl
-index=botsv1 | stats count by sourcetype
-```
-**Breakdown**
-- `index=botsv1` – Selects the lab’s dataset.  *Why:* Ensures I’m analyzing the intended simulation logs.  
-- `stats count by sourcetype` – Summarizes total events per log type.  *Why:* Verifies which sources contain the most data for subsequent deep‑dives.
-
 ### Findings / Analysis
-All expected sourcetypes were present. Understanding these sources early streamlined later correlation searches across network and host data.
-
-### What I Learned
-This setup phase emphasized the importance of situational awareness before analysis. Knowing data sources and their fields prevents misinterpretation of logs—a skill fundamental to blue‑team operations. This relates to **MITRE ATT&CK TA0001 (Initial Access)** and Security+ objectives covering data collection and correlation.
+All expected sourcetypes were present. Understanding these sources early streamlined later correlation searches across network and host data. This setup phase emphasized the importance of situational awareness before analysis. Knowing data sources and their fields prevents misinterpretation of logs—a skill fundamental to blue‑team operations. This relates to **MITRE ATT&CK TA0001 (Initial Access)** and Security+ objectives covering data collection and correlation.
 
 ---
 
