@@ -293,7 +293,7 @@ Because this activity doesn’t exploit a specific vulnerability but instead map
 
 
 ### Findings / Analysis
-`40.80.148.42` accounted for over 90 % of the requests, and was consistent with automated vulnerability scanning. Active recon evidence included frequent GET requests.
+`40.80.148.42` accounted for over  90 % of the requests, and was consistent with automated vulnerability scanning. Active recon evidence included frequent GET requests.
 
 ### What I Learned
 This task demonstrated how correlated IDS and network logs can expose early attacker behavior. Recognizing reconnaissance helps defenders act during the earliest possible stage of an attack, aligning with **Security+ Domain 3 (Threat Detection)** and **NIST IR Phase – Identification** (Woohoo! Earning my CompTIA Sec+ cert was worth it).
