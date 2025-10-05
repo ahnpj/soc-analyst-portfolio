@@ -57,6 +57,14 @@ The task strengthened my understanding that incident handling is continuous. Eve
 ### Overview / Objective
 This task introduced the simulated incident at **Wayne Enterprises**, where the domain `imreallynotbatman.com` was defaced. My objective was to understand the environment, available data, and how attacker behavior maps to the **Lockheed Martin Cyber Kill Chain**.
 
+<p align="left">
+  <img src="images/lab03-splunk-cyber-kill-chain-investigation-01.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 1</em>
+</p>
+
 This part of the lab established the context of the lab and defined what constitutes a **security incident**. 
 
 ### Data Sources
