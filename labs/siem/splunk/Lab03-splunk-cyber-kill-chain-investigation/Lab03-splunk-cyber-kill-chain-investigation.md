@@ -20,8 +20,6 @@ Throughout the lab, I performed detailed Splunk queries to uncover reconnaissanc
 ### Step‑by‑Step Walkthrough
 The lab described incident handling as a structured response to any event that could jeopardize CIA. I reviewed Splunk’s role in aggregating and correlating logs from multiple systems to detect these events. No commands were executed yet, but I examined indexed data to confirm ingestion from multiple sources and verified connectivity to Splunk Search Head and Indexer components.
 
-📸 **Screenshot Placeholder:** Splunk Search Head interface showing available indexes and data sources.
-
 ### Findings / Analysis
 Understanding incident handling early clarified how every detection and response task later in the lab aligns with the **NIST SP 800‑61 r2** lifecycle and **CompTIA Security+ Domain 2 (Incident Response)**. The introduction underscored the need for predefined processes and emphasized that SIEM tools automate detection and correlation across multiple log types.
 
