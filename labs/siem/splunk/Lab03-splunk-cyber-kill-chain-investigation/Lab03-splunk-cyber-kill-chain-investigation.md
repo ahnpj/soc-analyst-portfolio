@@ -197,7 +197,7 @@ All expected sourcetypes were present. Understanding these sources early streaml
 The objective was to detect early reconnaissance activity targeting `imreallynotbatman.com`. Reconnaissance is the first phase of the Cyber Kill Chain, where adversaries gather intelligence about targets.
 
 ### Step‑by‑Step Walkthrough
-**1)** I began by searching the dataset for any logs referencing the domain:
+<h4>(1) I began by searching the dataset for any logs referencing the domain.</h4>
 
 ```spl
 index=botsv1 imreallynotbatman.com
@@ -224,7 +224,9 @@ This returned several sourcetypes, including `suricata`, `stream:http`, `fortiga
   <em>Figure 7</em>
 </p>
 
-**(2)** I refined the query to focus on HTTP traffic because the domain represents a web address. I first limited my query to `HTTP` traffic using `sourcetype=stream:http` to focus only on web communication logs and reduce unrelated results. This made the search faster and more precise, allowing me to see which source IPs had connected to that domain. The results showed two main IPs — `40.80.148.42` and `23.22.63.114`, with the first generating the majority of HTTP requests, suggesting it was the primary host involved in the connection.
+<h4>(2)</h4> I refined the query to focus on HTTP traffic because the domain represents a web address. 
+
+I first limited my query to `HTTP` traffic using `sourcetype=stream:http` to focus only on web communication logs and reduce unrelated results. This made the search faster and more precise, allowing me to see which source IPs had connected to that domain. The results showed two main IPs — `40.80.148.42` and `23.22.63.114`, with the first generating the majority of HTTP requests, suggesting it was the primary host involved in the connection.
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-08.png?raw=true&v=2" 
@@ -251,7 +253,9 @@ From this search, I identified two IPs (`40.80.148.42` and `23.22.63.114`)
   <em>Figure 9</em>
 </p>
 
-**(3)** I needed to validate that this was indeed a scanning attempt by `40.80.148.42`, so I narrowed my search query to Suricata logs using the query:
+<h4>(3)</h4> I needed to validate that this was indeed a scanning attempt by `40.80.148.42`.
+
+I started by narrowing my search query to Suricata logs using the query:
 
 ```spl
 index=botsv1
