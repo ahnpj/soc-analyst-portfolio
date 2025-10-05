@@ -48,11 +48,11 @@ Currently includes:
 > <details>
 > <summary>Splunk</summary>
 >
-> - <a href="labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis-basics.md">Lab01 – Splunk VPN Log Analysis</a><br/>
+> - <a href="siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis-basics.md">Lab01 – Splunk VPN Log Analysis</a><br/>
 >   <em>Level: Beginner</em> → Detecting unusual VPN login activity, analyzing login patterns by user and source country, and identifying suspicious travel or account compromise.
-> - <a href="labs/siem/splunk/Lab02-splunk-data-manipulation/Lab02-splunk-data-manipulation-basics.md">Lab02 – Splunk Data Manipulation</a><br/>
+> - <a href="siem/splunk/Lab02-splunk-data-manipulation/Lab02-splunk-data-manipulation-basics.md">Lab02 – Splunk Data Manipulation</a><br/>
 >   <em>Level: Beginner</em> → Understanding how Splunk processes, parses, and manipulates machine-generated data using configuration files (inputs.conf, props.conf, transforms.conf) to ensure accurate field extraction and reliable analysis for security investigations.
->- <a href="labs/siem/splunk/Lab03-splunk-cyber-kill-chain-investigation/Lab03-splunk-cyber-kill-chain-investigation.md">Lab03 – Splunk Cyber Kill Chain Investigation</a><br/>
+>- <a href="siem/splunk/Lab03-splunk-cyber-kill-chain-investigation/Lab03-splunk-cyber-kill-chain-investigation.md">Lab03 – Splunk Cyber Kill Chain Investigation</a><br/>
 >   <em>Level: Intermediate</em> → Performing a complete investigation of a simulated web server defacement incident by tracing attacker activity through each phase of the Cyber Kill Chain. This includes identifying reconnaissance behavior, analyzing exploit attempts, verifying malware installation, and uncovering command-and-control (C2) communication using Splunk queries and network log data. The lab emphasizes the analytical workflow of a SOC analyst — from detecting the initial compromise to mapping adversary TTPs against frameworks like MITRE ATT&CK and NIST SP 800-61. Learners will gain hands-on experience correlating IDS alerts, HTTP traffic, and DNS records to produce actionable intelligence and document incident findings in a professional, report-ready format.
 > </details>
 
@@ -73,7 +73,7 @@ Currently includes:
 > <details>
 > <summary>PowerShell</summary>
 >
-> - <a href="labs/endpoint-triage/powershell/Lab01-powershell-endpoint-triage-basics/Lab01-powershell-endpoint-triage-basics.md">Lab01 – PowerShell Basics</a><br/>
+> - <a href="endpoint-triage/powershell/Lab01-powershell-endpoint-triage-basics/Lab01-powershell-endpoint-triage-basics.md">Lab01 – PowerShell Basics</a><br/>
 >   <em>Level: Beginner</em> → Leveraging PowerShell commands to collect endpoint data, filter logs, and detect potential anomalies in process execution.
 >
 > </details>
