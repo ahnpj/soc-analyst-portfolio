@@ -88,7 +88,8 @@ Note: The following steps were independent, exploratory checks I performed outsi
 - If SSH is exposed and credentials are provided by the lab, use `ssh` for interactive access.  
 - Terminate or extend the VM when finished using the TryHackMe controls.
 
-**(1) Checking Basic Connectivity (AttackBox Linux Bash terminal)**
+**(1) Checking Basic Connectivity (AttackBox Linux Bash terminal)** </br>
+
 My goal here is to quickly confirm  whether the target is reachable from the AttackBox (verifies network connectivity and that the VM is up).
 
 <p align="left">
@@ -106,7 +107,8 @@ ping -c 3 10.201.17.82
 - `-c 3` — Limits the ping to 3 ICMP packets so the test is quick and concise.
 - `10.201.17.82` — The target IP returned by the TryHackMe lab UI.
 
-**(2) Discovering Open Ports via Nmap (Attackbox Linux Bash terminal)**
+**(2) Discovering Open Ports via Nmap (Attackbox Linux Bash terminal)** </br>
+
 I also wanted to  enumerate which ports are open and which services are listening so I know where to focus further testing (web, SSH, custom services, etc.).
 
 <p align="left">
@@ -128,7 +130,8 @@ nmap -sS -sV -p- 10.201.17.82
 - `-p-` — Scan every TCP port (1–65535). Useful if you want a full port sweep rather than just common ports.
 - `10.201.17.82` — The target IP.
 
-**(3) Checking Basic Connectivity (AttackBox Linux Bash terminal)**
+**(3) Checking Basic Connectivity (AttackBox Linux Bash terminal)** </br>
+
 My goal here is to try verifying that the web server is present, inspect response headers (server, cookies, redirects, status codes), and quickly retrieve pages for manual review or to inform later automated testing.
 
 <p align="left">
@@ -148,7 +151,8 @@ curl http://10.201.17.82/index.php
 - `http://10.201.17.82` — The target’s web root. If a web service listens on a nonstandard port, include `:port` (for example `http://10.201.17.82:8000`).
 - `http://10.201.17.82/index.php` — Example path to fetch a specific page or endpoint to see content or responses.
 
-**(4) Testing Specific TCP Ports via netcat (AttackBox Linux Bash terminal)**
+**(4) Testing Specific TCP Ports via netcat (AttackBox Linux Bash terminal)** </br>
+
 I wanted quick verification of whether a specific port is accepting TCP connections (faster than a full nmap when you want to check individual services).
 
 <p align="left">
@@ -168,7 +172,8 @@ nc -vz 10.201.17.82 22
 - `-z` — Zero-I/O mode: used for scanning/listening without sending data (useful for quick port checks).
 - `10.201.17.82 80` — Target IP and port to test (80 = HTTP).
 
-**Event Logs Source**</br>
+**Event Logs Source** </br>
+
 I was provided [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. I confirmed by running a quick baseline query:
 
 ```spl
