@@ -1,10 +1,10 @@
-# PowerShell Lab Report (Tasks 3–8)
+# PowerShell Lab Report (Objectives 1–6)
 
 This lab report documents my hands-on work with PowerShell. Each section demonstrates not only the commands I used but also why I used them, how they can be applied in real-world security or administrative contexts, and what insights they provided. The goal is to showcase practical skills and understanding of how PowerShell can be leveraged effectively.
 
 ---
 
-## Task 3: PowerShell Basics
+## Objective 1: PowerShell Basics
 
 ### What I Did
 I started by connecting to the target lab machine via SSH and launching PowerShell. Once inside, I explored how PowerShell structures its commands with the `Verb-Noun` format. I then practiced discovering available commands and getting help on their usage.
@@ -49,7 +49,7 @@ Recruiters should note: I can confidently navigate PowerShell, discover the tool
 
 ---
 
-## Task 4: Navigating the File System and Working with Files
+## Objective 2: Navigating the File System and Working with Files
 
 ### What I Did
 Here I explored the file system — listing directories, moving around, creating new files/folders, copying them, and even reading content. Instead of memorizing different commands like in CMD (`dir`, `cd`, `mkdir`), I worked with consistent PowerShell cmdlets.
@@ -88,7 +88,7 @@ This skill translates to **log analysis, evidence collection, and forensic tasks
 
 ---
 
-## Task 5: Piping, Filtering, and Sorting Data
+## Objective 3: Piping, Filtering, and Sorting Data
 
 ### What I Did
 I practiced chaining commands together with pipes, sorting files by size, filtering by extension, and even searching text within files. This is where PowerShell’s object-oriented design really showed its strength.
@@ -188,7 +188,7 @@ In a SOC environment, I could use this same method to **parse event logs, filter
 
 ---
 
-## Task 6: System and Network Information
+## Objective 4: System and Network Information
 
 ### What I Did
 I retrieved system information, checked for local users, and pulled detailed network configuration and IP assignments.
@@ -268,7 +268,7 @@ This aligns with **host auditing and reconnaissance**. For example, if I suspect
 
 ---
 
-## Task 7: Real-Time System Analysis
+## Objective 5: Real-Time System Analysis
 
 ### What I Did
 I moved into monitoring mode — checking processes, services, open connections, and verifying file integrity with hashes.
@@ -394,7 +394,7 @@ This mirrors what I’d do as an analyst during **threat hunting or incident res
 
 ---
 
-## Task 8: Scripting
+## Objective 6: Scripting
 
 ### What I Did
 I wrapped up by practicing PowerShell scripting, focusing on how to automate repetitive tasks and even execute commands remotely with `Invoke-Command`.
