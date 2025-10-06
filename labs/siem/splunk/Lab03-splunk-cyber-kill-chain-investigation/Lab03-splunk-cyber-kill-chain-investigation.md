@@ -112,7 +112,7 @@ I performed some independent, exploratory checks outside the provided lab instru
 - **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
 
 #### Practical Checklist I Used
-- Deploy the target VM via TryHackMe and copy the Target IP.  
+- Deploy the target VM and copy the target IP. 
 - Open the AttackBox and ensure I am on the lab network.  
 - Run `ping` to confirm host is up.  
 - Run `nmap` (full or targeted) to discover open ports and services.  
