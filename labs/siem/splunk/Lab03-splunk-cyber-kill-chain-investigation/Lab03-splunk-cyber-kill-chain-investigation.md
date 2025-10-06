@@ -9,7 +9,7 @@
     - [Step-by-Step Walkthrough](#stepbystepwalkthrough)
     - [Findings / Analysis](#findingsanalysis)
     - [What I Learned](#whatilearned)
-  - [Scenario Setup and Cyber Kill Chain Overview](#scenariosetupandcyberkillchain-overview)
+  - [Scenario Setup and Cyber Kill Chain Overview](#scenariosetupandcyberkillchainoverview)
     - [Data Sources](#datasources)
     - [Lab Environment Setup](#labenvironmentsetup)
     - [Findings / Analysis](#findingsanalysis1)
