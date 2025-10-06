@@ -3,9 +3,8 @@
 
 ---
 
-## Introduction to Incident Handling
+## Overview / Objective
 
-### Overview / Objective
 The objective was to understand how an incident impacts confidentiality, integrity, or availability (CIA) and how **Splunk**, functioning as a Security Information and Event Management (SIEM) system, supports the incident‑handling process.
 
 In this lab, I conducted a full end-to-end investigation of a simulated cyber incident using Splunk as my primary analysis tool. The scenario involved a web server defacement attack against `imreallynotbatman.com`, hosted by the fictional company Wayne Enterprises. My objectives were to trace the adversary’s actions through each stage of the **Lockheed Martin Cyber Kill Chain**, identify the attacker’s tactics, techniques, and procedures (TTPs), and correlate activity across multiple data sources such as HTTP logs, IDS alerts, and Sysmon telemetry. 
@@ -28,6 +27,7 @@ This task reinforced the foundational concepts of incident response. I learned t
 
 ---
 
+<!--
 ## Incident Handling Lifecycle
 
 ### Overview / Objective
@@ -45,8 +45,7 @@ Each phase is cyclical and dependent on accurate log collection. I learned how S
 
 ### What I Learned
 The task strengthened my understanding that incident handling is continuous. Every incident fuels process improvement. This maps directly to **Security+ Domain 2.5 (Apply incident response procedures)** and NIST’s emphasis on lessons learned to enhance defensive posture.
-
----
+-->
 
 ## Scenario Setup and Cyber Kill Chain Overview
 
