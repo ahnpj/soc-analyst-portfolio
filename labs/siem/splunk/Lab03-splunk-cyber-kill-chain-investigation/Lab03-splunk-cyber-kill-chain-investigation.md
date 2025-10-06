@@ -210,9 +210,9 @@ All expected sourcetypes were present. Understanding these sources early streaml
 
 ---
 
-## Task 1 – Reconnaissance Phase
+## Objective 1 – Reconnaissance Phase
 
-### Overview / Objective
+### Overview
 The objective was to detect early reconnaissance activity targeting `imreallynotbatman.com`. Reconnaissance is the first phase of the Cyber Kill Chain, where adversaries gather intelligence about targets.
 
 ### Step‑by‑Step Walkthrough
@@ -321,9 +321,9 @@ This task demonstrated how correlated IDS and network logs can expose earl
 
 ---
 
-## Task 2 – Exploitation Phase
+## Objective 2 – Exploitation Phase
 
-### Overview / Objective
+### Overview
 The objective was to confirm whether the attacker attempted or succeeded in exploiting vulnerabilities discovered during reconnaissance—specifically targeting the Joomla CMS running on the web server.
 
 ### Step‑by‑Step Walkthrough
@@ -365,9 +365,9 @@ This task taught me how to use Splunk to detect web‑based br
 
 ---
 
-## Task 3 – Installation Phase
+## Objective 3 – Installation Phase
 
-### Overview / Objective
+### Overview
 The objective of this task was to verify whether the attacker successfully installed or executed any malicious payloads following exploitation. In the Cyber Kill Chain, **Installation** represents the stage where adversaries establish persistence within a target environment, typically by deploying malware or backdoors.
 
 ### Step‑by‑Step Walkthrough
@@ -402,9 +402,9 @@ I learned how to validate malware execution through cross‑referencing 
 
 ---
 
-## Task 4 – Action on Objectives Phase
+## Objective 4 – Action on Objectives Phase
 
-### Overview / Objective
+### Overview
 The goal of this phase was to determine the attacker’s ultimate objective after establishing persistence. In this scenario, the malicious actor defaced the company’s public website—a clear indicator of the **Actions on Objectives** stage of the Cyber Kill Chain.
 
 ### Step‑by‑Step Walkthrough
@@ -429,9 +429,9 @@ This task taught me how to trace adversary objectives using 
 
 ---
 
-## Task 5 – Command and Control (C2) Phase
+## Objective 5 – Command and Control (C2) Phase
 
-### Overview / Objective
+### Overview
 This task focused on identifying if the attacker established a **Command and Control (C2)** channel with external infrastructure. C2 allows threat actors to remotely control infected hosts and execute further commands.
 
 ### Step‑by‑Step Walkthrough
@@ -456,9 +456,9 @@ I learned to detect C2 communications by correlating IDS, fire
 
 ---
 
-## Task 6 – Weaponization Phase
+## Objective 6 – Weaponization Phase
 
-### Overview / Objective
+### Overview
 The objective was to analyze how the attacker prepared and delivered their payloads by pivoting on known indicators through OSINT tools. In the Cyber Kill Chain, Weaponization covers the creation of malware and exploitation packages used later in Delivery.
 
 ### Step‑by‑Step Walkthrough
@@ -474,9 +474,9 @@ Weaponization is rarely observable in internal logs, but threat�
 
 ---
 
-## Task 7 – Delivery Phase
+## Objective 7 – Delivery Phase
 
-### Overview / Objective
+### Overview
 The purpose of this phase was to examine malware delivery artifacts identified during the Weaponization stage and determine how the malicious payload reached the target.
 
 ### Step‑by‑Step Walkthrough
@@ -503,7 +503,7 @@ I learned how threat intelligence enrichment enhances forensic f
 
 ## Conclusion and Lessons Learned
 
-### Overview / Objective
+### Overview
 The final task consolidated the findings from the entire investigation and reviewed each phase of the Cyber Kill Chain to produce a comprehensive summary for executive reporting and process improvement.
 
 ### Findings / Analysis
