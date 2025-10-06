@@ -8,10 +8,10 @@
     - [Environment & Prerequisites](#environmentprerequisites)
     - [Step-by-Step Walkthrough](#stepbystepwalkthrough)
     - [Findings / Analysis](#findingsanalysis)
-    - [What I Learned](#whatilearned)
   - [Scenario Overview](#scenariooverview)
     - [Data Sources](#datasources)
     - [Lab Environment Setup](#labenvironmentsetup)
+    - [Independent Checks](#independentchecks)
     - [Findings / Analysis](#findingsanalysis1)
     - [What I Learned](#whatilearned1)
   - [Objective 1 – Reconnaissance Phase](#objective1reconnaissancephase)
@@ -44,9 +44,6 @@ The lab described incident handling as a structured response to any event that c
 
 ### Findings / Analysis
 Understanding incident handling early clarified how every detection and response task later in the lab aligns with the **NIST SP 800‑61 r2** lifecycle and **CompTIA Security+ Domain 2 (Incident Response)**. The introduction underscored the need for predefined processes and emphasized that SIEM tools automate detection and correlation across multiple log types.
-
-### What I Learned
-This task reinforced the foundational concepts of incident response. I learned that Splunk enables centralized visibility, correlation, and alerting—critical capabilities during incident triage. It highlighted that preparation and documentation are essential for containment and recovery phases. The key takeaway is that strong monitoring and data normalization pipelines form the backbone of any modern SOC.
 
 ---
 
