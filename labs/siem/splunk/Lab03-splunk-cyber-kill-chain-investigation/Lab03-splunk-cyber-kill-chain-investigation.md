@@ -107,9 +107,9 @@ In Splunk’s Search & Reporting app I confirmed the index=botsv1 dataset with `
 - **Event Logs Source**: The dataset for this lab was indexed under [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. The results showed multiple sourcetypes representing various log formats (network, web, and host data). This confirmed that the dataset was properly loaded and gave me a clear view of the log sources I would be analyzing throughout the lab.
 
 #### Independent Checks
-I performed some independent, explaratory checks outside the lab instructions to validate connectivity and practice recon techniques.
+I performed some independent, exploratory checks outside the provided lab instructions to validate connectivity and practice reconnaissance techniques.
 - **Target:**  `10.201.17.82` (deployed in an isolated virtual lab environment)  
-- **Context:**  I deployed the target machine using the TryHackMe interface and used the provided AttackBox (attacker VM) to perform reconnaissance and basic connection tests.
+- **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
 
 #### Practical Checklist I Used
 - Deploy the target VM via TryHackMe and copy the Target IP.  
@@ -119,7 +119,7 @@ I performed some independent, explaratory checks outside the lab instructions to
 - Use `curl` or the AttackBox browser to fetch web pages if HTTP(S) is available.  
 - Use `nc` to quickly test specific ports.  
 - If SSH is exposed and credentials are provided by the lab, use `ssh` for interactive access.  
-- Terminate or extend the VM when finished using the TryHackMe controls.
+- Terminate or extend the VM when finished with the investigation.
 
 **(1) Checking Basic Connectivity (AttackBox Linux Bash terminal)** </br>
 
