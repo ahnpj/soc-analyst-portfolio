@@ -1,6 +1,30 @@
 
 # Lab03 – Splunk Cyber Kill Chain Investigation (Objectives 1-7)
 
+<details>
+  <summary><b>📘 Table of Contents</b></summary>
+
+  - [Overview / Objective](#overview--objective)
+    - [Environment & Prerequisites](#environment--prerequisites)
+    - [Step-by-Step Walkthrough](#stepbystep-walkthrough)
+    - [Findings / Analysis](#findings--analysis)
+    - [What I Learned](#what-i-learned)
+  - [Scenario Setup and Cyber Kill Chain Overview](#scenario-setup-and-cyber-kill-chain-overview)
+    - [Data Sources](#data-sources)
+    - [Lab Environment Setup](#lab-environment-setup)
+    - [Findings / Analysis](#findings--analysis-1)
+    - [What I Learned](#what-i-learned-1)
+  - [Task 1 – Reconnaissance Phase](#task-1-–-reconnaissance-phase)
+  - [Task 2 – Exploitation Phase](#task-2-–-exploitation-phase)
+  - [Task 3 – Installation Phase](#task-3-–-installation-phase)
+  - [Task 4 – Action on Objectives Phase](#task-4-–-action-on-objectives-phase)
+  - [Task 5 – Command and Control (C2) Phase](#task-5-–-command-and-control-c2-phase)
+  - [Task 6 – Weaponization Phase](#task-6-–-weaponization-phase)
+  - [Task 7 – Delivery Phase](#task-7-–-delivery-phase)
+  - [Conclusion and Lessons Learned](#conclusion-and-lessons-learned)
+</details>
+
+
 ---
 
 ## Overview / Objective
