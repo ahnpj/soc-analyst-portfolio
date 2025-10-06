@@ -51,7 +51,7 @@ The task strengthened my understanding that incident handling is continuous. Eve
 ## Scenario Setup and Cyber Kill Chain Overview
 
 ### Overview / Objective
-This task introduced the simulated incident at **Wayne Enterprises**, where the domain `imreallynotbatman.com` was defaced. My objective was to understand the environment, available data, and how attacker behavior maps to the **Lockheed Martin Cyber Kill Chain**.
+**Scenario:** The domain `imreallynotbatman.com was defaced in a simulated breach of Wayne Enterprises. I examined the environment and collected relevant logs to track attacker actions across the Lockheed Martin Cyber Kill Chain.
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-01.png?raw=true&v=2" 
