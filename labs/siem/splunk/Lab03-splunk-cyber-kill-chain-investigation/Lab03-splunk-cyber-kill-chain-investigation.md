@@ -24,7 +24,6 @@
   - [Conclusion and Lessons Learned](#conclusion-and-lessons-learned)
 </details>
 
-
 ---
 
 ## Overview / Objective
