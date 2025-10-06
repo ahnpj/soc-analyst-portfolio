@@ -14,7 +14,7 @@
     - [Lab Environment Setup](#lab-environment-setup)
     - [Findings / Analysis](#findings--analysis-1)
     - [What I Learned](#what-i-learned-1)
-  - [Task 1 – Reconnaissance Phase](#task-1--reconnaissance-phase)
+  - [Task 1 – Reconnaissance Phase](#task-1-–-reconnaissance-phase)
   - [Task 2 – Exploitation Phase](#task-2-–-exploitation-phase)
   - [Task 3 – Installation Phase](#task-3-–-installation-phase)
   - [Task 4 – Action on Objectives Phase](#task-4-–-action-on-objectives-phase)
