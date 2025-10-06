@@ -70,7 +70,7 @@ This part of the lab established the context of the lab and defined what constit
 - `XmlWinEventLog:Microsoft‑Windows‑Sysmon` – Endpoint process creation and network events.
 
 ### Lab Environment Setup
-For this lab, I was provided with a virtual machine (VM) that served as the investigation environment. Once deployed, the machine was automatically assigned an IP address labeled as `MACHINE_IP`, which took approximately 3–5 minutes to initialize and become available. The VM contained all the event logs required for the investigation, specifically stored in the `index=botsv1` dataset. This dataset, released by Splunk, is designed to simulate a realistic environment for security analysis and may include real-world language or expressions. The lab’s purpose was to connect to this environment, explore the data sources and source types, and begin performing investigations based on the provided event data.
+The investigation was performed in a virtual machine (VM) environment preconfigured for Splunk analysis. Once deployed, the VM was automatically assigned an internal IP address (`MACHINE_IP`) and initialized within a few minutes. The Splunk instance hosted the `botsv1` dataset — a realistic collection of simulated security event logs designed for enterprise-scale analysis. This dataset included various sourcetypes representing web, network, and host activity, allowing for comprehensive event correlation and threat investigation throughout the lab.
 
 I accessed Splunk Enterprise on the target VM at `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `http://10.201.33.31` in the AttackBox browser.
 
@@ -83,11 +83,11 @@ In Splunk’s Search & Reporting app I confirmed the index=botsv1 dataset with `
        width="700"><br>
 </p>
 
-- **Event Logs Source**: I was provided [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. The results showed different sourcetypes, which represent various log formats such as network, web, or host data. This helped me confirm that the dataset was properly loaded and gave me a clear view of the log sources I would be analyzing throughout the lab.
+- **Event Logs Source**: The dataset for this lab was indexed under [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. The results showed multiple sourcetypes representing various log formats (network, web, and host data). This confirmed that the dataset was properly loaded and gave me a clear view of the log sources I would be analyzing throughout the lab.
 
 #### Independent Checks
 I performed some independent, explaratory checks outside the lab instructions to validate connectivity and practice recon techniques.
-- **Target:**  `10.201.17.82` (deployed via TryHackMe lab UI)  
+- **Target:**  `10.201.17.82` (deployed in an isolated virtual lab environment)  
 - **Context:**  I deployed the target machine using the TryHackMe interface and used the provided AttackBox (attacker VM) to perform reconnaissance and basic connection tests.
 
 #### Practical Checklist I Used
@@ -117,7 +117,7 @@ ping -c 3 10.201.17.82
 ```
 - `ping` — Sends ICMP Echo Request packets to the target to check if the host responds. Useful for basic reachability checks.
 - `-c 3` — Limits the ping to 3 ICMP packets so the test is quick and concise.
-- `10.201.17.82` — The target IP returned by the TryHackMe lab UI.
+- `10.201.17.82` — Target IP assigned to the analysis VM.
 
 **(2) Discovering Open Ports via Nmap (Attackbox Linux Bash terminal)** </br>
 
