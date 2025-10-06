@@ -1,5 +1,5 @@
 
-# Lab03 – Splunk Cyber Kill Chain Investigation (Tasks 1-7)
+# Lab03 – Splunk Cyber Kill Chain Investigation (Objectives 1-7)
 
 ---
 
@@ -49,20 +49,19 @@ The task strengthened my understanding that incident handling is continuous. Eve
 
 ## Scenario Setup and Cyber Kill Chain Overview
 
-### Overview / Objective
-**Scenario:** The domain `imreallynotbatman.com was defaced in a simulated breach of Wayne Enterprises. I examined the environment and collected relevant logs to track attacker actions across the Lockheed Martin Cyber Kill Chain.
+**Scenario:** The domain `imreallynotbatman.com` was defaced in a simulated breach of Wayne Enterprises. I examined the environment and collected relevant logs to track attacker actions across the Lockheed Martin Cyber Kill Chain.
 
-<p align="left">
+<p align="center">
   <img src="images/splunk-cyber-kill-chain-investigation-01.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
-       width="500"><br>
+       width="300"><br>
   <em>Figure 1</em>
 </p>
 
 This part of the lab established the context of the lab and defined what constitutes a **security incident**. 
 
-### Data Sources Review
+### Data Sources
 - `stream:http` – Network flows.  
 - `iis` – Web server access logs.  
 - `suricata` – Intrusion Detection System alerts.  
