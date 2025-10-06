@@ -9,7 +9,7 @@
     - [Step-by-Step Walkthrough](#stepbystepwalkthrough)
     - [Findings / Analysis](#findingsanalysis)
     - [What I Learned](#whatilearned)
-  - [Scenario Setup and Cyber Kill Chain Overview](#scenariosetupandcyberkillchainoverview)
+  - [Scenario Overview](#scenariooverview)
     - [Data Sources](#datasources)
     - [Lab Environment Setup](#labenvironmentsetup)
     - [Findings / Analysis](#findingsanalysis1)
@@ -70,7 +70,7 @@ Each phase is cyclical and dependent on accurate log collection. I learned how S
 The task strengthened my understanding that incident handling is continuous. Every incident fuels process improvement. This maps directly to **Security+ Domain 2.5 (Apply incident response procedures)** and NIST’s emphasis on lessons learned to enhance defensive posture.
 -->
 
-## Scenario Setup and Cyber Kill Chain Overview
+## Scenario Overview
 
 **Scenario:** The domain `imreallynotbatman.com` was defaced in a simulated breach of Wayne Enterprises. I examined the environment and collected relevant logs to track attacker actions across the Lockheed Martin Cyber Kill Chain.
 
