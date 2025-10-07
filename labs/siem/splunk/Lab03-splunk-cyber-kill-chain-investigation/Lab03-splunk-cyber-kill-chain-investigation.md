@@ -333,6 +333,14 @@ This task demonstrated how correlated IDS and network logs can expose earl
 ### Overview
 The objective was to confirm whether the attacker attempted or succeeded in exploiting vulnerabilities discovered during reconnaissance—specifically targeting the Joomla CMS running on the web server.
 
+**The information we have so far:**
+- I found two IP addresses from the reconnaissance phase that were sending requests to the web server:
+    - `40.80.148.42`
+    - `23.22.63.114`
+ - One of the IPs `40.80.148.42` was seen attempting to scan the web server with IP `192.168.250.70`.
+ - The attacker was using the web scanner Acunetix for the scanning attempt.
+ - The webserver is using the Joomla CMS.
+
 ### Step‑by‑Step Walkthrough
 I began by counting the number of requests from each source IP to the target domain:
 
