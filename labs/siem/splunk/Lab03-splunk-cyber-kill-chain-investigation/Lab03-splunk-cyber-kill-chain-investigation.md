@@ -315,7 +315,13 @@ Because this activity doesn’t exploit a specific vulnerability but instead map
 
 
 ### Findings / Analysis
-`40.80.148.42` accounted for over  90 % of the requests, and was consistent with automated vulnerability scanning. Active recon evidence included frequent GET requests.
+- `40.80.148.42` accounted for over  90 % of the requests, and was consistent with automated vulnerability scanning. Active recon evidence included frequent GET requests.
+- I filtered the Suricata logs for traffic from the attacker IP `40.80.148.42` to the web server `192.168.250.70`. In the `http_referrer` field, I found multiple entries pointing to paths such as `/joomla/index.php` and `/joomla/administrator/`. These are specific to the Joomla content management system, confirming the web server was running Joomla.
+- The same logs also showed requests containing the Shellshock (CVE-2014-6271) exploit pattern, which is commonly used by automated scanners like Nikto. This indicates the attacker was using Nikto to perform reconnaissance and exploit attempts against the Joomla server.
+- Summary:
+  - CMS of web server: Joomla
+  - Scanner attacker likely used: Nikto
+  - CVE: 2014-6271 (Shellshock)
 
 ### What I Learned
 This task demonstrated how correlated IDS and network logs can expose early attacker behavior. Recognizing reconnaissance helps defenders act during the earliest possible stage of an attack, aligning with **Security+ Domain 3 (Threat Detection)** and **NIST IR Phase – Identification** (Woohoo! Earning my CompTIA Sec+ cert was worth it).
