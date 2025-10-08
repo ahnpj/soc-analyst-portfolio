@@ -116,7 +116,14 @@ This part of the lab established the context of the lab and defined what constit
 
 The investigation was performed in a virtual machine (VM) environment preconfigured for Splunk analysis. Once deployed, the VM was automatically assigned an internal IP address (`MACHINE_IP`) and initialized within a few minutes. The Splunk instance hosted the `botsv1` dataset — a realistic collection of simulated security event logs designed for enterprise-scale analysis. This dataset included various sourcetypes representing web, network, and host activity, allowing for comprehensive event correlation and threat investigation throughout the lab.
 
-I accessed Splunk Enterprise on the target VM at `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `http://10.201.33.31` in the AttackBox browser.
+<blockquote>
+<strong>Important Note:</strong> IP addresses in this lab are ephemeral and were recorded at the time of each step (placeholders such as `MACHINE_IP` are used in this write-up when the IP changed between sessions).
+</blockquote>
+
+I accessed Splunk Enterprise on the target VM at `10.201.17.82` or `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5` or `10.201.117-139`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
+
+- **Target:**  `10.201.17.82` and `10.201.33.31` (deployed in an isolated virtual lab environment)  
+- **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
 
 In Splunk’s Search & Reporting app I confirmed the index=botsv1 dataset with `index=botsv1 | stats count by sourcetype` to understand what types of data were available
 
@@ -132,18 +139,6 @@ In Splunk’s Search & Reporting app I confirmed the index=botsv1 dataset with `
 ### Independent Checks 
 
 I performed some independent, exploratory checks outside the provided lab instructions to validate connectivity and practice reconnaissance techniques.
-- **Target:**  `10.201.17.82` (deployed in an isolated virtual lab environment)  
-- **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
-
-#### Practical Checklist I Used
-- Deploy the target VM and copy the target IP. 
-- Open the AttackBox and ensure I am on the lab network.  
-- Run `ping` to confirm host is up.  
-- Run `nmap` (full or targeted) to discover open ports and services.  
-- Use `curl` or the AttackBox browser to fetch web pages if HTTP(S) is available.  
-- Use `nc` to quickly test specific ports.  
-- If SSH is exposed and credentials are provided by the lab, use `ssh` for interactive access.  
-- Terminate or extend the VM when finished with the investigation.
 
 <h4>(1) Checking Basic Connectivity (AttackBox Linux Bash terminal)<h4>
 
@@ -229,6 +224,15 @@ nc -vz 10.201.17.82 22
 - `-z` — Zero-I/O mode: used for scanning/listening without sending data (useful for quick port checks).
 - `10.201.17.82 80` — Target IP and port to test (80 = HTTP).
 
+#### Practical Checklist I Used
+- Deploy the target VM and copy the target IP. 
+- Open the AttackBox and ensure I am on the lab network.  
+- Run `ping` to confirm host is up.  
+- Run `nmap` (full or targeted) to discover open ports and services.  
+- Use `curl` or the AttackBox browser to fetch web pages if HTTP(S) is available.  
+- Use `nc` to quickly test specific ports.  
+- If SSH is exposed and credentials are provided by the lab, use `ssh` for interactive access.  
+- Terminate or extend the VM when finished with the investigation.
 
 ### Findings / Analysis
 
