@@ -85,7 +85,7 @@ The task strengthened my understanding that incident handling is continuous. Eve
 
 ---
 
-## Scenario Overview </br>
+## Scenario Overview & Environment Setup </br>
 
 <details>
 
