@@ -145,7 +145,7 @@ I performed some independent, exploratory checks outside the provided lab instru
 - If SSH is exposed and credentials are provided by the lab, use `ssh` for interactive access.  
 - Terminate or extend the VM when finished with the investigation.
 
-**(1) Checking Basic Connectivity (AttackBox Linux Bash terminal)** </br>
+<h4>(1) Checking Basic Connectivity (AttackBox Linux Bash terminal)<h4>
 
 My goal here is to quickly confirm  whether the target is reachable from the AttackBox (verifies network connectivity and that the VM is up).
 
@@ -164,7 +164,7 @@ ping -c 3 10.201.17.82
 - `-c 3` — Limits the ping to 3 ICMP packets so the test is quick and concise.
 - `10.201.17.82` — Target IP assigned to the analysis VM.
 
-**(2) Discovering Open Ports via Nmap (Attackbox Linux Bash terminal)** </br>
+<h4>(2) Discovering Open Ports via Nmap (Attackbox Linux Bash terminal)**</h4>
 
 I also wanted to  enumerate which ports are open and which services are listening so I know where to focus further testing (web, SSH, custom services, etc.).
 
@@ -187,7 +187,7 @@ nmap -sS -sV -p- 10.201.17.82
 - `-p-` — Scan every TCP port (1–65535). Useful if you want a full port sweep rather than just common ports.
 - `10.201.17.82` — The target IP.
 
-**(3) Checking Basic Connectivity (AttackBox Linux Bash terminal)** </br>
+<h4>(3) Checking Basic Connectivity (AttackBox Linux Bash terminal)</h4>
 
 My goal here is to try verifying that the web server is present, inspect response headers (server, cookies, redirects, status codes), and quickly retrieve pages for manual review or to inform later automated testing.
 
@@ -208,7 +208,7 @@ curl http://10.201.17.82/index.php
 - `http://10.201.17.82` — The target’s web root. If a web service listens on a nonstandard port, include `:port` (for example `http://10.201.17.82:8000`).
 - `http://10.201.17.82/index.php` — Example path to fetch a specific page or endpoint to see content or responses.
 
-**(4) Testing Specific TCP Ports via netcat (AttackBox Linux Bash terminal)** </br>
+<h4>(4) Testing Specific TCP Ports via netcat (AttackBox Linux Bash terminal)</h4>
 
 I wanted quick verification of whether a specific port is accepting TCP connections (faster than a full nmap when you want to check individual services).
 
