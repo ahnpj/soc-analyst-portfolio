@@ -164,7 +164,7 @@ ping -c 3 10.201.17.82
 - `-c 3` — Limits the ping to 3 ICMP packets so the test is quick and concise.
 - `10.201.17.82` — Target IP assigned to the analysis VM.
 
-<h4>(2) Discovering Open Ports via Nmap (Attackbox Linux Bash terminal)**</h4>
+<h4>(2) Discovering Open Ports via Nmap (Attackbox Linux Bash terminal)</h4>
 
 I also wanted to  enumerate which ports are open and which services are listening so I know where to focus further testing (web, SSH, custom services, etc.).
 
