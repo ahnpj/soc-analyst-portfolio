@@ -4,19 +4,19 @@
 <details>
   <summary><b>📘 Table of Contents</b></summary>
 
-  - [Overview / Objective](#overviewobjective)
+  - [Overview / Objective](#overviewobjective-)
     - [Objective](#Objective)
     - [Environment & Prerequisites](#environmentprerequisites)
     - [Step-by-Step Walkthrough](#stepbystepwalkthrough)
     - [Findings / Analysis](#findingsanalysis)
-  - [Scenario Overview](#scenariooverview)
+  - [Scenario Overview](#scenariooverview-)
     - [Scenario](#scenario)
     - [Data Sources](#datasources)
     - [Environment Setup](#environmentsetup)
     - [Independent Checks](#independentchecks)
     - [Findings / Analysis](#findingsanalysis1)
     - [What I Learned](#whatilearned)
-  - [Objective 1 – Reconnaissance Phase](#objective1reconnaissancephase)
+  - [Objective 1 – Reconnaissance Phase](#objective1reconnaissancephase-)
     - [Overview](#overview)
     - [Step‑by‑Step Walkthrough](#stepbystepwalkthrough-1)
     - [Findings / Analysis](#findingsanalysis-2)
