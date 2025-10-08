@@ -9,7 +9,7 @@
     - [Environment & Prerequisites](#environmentprerequisites)
     - [Step-by-Step Walkthrough](#stepbystepwalkthrough)
     - [Findings / Analysis](#findingsanalysis)
-  - [Scenario Overview](#scenariooverview-)
+  - [Scenario Overview & Environment Setup](#scenariooverview--environment-setup-)
     - [Scenario](#scenario)
     - [Data Sources](#datasources)
     - [Environment Setup](#environmentsetup)
