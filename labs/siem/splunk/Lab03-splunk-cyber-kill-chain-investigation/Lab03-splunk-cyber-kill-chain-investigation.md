@@ -5,7 +5,7 @@
   <summary><b>📘 Table of Contents</b></summary>
 
   - [Overview / Objective](#overviewobjective-)
-    - [Objective](#Objective)
+    - [Objective](#Objective-)
     - [Environment & Prerequisites](#environmentprerequisites)
     - [Step-by-Step Walkthrough](#stepbystepwalkthrough)
     - [Findings / Analysis](#findingsanalysis)
