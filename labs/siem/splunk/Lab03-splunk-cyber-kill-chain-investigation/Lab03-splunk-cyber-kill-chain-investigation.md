@@ -429,7 +429,11 @@ This task demonstrated how correlated IDS and network logs can expose earl
 
 ---
 
-## Objective 2 – Exploitation Phase
+## Objective 2 – Exploitation Phase</br>
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Overview
 The objective was to confirm whether the attacker attempted or succeeded in exploiting vulnerabilities discovered during reconnaissance—specifically targeting the Joomla CMS running on the web server.
@@ -479,9 +483,15 @@ Evidence confirmed a brute‑force attack followed by successful�
 ### What I Learned
 This task taught me how to use Splunk to detect web‑based brute‑force and credential attacks through HTTP method filtering and field extraction. It emphasized the value of regex for pulling key data points from raw logs and how statistics commands summarize large volumes efficiently. From a SOC perspective, this correlates to **MITRE ATT&CK T1110 (Brute Force)** and **Security+ Domain 3.2 (Analyze Indicators of Compromise)**.
 
+</details>
+
 ---
 
-## Objective 3 – Installation Phase
+## Objective 3 – Installation Phase</br>
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Overview
 The objective of this task was to verify whether the attacker successfully installed or executed any malicious payloads following exploitation. In the Cyber Kill Chain, **Installation** represents the stage where adversaries establish persistence within a target environment, typically by deploying malware or backdoors.
@@ -516,9 +526,15 @@ Results confirmed that `3791.exe` executed shortly after upload. This demonstrat
 ### What I Learned
 I learned how to validate malware execution through cross‑referencing network and endpoint data sources in Splunk. Sysmon EventCode 1 is a reliable indicator for process creation and should be monitored in production environments using detection rules aligned with **MITRE ATT&CK T1059 (Command and Scripting Interpreter)**. This phase also illustrates **Security+ Domain 2.2 (Analyze Indicators of Malware)** and connects to the **Eradication** phase of the NIST Incident Response Lifecycle.
 
+</details>
+
 ---
 
-## Objective 4 – Action on Objectives Phase
+## Objective 4 – Action on Objectives Phase</br>
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Overview
 The goal of this phase was to determine the attacker’s ultimate objective after establishing persistence. In this scenario, the malicious actor defaced the company’s public website—a clear indicator of the **Actions on Objectives** stage of the Cyber Kill Chain.
@@ -543,9 +559,15 @@ The attacker’s intent was to publicly deface the website to demonstr
 ### What I Learned
 This task taught me how to trace adversary objectives using Splunk by following the attack from reconnaissance to impact. Understanding “Actions on Objectives” is vital for incident classification and damage assessment within a SOC. The technique relates to **MITRE ATT&CK T1491 (Defacement)** and NIST’s **Recovery Phase** of incident handling. Documenting such activity supports executive reporting and post‑incident remediation plans.
 
+</details>
+
 ---
 
-## Objective 5 – Command and Control (C2) Phase
+## Objective 5 – Command and Control (C2) Phase</br>
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Overview
 This task focused on identifying if the attacker established a **Command and Control (C2)** channel with external infrastructure. C2 allows threat actors to remotely control infected hosts and execute further commands.
@@ -570,9 +592,15 @@ The attacker used a Dynamic DNS service to obfuscate their C
 ### What I Learned
 I learned to detect C2 communications by correlating IDS, firewall, and endpoint data. Dynamic DNS is a common tactic for maintaining C2 reachability, and Splunk queries can identify these patterns through consistent destination hostnames and ports. This aligns with **MITRE ATT&CK T1071 (Application Layer Protocol)** and **Security+ Domain 3.3 (Analyze threat data to support an incident response)**.
 
+</details>
+
 ---
 
-## Objective 6 – Weaponization Phase
+## Objective 6 – Weaponization Phase</br>
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Overview
 The objective was to analyze how the attacker prepared and delivered their payloads by pivoting on known indicators through OSINT tools. In the Cyber Kill Chain, Weaponization covers the creation of malware and exploitation packages used later in Delivery.
@@ -588,9 +616,15 @@ The domain was associated with multiple subdomains and related�
 ### What I Learned
 Weaponization is rarely observable in internal logs, but threat intelligence correlation can expose it indirectly. I learned how OSINT enriches SIEM data and helps analysts build context beyond raw events. This relates to **MITRE ATT&CK T1587 (Develop Capabilities)** and **Security+ Domain 1.4 (Explain threat actors and attributes)**.
 
+</details>
+
 ---
 
-## Objective 7 – Delivery Phase
+## Objective 7 – Delivery Phase</br>
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Overview
 The purpose of this phase was to examine malware delivery artifacts identified during the Weaponization stage and determine how the malicious payload reached the target.
@@ -615,9 +649,15 @@ Analysis confirmed that the malware was delivered through social
 ### What I Learned
 I learned how threat intelligence enrichment enhances forensic findings within Splunk. Malware delivery mechanisms must be monitored for early warning signs, particularly HTTP downloads of executables. This maps to **Security+ Domain 1.2 (Compare and contrast attack types)** and **MITRE ATT&CK T1566 (Phishing)** for social delivery vectors.
 
+</details>
+
 ---
 
-## Conclusion and Lessons Learned
+## Conclusion and Lessons Learned</br>
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Overview
 The final task consolidated the findings from the entire investigation and reviewed each phase of the Cyber Kill Chain to produce a comprehensive summary for executive reporting and process improvement.
@@ -637,6 +677,8 @@ The final task consolidated the findings from the entire inves
 This final phase reinforced how SIEM platforms like Splunk enable end‑to‑end attack mapping and incident documentation. I learned to connect each stage of the Cyber Kill Chain to real telemetry sources and apply Security+ and NIST principles to practical incident response. The key takeaway is that consistent data enrichment, timeline reconstruction, and cross‑source correlation are essential for proactive threat hunting and strategic defense operations.
 
 📸 **Screenshot Placeholder:** Summary dashboard displaying timeline of attack phases and associated indicators.
+
+</details>
 
 ---
 
