@@ -91,11 +91,7 @@ The task strengthened my understanding that incident handling is continuous. Eve
 
 <summary><b>(Click to expand)</b></summary>
 
-### Scenario</br>
-
-<details>
-
-<summary>(Click to expand)</summary></br>
+### Scenario
 
 The domain `imreallynotbatman.com` was defaced in a simulated breach of Wayne Enterprises. I examined the environment and collected relevant logs to track attacker actions across the Lockheed Martin Cyber Kill Chain.
 
@@ -109,25 +105,15 @@ The domain `imreallynotbatman.com` was defaced in a simulated breach of Wayne En
 
 This part of the lab established the context of the lab and defined what constitutes a **security incident**. 
 
-</details>
-
-### Data Sources</br>
-
-<details>
-
-<summary>(Click to expand)</summary></br>
+### Data Sources
 
 - `stream:http` – Network flows.  
 - `iis` – Web server access logs.  
 - `suricata` – Intrusion Detection System alerts.  
 - `XmlWinEventLog:Microsoft‑Windows‑Sysmon` – Endpoint process creation and network events.
 
-</details>
+### Environment Setup 
 
-### Environment Setup </br>
-<details>
-
-<summary>(Click to expand)</summary></br>
 The investigation was performed in a virtual machine (VM) environment preconfigured for Splunk analysis. Once deployed, the VM was automatically assigned an internal IP address (`MACHINE_IP`) and initialized within a few minutes. The Splunk instance hosted the `botsv1` dataset — a realistic collection of simulated security event logs designed for enterprise-scale analysis. This dataset included various sourcetypes representing web, network, and host activity, allowing for comprehensive event correlation and threat investigation throughout the lab.
 
 I accessed Splunk Enterprise on the target VM at `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `http://10.201.33.31` in the AttackBox browser.
@@ -143,12 +129,7 @@ In Splunk’s Search & Reporting app I confirmed the index=botsv1 dataset with `
 
 - **Event Logs Source**: The dataset for this lab was indexed under [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. The results showed multiple sourcetypes representing various log formats (network, web, and host data). This confirmed that the dataset was properly loaded and gave me a clear view of the log sources I would be analyzing throughout the lab.
 
-</details>
-
-### Independent Checks </br>
-<details>
-
-<summary>(Click to expand)</summary></br>
+### Independent Checks 
 
 I performed some independent, exploratory checks outside the provided lab instructions to validate connectivity and practice reconnaissance techniques.
 - **Target:**  `10.201.17.82` (deployed in an isolated virtual lab environment)  
@@ -248,16 +229,11 @@ nc -vz 10.201.17.82 22
 - `-z` — Zero-I/O mode: used for scanning/listening without sending data (useful for quick port checks).
 - `10.201.17.82 80` — Target IP and port to test (80 = HTTP).
 
-</details>
 
-### Findings / Analysis</br>
+### Findings / Analysis
 
-<details>
-
-<summary>(Click to expand)</summary></br>
 All expected sourcetypes were present. Understanding these sources early streamlined later correlation searches across network and host data. This setup phase emphasized the importance of situational awareness before analysis. Knowing data sources and their fields prevents misinterpretation of logs—a skill fundamental to blue‑team operations. This relates to **MITRE ATT&CK TA0001 (Initial Access)** and Security+ objectives covering data collection and correlation.
 
-</details>
 
 </details>
 
@@ -268,18 +244,13 @@ All expected sourcetypes were present. Understanding these sources early streaml
 
 <summary><b>(Click to expand)</b></summary>
 
-### Overview</br>
-<details>
+### Overview
 
-<summary>(Click to expand)</summary></br>
 The objective was to detect early reconnaissance activity targeting `imreallynotbatman.com`. Reconnaissance is the first phase of the Cyber Kill Chain, where adversaries gather intelligence about targets.
 
-</details>
 
-### Step‑by‑Step Walkthrough</br>
-<details>
+### Step‑by‑Step Walkthrough
 
-<summary>(Click to expand)</summary>
 <h4>(1) I began by searching the dataset for any logs referencing the domain.</h4>
 
 ```spl
@@ -380,12 +351,7 @@ HTTP requests with empty headers are common with automated vulnerability scanner
 
 Because this activity doesn’t exploit a specific vulnerability but instead maps and tests the server’s behavior, it’s a strong indicator of active reconnaissance.
 
-</details>
-
-### Findings / Analysis</br>
-<details>
-
-<summary>(Click to expand)</summary>
+### Findings / Analysis
 
 - `40.80.148.42` accounted for over  90 % of the requests, and was consistent with automated vulnerability scanning. Active recon evidence included frequent GET requests.
 - I filtered the Suricata logs for traffic from the attacker IP `40.80.148.42` to the web server `192.168.250.70`. In the `http_referrer` field, I found multiple entries pointing to paths such as `/joomla/index.php` and `/joomla/administrator/`. These are specific to the Joomla content management system, confirming the web server was running Joomla. This field typically shows the URL of the webpage that directed the client to the current resource, so basically where each request originated from.
@@ -395,15 +361,9 @@ Because this activity doesn’t exploit a specific vulnerability but instead map
   - Scanner attacker likely used: Acunetix
   - CVE: 2014-6271 (Shellshock)
 
-  </details>
+### What I Learned
 
-### What I Learned</br>
-<details>
-
-<summary>(Click to expand)</summary></br>
 This task demonstrated how correlated IDS and network logs can expose early attacker behavior. Recognizing reconnaissance helps defenders act during the earliest possible stage of an attack, aligning with **Security+ Domain 3 (Threat Detection)** and **NIST IR Phase – Identification** (Woohoo! Earning my CompTIA Sec+ cert was worth it).
-
-</details>
 
 </details>
 
