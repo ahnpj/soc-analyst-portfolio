@@ -5,12 +5,14 @@
   <summary><b>📘 Table of Contents</b></summary>
 
   - [Overview / Objective](#overviewobjective)
+    - [Objective](#Objective)
     - [Environment & Prerequisites](#environmentprerequisites)
     - [Step-by-Step Walkthrough](#stepbystepwalkthrough)
     - [Findings / Analysis](#findingsanalysis)
   - [Scenario Overview](#scenariooverview)
+    - [Scenario](#scenario)
     - [Data Sources](#datasources)
-    - [Lab Environment Setup](#labenvironmentsetup)
+    - [Environment Setup](#environmentsetup)
     - [Independent Checks](#independentchecks)
     - [Findings / Analysis](#findingsanalysis1)
     - [What I Learned](#whatilearned1)
@@ -26,7 +28,17 @@
 
 ---
 
-## Overview / Objective
+## Overview / Objective </br>
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
+### Objective </br>
+
+<details>
+
+<summary>(Click to expand)</summary></br>
 
 The objective was to understand how an incident impacts confidentiality, integrity, or availability (CIA) and how **Splunk**, functioning as a Security Information and Event Management (SIEM) system, supports the incident‑handling process.
 
@@ -34,18 +46,38 @@ In this lab, I conducted a full end-to-end investigation of a simulated cyber in
 
 Throughout the lab, I performed detailed Splunk queries to uncover reconnaissance behavior, brute-force authentication attempts, malware installation, command and control (C2) communication, and the final defacement of the target system. Each query was analyzed line-by-line to understand what it revealed about the attacker’s behavior and how it maps to MITRE ATT&CK techniques. The overall objective was to strengthen my ability to think like a SOC analyst — connecting raw log data to broader threat frameworks, applying NIST SP 800-61 principles, and producing an actionable, evidence-based incident report. This lab emphasized not only technical proficiency with Splunk but also structured analytical thinking, documentation, and professional reporting skills critical to cybersecurity operations.
 
-### Environment & Prerequisites
+</details>
+
+### Environment & Prerequisites</br>
+
+<details>
+
+<summary>(Click to expand)</summary></br>
+
 - Splunk Enterprise environment pre‑configured with the `botsv1` dataset.  
 - Access to simulated log sources: Suricata IDS, IIS web server, Sysmon, and Fortigate firewall.  
 - Familiarity with basic Splunk navigation and search syntax.
 
-### Step‑by‑Step Walkthrough
+</details>
+
+### Step‑by‑Step Walkthrough</br>
+
+<details>
+
+<summary>(Click to expand)</summary></br>
 The lab described incident handling as a structured response to any event that could jeopardize CIA. I reviewed Splunk’s role in aggregating and correlating logs from multiple systems to detect these events. No commands were executed yet, but I examined indexed data to confirm ingestion from multiple sources and verified connectivity to Splunk Search Head and Indexer components.
 
-### Findings / Analysis
+</details>
+
+### Findings / Analysis</br>
+
+<details>
+
+<summary>(Click to expand)</summary></br>
 Understanding incident handling early clarified how every detection and response task later in the lab aligns with the **NIST SP 800‑61 r2** lifecycle and **CompTIA Security+ Domain 2 (Incident Response)**. The introduction underscored the need for predefined processes and emphasized that SIEM tools automate detection and correlation across multiple log types.
 
----
+</details>
+</details>
 
 <!--
 ## Incident Handling Lifecycle
@@ -67,9 +99,21 @@ Each phase is cyclical and dependent on accurate log collection. I learned how S
 The task strengthened my understanding that incident handling is continuous. Every incident fuels process improvement. This maps directly to **Security+ Domain 2.5 (Apply incident response procedures)** and NIST’s emphasis on lessons learned to enhance defensive posture.
 -->
 
-## Scenario Overview
+---
 
-**Scenario:** The domain `imreallynotbatman.com` was defaced in a simulated breach of Wayne Enterprises. I examined the environment and collected relevant logs to track attacker actions across the Lockheed Martin Cyber Kill Chain.
+## Scenario Overview </br>
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
+### Scenario</br>
+
+<details>
+
+<summary>(Click to expand)</summary></br>
+
+The domain `imreallynotbatman.com` was defaced in a simulated breach of Wayne Enterprises. I examined the environment and collected relevant logs to track attacker actions across the Lockheed Martin Cyber Kill Chain.
 
 <p align="center">
   <img src="images/splunk-cyber-kill-chain-investigation-01.png?raw=true&v=2" 
@@ -81,13 +125,25 @@ The task strengthened my understanding that incident handling is continuous. Eve
 
 This part of the lab established the context of the lab and defined what constitutes a **security incident**. 
 
-### Data Sources
+</details>
+
+### Data Sources</br>
+
+<details>
+
+<summary>(Click to expand)</summary></br>
+
 - `stream:http` – Network flows.  
 - `iis` – Web server access logs.  
 - `suricata` – Intrusion Detection System alerts.  
 - `XmlWinEventLog:Microsoft‑Windows‑Sysmon` – Endpoint process creation and network events.
 
-### Lab Environment Setup
+</details>
+
+### Environment Setup </br>
+<details>
+
+<summary>(Click to expand)</summary></br>
 The investigation was performed in a virtual machine (VM) environment preconfigured for Splunk analysis. Once deployed, the VM was automatically assigned an internal IP address (`MACHINE_IP`) and initialized within a few minutes. The Splunk instance hosted the `botsv1` dataset — a realistic collection of simulated security event logs designed for enterprise-scale analysis. This dataset included various sourcetypes representing web, network, and host activity, allowing for comprehensive event correlation and threat investigation throughout the lab.
 
 I accessed Splunk Enterprise on the target VM at `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `http://10.201.33.31` in the AttackBox browser.
@@ -103,7 +159,13 @@ In Splunk’s Search & Reporting app I confirmed the index=botsv1 dataset with `
 
 - **Event Logs Source**: The dataset for this lab was indexed under [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. The results showed multiple sourcetypes representing various log formats (network, web, and host data). This confirmed that the dataset was properly loaded and gave me a clear view of the log sources I would be analyzing throughout the lab.
 
-### Independent Checks
+</details>
+
+### Independent Checks </br>
+<details>
+
+<summary>(Click to expand)</summary></br>
+
 I performed some independent, exploratory checks outside the provided lab instructions to validate connectivity and practice reconnaissance techniques.
 - **Target:**  `10.201.17.82` (deployed in an isolated virtual lab environment)  
 - **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
@@ -202,17 +264,38 @@ nc -vz 10.201.17.82 22
 - `-z` — Zero-I/O mode: used for scanning/listening without sending data (useful for quick port checks).
 - `10.201.17.82 80` — Target IP and port to test (80 = HTTP).
 
-### Findings / Analysis
+</details>
+
+### Findings / Analysis</br>
+
+<details>
+
+<summary>(Click to expand)</summary></br>
 All expected sourcetypes were present. Understanding these sources early streamlined later correlation searches across network and host data. This setup phase emphasized the importance of situational awareness before analysis. Knowing data sources and their fields prevents misinterpretation of logs—a skill fundamental to blue‑team operations. This relates to **MITRE ATT&CK TA0001 (Initial Access)** and Security+ objectives covering data collection and correlation.
+
+</details>
+
+</details>
 
 ---
 
-## Objective 1 – Reconnaissance Phase
+## Objective 1 – Reconnaissance Phase </br>
+<details>
 
-### Overview
+<summary><b>(Click to expand)</b></summary>
+
+### Overview</br>
+<details>
+
+<summary>(Click to expand)</summary></br>
 The objective was to detect early reconnaissance activity targeting `imreallynotbatman.com`. Reconnaissance is the first phase of the Cyber Kill Chain, where adversaries gather intelligence about targets.
 
-### Step‑by‑Step Walkthrough
+</details>
+
+### Step‑by‑Step Walkthrough</br>
+<details>
+
+<summary>(Click to expand)</summary>
 <h4>(1) I began by searching the dataset for any logs referencing the domain.</h4>
 
 ```spl
@@ -313,8 +396,13 @@ HTTP requests with empty headers are common with automated vulnerability scanner
 
 Because this activity doesn’t exploit a specific vulnerability but instead maps and tests the server’s behavior, it’s a strong indicator of active reconnaissance.
 
+</details>
 
-### Findings / Analysis
+### Findings / Analysis</br>
+<details>
+
+<summary>(Click to expand)</summary>
+
 - `40.80.148.42` accounted for over  90 % of the requests, and was consistent with automated vulnerability scanning. Active recon evidence included frequent GET requests.
 - I filtered the Suricata logs for traffic from the attacker IP `40.80.148.42` to the web server `192.168.250.70`. In the `http_referrer` field, I found multiple entries pointing to paths such as `/joomla/index.php` and `/joomla/administrator/`. These are specific to the Joomla content management system, confirming the web server was running Joomla. This field typically shows the URL of the webpage that directed the client to the current resource, so basically where each request originated from.
 - To further investigate the nature of the attack, I examined the `http_user_agent` field in the same logs. This field identifies the software or tool that generated each `HTTP` request, which helps determine whether the traffic originated from a legitimate browser or an automated scanner. Within this field, I found entries containing the string `acunetix_wvs_security_test`, a known signature used by the Acunetix web vulnerability scanner. Combined with the presence of the Shellshock (CVE-2014-6271) exploit pattern, this confirms that the attacker was using Acunetix to perform automated reconnaissance and vulnerability testing against the Joomla server.
@@ -323,8 +411,17 @@ Because this activity doesn’t exploit a specific vulnerability but instead map
   - Scanner attacker likely used: Acunetix
   - CVE: 2014-6271 (Shellshock)
 
-### What I Learned
+  </details>
+
+### What I Learned</br>
+<details>
+
+<summary>(Click to expand)</summary></br>
 This task demonstrated how correlated IDS and network logs can expose early attacker behavior. Recognizing reconnaissance helps defenders act during the earliest possible stage of an attack, aligning with **Security+ Domain 3 (Threat Detection)** and **NIST IR Phase – Identification** (Woohoo! Earning my CompTIA Sec+ cert was worth it).
+
+</details>
+
+</details>
 
 ---
 
