@@ -124,6 +124,7 @@ I accessed Splunk Enterprise on the target VM at `10.201.17.82` or `http://10.20
 
 - **Target:**  `10.201.17.82` and `10.201.33.31` (deployed in an isolated virtual lab environment)  
 - **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
+- **Event Logs Source**: The dataset for this lab was indexed under [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. The results showed multiple sourcetypes representing various log formats (network, web, and host data). This confirmed that the dataset was properly loaded and gave me a clear view of the log sources I would be analyzing throughout the lab.
 
 In Splunk’s Search & Reporting app I confirmed the index=botsv1 dataset with `index=botsv1 | stats count by sourcetype` to understand what types of data were available
 
@@ -134,13 +135,11 @@ In Splunk’s Search & Reporting app I confirmed the index=botsv1 dataset with `
        width="700"><br>
 </p>
 
-- **Event Logs Source**: The dataset for this lab was indexed under [`index=botsv1`](https://github.com/splunk/botsv1), which contained all event data necessary for the analysis. The results showed multiple sourcetypes representing various log formats (network, web, and host data). This confirmed that the dataset was properly loaded and gave me a clear view of the log sources I would be analyzing throughout the lab.
-
 ### Independent Checks 
 
 I performed some independent, exploratory checks outside the provided lab instructions to validate connectivity and practice reconnaissance techniques.
 
-<h4>(1) Checking Basic Connectivity (AttackBox Linux Bash terminal)<h4>
+<h4>(1) Checking Basic Connectivity (AttackBox Linux Bash terminal)</h4>
 
 My goal here is to quickly confirm  whether the target is reachable from the AttackBox (verifies network connectivity and that the VM is up).
 
