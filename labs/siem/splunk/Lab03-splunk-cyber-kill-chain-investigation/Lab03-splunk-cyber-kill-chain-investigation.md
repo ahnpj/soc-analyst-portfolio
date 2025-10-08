@@ -38,11 +38,7 @@
 
 <summary><b>(Click to expand)</b></summary>
 
-### Objective </br>
-
-<details>
-
-<summary>(Click to expand)</summary></br>
+### Objective
 
 The objective was to understand how an incident impacts confidentiality, integrity, or availability (CIA) and how **Splunk**, functioning as a Security Information and Event Management (SIEM) system, supports the incident‑handling process.
 
@@ -50,37 +46,21 @@ In this lab, I conducted a full end-to-end investigation of a simulated cyber in
 
 Throughout the lab, I performed detailed Splunk queries to uncover reconnaissance behavior, brute-force authentication attempts, malware installation, command and control (C2) communication, and the final defacement of the target system. Each query was analyzed line-by-line to understand what it revealed about the attacker’s behavior and how it maps to MITRE ATT&CK techniques. The overall objective was to strengthen my ability to think like a SOC analyst — connecting raw log data to broader threat frameworks, applying NIST SP 800-61 principles, and producing an actionable, evidence-based incident report. This lab emphasized not only technical proficiency with Splunk but also structured analytical thinking, documentation, and professional reporting skills critical to cybersecurity operations.
 
-</details>
 
-### Environment & Prerequisites</br>
-
-<details>
-
-<summary>(Click to expand)</summary></br>
+### Environment & Prerequisites
 
 - Splunk Enterprise environment pre‑configured with the `botsv1` dataset.  
 - Access to simulated log sources: Suricata IDS, IIS web server, Sysmon, and Fortigate firewall.  
 - Familiarity with basic Splunk navigation and search syntax.
 
-</details>
+### Step‑by‑Step Walkthrough
 
-### Step‑by‑Step Walkthrough</br>
-
-<details>
-
-<summary>(Click to expand)</summary></br>
 The lab described incident handling as a structured response to any event that could jeopardize CIA. I reviewed Splunk’s role in aggregating and correlating logs from multiple systems to detect these events. No commands were executed yet, but I examined indexed data to confirm ingestion from multiple sources and verified connectivity to Splunk Search Head and Indexer components.
 
-</details>
+### Findings / Analysis
 
-### Findings / Analysis</br>
-
-<details>
-
-<summary>(Click to expand)</summary></br>
 Understanding incident handling early clarified how every detection and response task later in the lab aligns with the **NIST SP 800‑61 r2** lifecycle and **CompTIA Security+ Domain 2 (Incident Response)**. The introduction underscored the need for predefined processes and emphasized that SIEM tools automate detection and correlation across multiple log types.
 
-</details>
 </details>
 
 <!--
