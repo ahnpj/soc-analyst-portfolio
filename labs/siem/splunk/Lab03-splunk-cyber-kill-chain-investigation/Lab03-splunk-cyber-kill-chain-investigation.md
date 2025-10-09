@@ -254,7 +254,7 @@ The objective was to detect early reconnaissance activity targeting `imreallynot
 
 ### Step‑by‑Step Walkthrough
 
-<h4>(1) I began by searching the dataset for any logs referencing the domain.</h4>
+<h4>(Step 1) I began by searching the dataset for any logs referencing the domain.</h4>
 
 ```spl
 index=botsv1
@@ -281,7 +281,7 @@ This returned several sourcetypes, including `suricata`, `stream:http`, `fortiga
   <em>Figure 7</em>
 </p>
 
-<h4>(2) I refined the query to focus on HTTP traffic because the domain represents a web address.</h4>
+<h4>(Step 2) I refined the query to focus on HTTP traffic because the domain represents a web address.</h4>
 
 I first limited my query to `HTTP` traffic using `sourcetype=stream:http` to focus only on web communication logs and reduce unrelated results. This made the search faster and more precise, allowing me to see which source IPs had connected to that domain. The results showed two main IPs — `40.80.148.42` and `23.22.63.114`, with the first generating the majority of HTTP requests, suggesting it was the primary host involved in the connection.
 
@@ -310,7 +310,7 @@ From this search, I identified two IPs (`40.80.148.42` and `23.22.63.114`)
   <em>Figure 9</em>
 </p>
 
-<h4>(3) I needed to validate that this was indeed a scanning attempt by `40.80.148.42`.</h4>
+<h4>(Step 3) I needed to validate that this was indeed a scanning attempt by `40.80.148.42`.</h4>
 
 I started by narrowing my search query to Suricata logs using the query:
 
@@ -391,7 +391,7 @@ The objective was to confirm whether the attacker attempted or succeeded in expl
 
 ### Step‑by‑Step Walkthrough
 
-<h4>(1) I began by running three Splunk searches to analyze web activity targeting the imreallynotbatman.com web server</h4>
+<h4>(Step 1) I began by running three Splunk searches to analyze web activity targeting the imreallynotbatman.com web server</h4>
 
   - <b>First query:</b> I immediately noticed `40.80.148.42` has made the majority of requests with 17483 requests and `23.22.63.114` made 1235 requests against web server (Figure 13).
   - <b>Second query:</b> Saw that `40.80.148.42`, `23.22.63.114`, and `192.168.2.50` have all made HTTP requests to the web server by looking into the `src_ip` field (Figure 14). Looking into the `http_method` field, I saw that most of the HTTP traffic observed consisted of POST requests directed at the web server (see Figure 15).
@@ -401,7 +401,7 @@ The objective was to confirm whether the attacker attempted or succeeded in expl
 Below are more details about each query and the corresponding findings.
 </blockquote>
 
-_<b>First query</b>_
+_<b>First query (Step 1)</b>_
 
 This query was used to identify which client IPs accessed the domain name, and the count events per source IP, regardless of how it resolved (`sourcetype=stream:*`). This search focused on hostname-based activity across multiple Stream sourcetypes (`sourcetype=stream:*`), capturing a broad view of traffic involving the domain (including DNS and HTTP Host header references).
 
@@ -423,7 +423,7 @@ index=botsv1 imreallynotbatman.com sourcetype=stream:*
 - **stats count(src_ip) as Requests by src_ip** – Counts events per source IP. Doing so identifies hosts generating abnormal traffic.  
 - **sort -Requests** – Orders results descending. This is to highlight the most active attackers first.
 
-_<b>Second query</b>_
+_<b>Second query (Step 1)</b>_
 
 This query was used to narrow the scope to HTTP requests directed specifically to the web server’s IP address to identify all inbound HTTP traffic. This provided a more focused look at network-level interactions and potential data submissions to the site. As part of the second query, I looked into the `http_method` field and saw that most of the HTTP traffic observed consisted of POST requests directed at the web server (see Figure 15). POST requests typically carry credentials during authentication.
 
@@ -443,7 +443,7 @@ dest_ip="192.168.250.70"
   <sub>Figure 14 (left) & Figure 15 (right)</sub>
 </p>
 
-_<b>Third query</b>_ 
+_<b>Third query (Step 1)</b>_ 
 
 Was used to identify which IP addresses sent POST requests to the web server and counted how many requests each one made.
 
@@ -466,7 +466,7 @@ http_method=POST
   <em>Figure 16</em>
 </p>
 
-<h4>(2) After identifying that the target web server uses the Joomla CMS, I wanted to check if anyone tried accessing the admin login page. Admin pages are important to monitor because attackers often try to reach them first when attempting to log in or exploit a site. I began by running two Splunk queries</h4>
+<h4>(Step 2) After identifying that the target web server uses the Joomla CMS, I wanted to check if anyone tried accessing the admin login page. Admin pages are important to monitor because attackers often try to reach them first when attempting to log in or exploit a site. I began by running two Splunk queries</h4>
 
 <blockquote>
 Through a quick online search, I learned that Joomla’s admin login page is usually found at: `/joomla/administrator/index.php`. 
@@ -479,7 +479,7 @@ Through a quick online search, I learned that Joomla’s admin login page is usu
 Below are more details about each query and the corresponding findings.
 </blockquote>
 
-_<b>First query</b>_ 
+_<b>First query (Step 2)</b>_ 
 
 Used to identify traffic coming into this URI (`/joomla/administrator/index.php`). 
 
@@ -504,7 +504,7 @@ uri="/joomla/administrator/index.php"
   <em>Figure 17</em>
 </p>
 
-_<b>Second query</b>_
+_<b>Second query (Step 2)</b>_
 
 Was used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually extract the username and password credentials attempted using `form_data`. 
 
@@ -539,7 +539,7 @@ Inspecting the `form_data` field revealed multiple login attempts to `
 <strong>Note:</strong> To further narrow down my results, I could add a specific source IP to the query, such as src_ip="40.80.148.42". This would limit the search to only show HTTP requests sent from that particular client. Filtering by source IP helps identify which system initiated the traffic, making it easier to trace suspicious behavior or confirm repeated login attempts from the same host. This kind of filter is especially useful when analyzing targeted activity against the Joomla admin login page.
 </blockquote>
 
-<h4>(3) After confirming that most traffic to `/joomla/administrator/index.php` (Joomla's admin login page) were POST requests (mostly from `40.80.148.42`, with some from `23.22.63.114`), I wanted to extract the submitted form fields to see the username and password values those POST attempts used.</h4>
+<h4>(Step 3) After confirming that most traffic to `/joomla/administrator/index.php` (Joomla's admin login page) were POST requests (mostly from `40.80.148.42`, with some from `23.22.63.114`), I wanted to extract the submitted form fields to see the username and password values those POST attempts used.</h4>
 
 Previously, after inspecting the `form_data` field and confirmed multiple login attempts to `/joomla/administrator/index.php`, I used regex to extract only the username (`username`) and password (`passwd`) fields:
 
@@ -572,7 +572,7 @@ form_data=*username*passwd*
   <em>Figure 19</em>
 </p>
 
-<h4>(4) After extracting the submitted form fields to see the username and password values those POST attempts used, I used regex in 2 Splunk queries to do this.</h4>
+<h4>(Step 4) After extracting the submitted form fields to see the username and password values those POST attempts used, I used regex in 2 Splunk queries to do this.</h4>
   
 - **The first query** was to extract all password found in the `passwd` field.
 - **The second query** was used identify whether credential submissions came from normal browsers or from automated tools/scripts; patterns in user-agents help distinguish human traffic from likely scanning or brute-force activity.
@@ -581,7 +581,7 @@ form_data=*username*passwd*
 Below are more details about each query and the corresponding findings.
 </blockquote>
 
-_<b>First query</b>_
+_<b>First query (Step 4)</b>_
 
 Used to extract all password found in the `passwd` field.
 
@@ -618,7 +618,7 @@ form_data=*username*passwd*
   <em>Figure 20</em>
 </p>
 
-_<b>Second query</b>_ 
+_<b>Second query (Step 4)</b>_ 
 
 Used identify whether credential submissions came from normal browsers or from automated tools/scripts; patterns in user-agents help distinguish human traffic from likely scanning or brute-force activity.
 
