@@ -401,7 +401,7 @@ The objective was to confirm whether the attacker attempted or succeeded in expl
 Below are more details about each query and the corresponding findings.
 </blockquote>
 
-<b><u>First query</u></b>
+<b>First query (Exploitation Phase)</b>
 
 This query was used to identify which client IPs accessed the domain name, and the count events per source IP, regardless of how it resolved (`sourcetype=stream:*`). This search focused on hostname-based activity across multiple Stream sourcetypes (`sourcetype=stream:*`), capturing a broad view of traffic involving the domain (including DNS and HTTP Host header references).
 
