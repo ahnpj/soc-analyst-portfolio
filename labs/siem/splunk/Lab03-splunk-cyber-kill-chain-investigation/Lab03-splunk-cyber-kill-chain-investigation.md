@@ -401,7 +401,7 @@ The objective was to confirm whether the attacker attempted or succeeded in expl
 Below are more details about each query and the corresponding findings.
 </blockquote>
 
-<b>First query (Exploitation Phase)</b>
+_<b>First query</b>_
 
 This query was used to identify which client IPs accessed the domain name, and the count events per source IP, regardless of how it resolved (`sourcetype=stream:*`). This search focused on hostname-based activity across multiple Stream sourcetypes (`sourcetype=stream:*`), capturing a broad view of traffic involving the domain (including DNS and HTTP Host header references).
 
@@ -424,7 +424,7 @@ index=botsv1 imreallynotbatman.com sourcetype=stream:*
 - **stats count(src_ip) as Requests by src_ip** – Counts events per source IP. Doing so identifies hosts generating abnormal traffic.  
 - **sort -Requests** – Orders results descending. This is to highlight the most active attackers first.
 
-<b>The second query</b> 
+_<b>Second query</b>_
 
 This query was used to narrow the scope to HTTP requests directed specifically to the web server’s IP address to identify all inbound HTTP traffic. This provided a more focused look at network-level interactions and potential data submissions to the site. As part of the second query, I looked into the `http_method` field and saw that most of the HTTP traffic observed consisted of POST requests directed at the web server (see Figure 15). POST requests typically carry credentials during authentication.
 
