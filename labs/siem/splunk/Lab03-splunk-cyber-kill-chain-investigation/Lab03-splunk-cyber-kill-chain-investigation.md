@@ -444,7 +444,7 @@ dest_ip="192.168.250.70"
   <sub>Figure 14 (left) & Figure 15 (right)</sub>
 </p>
 
-<b>The third query</b> 
+_<b>Third query</b>_ 
 
 Was used to identify which IP addresses sent POST requests to the web server and counted how many requests each one made.
 
@@ -480,7 +480,7 @@ Through a quick online search, I learned that Joomla’s admin login page is usu
 Below are more details about each query and the corresponding findings.
 </blockquote>
 
-<b>The first query</b> 
+_<b>First query</b>_ 
 
 Used to identify traffic coming into this URI (`/joomla/administrator/index.php`). 
 
@@ -505,7 +505,7 @@ uri="/joomla/administrator/index.php"
   <em>Figure 17</em>
 </p>
 
-<b>The second query</b> 
+_<b>Second query</b>_
 
 Was used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually extract the username and password credentials attempted using `form_data`. 
 
@@ -582,7 +582,7 @@ form_data=*username*passwd*
 Below are more details about each query and the corresponding findings.
 </blockquote>
 
-<b>First query</b>
+_<b>First query</b>_
 
 Used to extract all password found in the `passwd` field.
 
@@ -619,7 +619,7 @@ form_data=*username*passwd*
   <em>Figure 20</em>
 </p>
 
-<b>Second query</b> 
+_<b>Second query</b>_ 
 
 Used identify whether credential submissions came from normal browsers or from automated tools/scripts; patterns in user-agents help distinguish human traffic from likely scanning or brute-force activity.
 
