@@ -520,7 +520,36 @@ Inspecting the `form_data` field revealed multiple login attempts to `
 <strong>Note:</strong> To further narrow down my results, I could add a specific source IP to the query, such as src_ip="40.80.148.42". This would limit the search to only show HTTP requests sent from that particular client. Filtering by source IP helps identify which system initiated the traffic, making it easier to trace suspicious behavior or confirm repeated login attempts from the same host. This kind of filter is especially useful when analyzing targeted activity against the Joomla admin login page.
 </blockquote>
 
-Inspecting the `form_data` field revealed multiple login attempts to `/joomla/administrator/index.php`. I used regex to extract submitted passwords:
+<h4>(3) After confirming that most traffic to `/joomla/administrator/index.php` (Joomla's admin login page) were POST requests (mostly from `40.80.148.42`, with some from `23.22.63.114`), I wanted to extract the submitted form fields to see the username and password values those POST attempts used.</h4>
+
+Previously, after inspecting the `form_data` field and confirmed multiple login attempts to `/joomla/administrator/index.php`, I used regex to extract only the username (`username`) and password (`passwd`) fields:
+
+```spl
+index=botsv1
+sourcetype=stream:http
+dest_ip="192.168.250.70"
+http_method=POST
+uri="/joomla/administrator/index.php"
+form_data=*username*passwd*
+| table _time uri src_ip dest_ip form_data
+```
+**Breakdown**
+- **sourcetype=stream:http** - Filters to HTTP events captured by Splunk Stream (application-layer HTTP requests and related fields).
+- **dest_ip="192.168.250.70"** – Specifies destination IP which only returns events whose destination IP is the web server.
+- **http_method=POST** - Keeps only HTTP POST requests (commonly used for form submissions, like login attempts).
+- **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
+- **http_method=POST** - Narrows results to requests targeting the Joomla admin login page (so basically only looking at login-portal activity specifically).
+- **uri="/joomla/administrator/index.php"** - Specifies the URI path being requested. In this case, it filters for requests targeting Joomla’s admin login page, which is a common location attackers probe when trying to gain access.
+- **form_data=*username*passwd*** - Wildcard match intended to find events where the `form_data` field contains the fields `username` and `passwd`.
+- **table _time uri src_ip dest_ip form_data** - Took all results from my search and displayed only the specific fields I cared about in a easy-to-read table.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-19.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 19</em>
+</p>
 
 ```spl
 rex field=form_data "passwd=(?<password>\w+)"
