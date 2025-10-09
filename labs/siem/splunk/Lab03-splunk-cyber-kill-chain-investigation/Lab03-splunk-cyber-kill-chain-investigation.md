@@ -401,7 +401,9 @@ The objective was to confirm whether the attacker attempted or succeeded in expl
 Below are more details about each query and the corresponding findings.
 </blockquote>
 
-<b>The first query</b> was used to identify which client IPs accessed the domain name, and the count events per source IP, regardless of how it resolved (`sourcetype=stream:*`). This search focused on hostname-based activity across multiple Stream sourcetypes (`sourcetype=stream:*`), capturing a broad view of traffic involving the domain (including DNS and HTTP Host header references).
+<b>The first query</b>
+
+This query was used to identify which client IPs accessed the domain name, and the count events per source IP, regardless of how it resolved (`sourcetype=stream:*`). This search focused on hostname-based activity across multiple Stream sourcetypes (`sourcetype=stream:*`), capturing a broad view of traffic involving the domain (including DNS and HTTP Host header references).
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-13.png?raw=true&v=2" 
@@ -422,7 +424,9 @@ index=botsv1 imreallynotbatman.com sourcetype=stream:*
 - **stats count(src_ip) as Requests by src_ip** – Counts events per source IP. Doing so identifies hosts generating abnormal traffic.  
 - **sort -Requests** – Orders results descending. This is to highlight the most active attackers first.
 
-<b>The second query</b> was used to narrow the scope to HTTP requests directed specifically to the web server’s IP address to identify all inbound HTTP traffic. This provided a more focused look at network-level interactions and potential data submissions to the site. As part of the second query, I looked into the `http_method` field and saw that most of the HTTP traffic observed consisted of POST requests directed at the web server (see Figure 15). POST requests typically carry credentials during authentication.
+<b>The second query</b> 
+
+This query was used to narrow the scope to HTTP requests directed specifically to the web server’s IP address to identify all inbound HTTP traffic. This provided a more focused look at network-level interactions and potential data submissions to the site. As part of the second query, I looked into the `http_method` field and saw that most of the HTTP traffic observed consisted of POST requests directed at the web server (see Figure 15). POST requests typically carry credentials during authentication.
 
 ```spl
 index=botsv1
@@ -440,7 +444,9 @@ dest_ip="192.168.250.70"
   <sub>Figure 14 (left) & Figure 15 (right)</sub>
 </p>
 
-<b>The third query</b> identified which IP addresses sent POST requests to the web server and counted how many requests each one made.
+<b>The third query</b> 
+
+Was used to identify which IP addresses sent POST requests to the web server and counted how many requests each one made.
 
 ```spl
 index=botsv1
@@ -463,7 +469,9 @@ http_method=POST
 
 <h4>(2) After identifying that the target web server uses the Joomla CMS, I wanted to check if anyone tried accessing the admin login page. Admin pages are important to monitor because attackers often try to reach them first when attempting to log in or exploit a site. I began by running two Splunk queries</h4>
 
+<blockquote>
 Through a quick online search, I learned that Joomla’s admin login page is usually found at: `/joomla/administrator/index.php`. 
+</blockquote>
 
 - <b>First query:</b> Immediately noticed after inspecting the `form_data` field that there were multiple login attempts to `/joomla/administrator/index.php`. The field `form_data` contained the requests sent through the form on the admin panel page, which has a login page.
 - <b>Second query:</b> Used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually IP `23.22.63.114` was trying to guess the password by brute-forcing and attempting numerous passwords.
@@ -472,7 +480,10 @@ Through a quick online search, I learned that Joomla’s admin login page is usu
 Below are more details about each query and the corresponding findings.
 </blockquote>
 
-<b>The first query</b> was used to identify traffic coming into this URI (`/joomla/administrator/index.php`). 
+<b>The first query</b> 
+
+Used to identify traffic coming into this URI (`/joomla/administrator/index.php`). 
+
 ```spl
 index=botsv1
 imreallynotbatman.com
@@ -494,7 +505,9 @@ uri="/joomla/administrator/index.php"
   <em>Figure 17</em>
 </p>
 
-<b>The second query</b> was used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually extract the username and password credentials attempted using `form_data`. 
+<b>The second query</b> 
+
+Was used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually extract the username and password credentials attempted using `form_data`. 
 
 ```spl
 index=botsv1
@@ -569,7 +582,9 @@ form_data=*username*passwd*
 Below are more details about each query and the corresponding findings.
 </blockquote>
 
-**First query:**
+<b>First query</b>
+
+Used to extract all password found in the `passwd` field.
 
 ```spl
 index=botsv1
@@ -604,7 +619,11 @@ form_data=*username*passwd*
   <em>Figure 20</em>
 </p>
 
-**Second query:** This query finds POSTs to the server that look like login attempts, pulls out the password token into `creds`, and shows when they happened (`_time`), who sent them (`src_ip`), what `URI` was requested, and which client/tool (`user_agent`) made the request.
+<b>Second query</b> 
+
+Used identify whether credential submissions came from normal browsers or from automated tools/scripts; patterns in user-agents help distinguish human traffic from likely scanning or brute-force activity.
+
+This query finds POSTs to the server that look like login attempts, pulls out the password token into `creds`, and shows when they happened (`_time`), who sent them (`src_ip`), what `URI` was requested, and which client/tool (`user_agent`) made the request.
 
 ```spl
 index=botsv1
