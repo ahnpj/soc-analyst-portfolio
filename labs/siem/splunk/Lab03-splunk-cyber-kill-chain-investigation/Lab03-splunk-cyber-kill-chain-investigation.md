@@ -391,13 +391,13 @@ The objective was to confirm whether the attacker attempted or succeeded in expl
 
 ### Step‑by‑Step Walkthrough
 
-<h4>(1) I began by running two Splunk searches to analyze web activity targeting the imreallynotbatman.com web server</h4>
+<h4>(1) I began by running three Splunk searches to analyze web activity targeting the imreallynotbatman.com web server</h4>
 
-  - Then, went to the <b>[Statistics]</b> tab.
-  - First query: I immediately noticed `40.80.148.42` has made the majority of requests with 17483 requests and `23.22.63.114` made 1235 requests against web server
-  - Second query: Saw that `40.80.148.42`, `23.22.63.114`, and `192.168.2.50` have all made HTTP requests to the web server.
+  - <b>First query:</b> I immediately noticed `40.80.148.42` has made the majority of requests with 17483 requests and `23.22.63.114` made 1235 requests against web server (Figure 13).
+  - <b>Second query:</b> Saw that `40.80.148.42`, `23.22.63.114`, and `192.168.2.50` have all made HTTP requests to the web server by looking into the `src_ip` field (Figure 14). Looking into the `http_method` field, I saw that most of the HTTP traffic observed consisted of POST requests directed at the web server (see Figure 15).
+  - <b>Third query:</b> Confirmed that both `40.80.148.42` and `23.22.63.114` sent POST requests to the web server, with the majority originating from `40.80.148.42`.
 
-The first query was used to identify which client IPs accessed the domain name, and the count events per source IP, regardless of how it resolved (`sourcetype=stream:*`). This search focused on hostname-based activity across multiple Stream sourcetypes (`sourcetype=stream:*`), capturing a broad view of traffic involving the domain (including DNS and HTTP Host header references).
+<b>The first query</b> was used to identify which client IPs accessed the domain name, and the count events per source IP, regardless of how it resolved (`sourcetype=stream:*`). This search focused on hostname-based activity across multiple Stream sourcetypes (`sourcetype=stream:*`), capturing a broad view of traffic involving the domain (including DNS and HTTP Host header references).
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-13.png?raw=true&v=2" 
@@ -418,15 +418,7 @@ index=botsv1 imreallynotbatman.com sourcetype=stream:*
 - **stats count(src_ip) as Requests by src_ip** – Counts events per source IP. Doing so identifies hosts generating abnormal traffic.  
 - **sort -Requests** – Orders results descending. This is to highlight the most active attackers first.
 
-The second query was used to narrow the scope to HTTP requests directed specifically to the web server’s IP address to identify all inbound HTTP traffic. This provided a more focused look at network-level interactions and potential data submissions to the site.
-
-<p align="left">
-  <img src="images/splunk-cyber-kill-chain-investigation-14.png?raw=true&v=2" 
-       alt="SIEM alert" 
-       style="border: 2px solid #444; border-radius: 6px;" 
-       width="1000"><br>
-  <em>Figure 14</em>
-</p>
+<b>The second query</b> was used to narrow the scope to HTTP requests directed specifically to the web server’s IP address to identify all inbound HTTP traffic. This provided a more focused look at network-level interactions and potential data submissions to the site. As part of the second query, I looked into the `http_method` field and saw that most of the HTTP traffic observed consisted of POST requests directed at the web server (see Figure 15). POST requests typically carry credentials during authentication.
 
 ```spl
 index=botsv1
@@ -435,8 +427,92 @@ dest_ip="192.168.250.70"
 ```
 **Breakdown**
 - **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server.  
-- **http_method=POST** – Selects requests containing form data. *Why:*  POST requests typically carry credentials during authentication.
-- **sourcety[e=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
+- **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
+
+<p align="center">
+  <img src="images/splunk-cyber-kill-chain-investigation-14.png?raw=true&v=2" width="45%">
+  <img src="images/splunk-cyber-kill-chain-investigation-15.png?raw=true&v=2" width="45%">
+  <br>
+  <sub>Figure 14 (left) & Figure 15 (right)</sub>
+</p>
+
+<b>The third query</b> identified which IP addresses sent POST requests to the web server and counted how many requests each one made.
+
+```spl
+index=botsv1
+sourcetype=stream:http
+dest_ip="192.168.250.70"
+http_method=POST
+```
+**Breakdown**
+- **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server.  
+- **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
+- **http_method=POST** - Narrowed the scope to HTTP POST requests directed specifically to the web server’s IP address.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-16.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 16</em>
+</p>
+
+<h4>(2) After identifying that the target web server uses the Joomla CMS, I wanted to check if anyone tried accessing the admin login page. Admin pages are important to monitor because attackers often try to reach them first when attempting to log in or exploit a site. I began by running two Splunk queries</h4>
+
+- Through a quick online search, I learned that Joomla’s admin login page is usually found at: `/joomla/administrator/index.php`. 
+- <b>First query:</b> Immediately noticed after inspecting the `form_data` field that there were multiple login attempts to `/joomla/administrator/index.php`. The field `form_data` contained the requests sent through the form on the admin panel page, which has a login page.
+- <b>Second query:</b> Used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually extract the username and password credentials attempted.
+
+<b>The first query</b> was used to identify traffic coming into this URI (`/joomla/administrator/index.php`). 
+```spl
+index=botsv1
+imreallynotbatman.com
+sourcetype=stream:http
+dest_ip="192.168.250.70"
+uri="/joomla/administrator/index.php"
+```
+**Breakdown**
+- **imreallynotbatman** - Matches the domain name in the event data (like in the HTTP host header). This ensured I was only pulling events related to that specific website, especially if the same web server hosts multiple domains.
+- **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server's IP address at the network level. Ensured I was only capturing traffic sent to the actual web server, regardless of what hostname or alias was used in the request.
+- **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
+- **http_method=POST** - Narrowed the scope to HTTP POST requests directed specifically to the web server’s IP address.
+- **uri="/joomla/administrator/index.php" - Specifies the URI path being requested. In this case, it filters for requests targeting Joomla’s admin login page, which is a common location attackers probe when trying to gain access.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-17.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 17</em>
+</p>
+
+<b>The second query</b> was used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually extract the username and password credentials attempted.
+
+```spl
+index=botsv1
+imreallynotbatman.com
+sourcetype=stream:http
+dest_ip="192.168.250.70"
+uri="/joomla/administrator/index.php"
+| table _time uri src_ip dest_ip form_data
+```
+**Breakdown**
+- **imreallynotbatman** - Matches the domain name in the event data (like in the HTTP host header). This ensured I was only pulling events related to that specific website, especially if the same web server hosts multiple domains.
+- **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server's IP address at the network level. Ensured I was only capturing traffic sent to the actual web server, regardless of what hostname or alias was used in the request.
+- **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
+- **http_method=POST** - Narrowed the scope to HTTP POST requests directed specifically to the web server’s IP address.
+- **uri="/joomla/administrator/index.php" - Specifies the URI path being requested. In this case, it filters for requests targeting Joomla’s admin login page, which is a common location attackers probe when trying to gain access.
+- **table _time uri src_ip dest_ip form_data** - Took all results from my search and displayed only the specific fields I cared about in a easy-to-read table.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-18.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 18</em>
+</p>
+
+To further narrow down my results, I could add a specific source IP to the query, such as src_ip="40.80.148.42". This would limit the search to only show HTTP requests sent from that particular client. Filtering by source IP helps identify which system initiated the traffic, making it easier to trace suspicious behavior or confirm repeated login attempts from the same host. This kind of filter is especially useful when analyzing targeted activity against the Joomla admin login page.
 
 Inspecting the `form_data` field revealed multiple login attempts to `/joomla/administrator/index.php`. I used regex to extract submitted passwords:
 
