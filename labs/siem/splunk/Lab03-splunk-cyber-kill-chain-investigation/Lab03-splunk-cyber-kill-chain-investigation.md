@@ -120,7 +120,7 @@ The investigation was performed in a virtual machine (VM) environment preconfigu
 <strong>Important Note:</strong> IP addresses in this lab are ephemeral and were recorded at the time of each step (placeholders such as `MACHINE_IP` are used in this write-up when the IP changed between sessions).
 </blockquote>
 
-I accessed Splunk Enterprise on the target VM at `10.201.17.82` or `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5` or `10.201.117-139`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
+I accessed Splunk Enterprise on the target VM at `10.201.17.82` or `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`, `10.201.117-139`, or `10.201.117.123`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
 
 - **Target:**  `10.201.17.82` and `10.201.33.31` (deployed in an isolated virtual lab environment)  
 - **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
@@ -390,26 +390,53 @@ The objective was to confirm whether the attacker attempted or succeeded in expl
  - The webserver is using the Joomla CMS.
 
 ### Step‑by‑Step Walkthrough
-I began by counting the number of requests from each source IP to the target domain:
+
+<h4>(1) I began by running two Splunk searches to analyze web activity targeting the imreallynotbatman.com web server</h4>
+
+  - Then, went to the <b>[Statistics]</b> tab.
+  - First query: I immediately noticed `40.80.148.42` has made the majority of requests with 17483 requests and `23.22.63.114` made 1235 requests against web server
+  - Second query: Saw that `40.80.148.42`, `23.22.63.114`, and `192.168.2.50` have all made HTTP requests to the web server.
+
+The first query was used to identify which client IPs accessed the domain name, and the count events per source IP, regardless of how it resolved (`sourcetype=stream:*`). This search focused on hostname-based activity across multiple Stream sourcetypes (`sourcetype=stream:*`), capturing a broad view of traffic involving the domain (including DNS and HTTP Host header references).
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-13.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 13</em>
+</p>
 
 ```spl
 index=botsv1 imreallynotbatman.com sourcetype=stream:* 
 | stats count(src_ip) as Requests by src_ip 
 | sort -Requests
 ```
-**Breakdown**
-- **sourcetype=stream*** – Includes all protocol types captured by Splunk Stream. *Why:* Provides a full view of potential attack vectors.  
-- **stats count(src_ip) as Requests by src_ip** – Counts events per source IP. *Why:* Identifies hosts generating abnormal traffic.  
-- **sort -Requests** – Orders results descending. *Why:* Highlights the most active attackers first.
 
-Next, I filtered for HTTP POST methods to identify credential submissions:
+**Breakdown**
+- **sourcetype=stream*** – Includes all protocol types captured by Splunk Stream. This provides a full view of potential attack vectors.  
+- **stats count(src_ip) as Requests by src_ip** – Counts events per source IP. Doing so identifies hosts generating abnormal traffic.  
+- **sort -Requests** – Orders results descending. This is to highlight the most active attackers first.
+
+The second query was used to narrow the scope to HTTP requests directed specifically to the web server’s IP address to identify all inbound HTTP traffic. This provided a more focused look at network-level interactions and potential data submissions to the site.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-14.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 14</em>
+</p>
 
 ```spl
-index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST
+index=botsv1
+sourcetype=stream:http
+dest_ip="192.168.250.70"
 ```
 **Breakdown**
-- **dest_ip="192.168.250.70"** – Specifies the web server. *Why:*  Focuses on attacker traffic targeting the victim.  
+- **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server.  
 - **http_method=POST** – Selects requests containing form data. *Why:*  POST requests typically carry credentials during authentication.
+- **sourcety[e=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
 
 Inspecting the `form_data` field revealed multiple login attempts to `/joomla/administrator/index.php`. I used regex to extract submitted passwords:
 
