@@ -542,7 +542,7 @@ form_data=*username*passwd*
 - **table _time uri src_ip dest_ip form_data** - Took all results from my search and displayed only the specific fields I cared about in a easy-to-read table.
 
 <blockquote>
-<strong>Note:</strong>I filtered HTTP POST traffic to `dest_ip=192.168.250.70` and the Joomla admin URI `/joomla/administrator/index.php` to find login attempts. I used the server IP rather than the domain because the IP reliably captures all traffic to that machine in this lab environment; adding the domain would only be necessary if the server hosted multiple sites and I needed to confirm the virtual host. I then displayed `form_data` to inspect submitted `username` and `passwd` values.
+<strong>Note:</strong> I filtered HTTP POST traffic to `dest_ip=192.168.250.70` and the Joomla admin URI `/joomla/administrator/index.php` to find login attempts. I used the server IP rather than the domain because the IP reliably captures all traffic to that machine in this lab environment; adding the domain would only be necessary if the server hosted multiple sites and I needed to confirm the virtual host. I then displayed `form_data` to inspect submitted `username` and `passwd` values.
 </blockquote>
 
 <p align="left">
