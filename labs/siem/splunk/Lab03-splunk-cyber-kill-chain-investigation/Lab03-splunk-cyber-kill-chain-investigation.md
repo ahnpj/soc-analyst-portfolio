@@ -120,7 +120,7 @@ The investigation was performed in a virtual machine (VM) environment preconfigu
 <strong>Important Note:</strong> IP addresses in this lab are ephemeral and were recorded at the time of each step (placeholders such as `MACHINE_IP` are used in this write-up when the IP changed between sessions).
 </blockquote>
 
-I accessed Splunk Enterprise on the target VM at `10.201.17.82` or `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`, `10.201.117-139`, `10.201.117.123`, and `10.201.119.166`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
+I accessed Splunk Enterprise on the target VM at `10.201.17.82` or `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`, `10.201.117-139`, `10.201.117.123`, `10.201.119.166`, and `10.201.5.103`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
 
 - **Target:**  `10.201.17.82` and `10.201.33.31` (deployed in an isolated virtual lab environment)  
 - **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
@@ -730,7 +730,7 @@ dest_ip="192.168.250.70" *.exe
   <em>Figure 22</em>
 </p>
 
-The results displayed two filenames: `3791.exe` and `agent.php`, which appear to be executable files.
+I examined the "part_filename{}" field in Splunk to identify any files transferred over the network during the activity. The results displayed two filenames: `3791.exe` and `agent.php`, which appear to be executable files in HTTP traffic that were either downloaded or executed on the web server.
 
 <h4>(Step 2) I needed to confirm if any of these files came from the IP addresses that were found to be associated in objective 2</h4>
 
@@ -759,11 +759,24 @@ dest_ip="192.168.250.70"
   <em>Figure 23</em>
 </p>
 
-Both were uploaded by the attacker IP `40.80.148.42`. 
+I checked the "c_ip" (client IP address) field to see which host on the network requested or downloaded `3791.exe`. This allowed me to trace the origin of the activity within the environment. They were uploaded by the attacker IP `40.80.148.42`.
 
-<h4>Now, I needed to confirm whether the file `3791.exe` was executed</h4>
+<blockquote>
+Both "src_ip" and "c_ip" confirms the ip that started any process, but "c_ip" is application-focused (the client in a session), while "src_ip" is network-focused (the raw source of the packet).
+</blockquote>
 
-I ran the query `index=botsv1 "3791.exe"`, which returned 76 events distributed across multiple sourcetypes, with the majority (about 91%) coming from `XmlWinEventLog`, followed by a few from `WinEventLog`, `stream:http`, `fortigate_utm`, and `suricata`. This distribution shows that most of the activity involving `3791.exe` was captured through host-based Windows event logging, specifically Sysmon. While a small number of the remaining events originated from network and security monitoring sources. The `XmlWinEventLog` entries indicates that the file was executed or interacted with at the endpoint level, though its presence in `stream:http` suggests it may have been downloaded or transferred via HTTP traffic. Overall, this correlation between host and network data points to a potential infection vector where `3791.exe` was delivered over the network and then executed on the host system.
+<blockquote>
+I reviewed the "c_ip" field to identify which host initiated the HTTP request for `3791.exe`. Since the data came from the `stream:http` sourcetype, it records application-level traffic using client/server roles, so the "c_ip" field shows the requesting client, while "src_ip" isn’t present in this type of log.
+</blockquote>
+
+<h4>(Step 3) Now, I needed to confirm whether the file `3791.exe` was executed</h4>
+
+I ran the query `index=botsv1 "3791.exe"`, which returned 76 events distributed across multiple sourcetypes, with the majority (about 91%) coming from `XmlWinEventLog`, followed by a few from `WinEventLog`, `stream:http`, `fortigate_utm`, and `suricata`. This distribution shows that most of the activity involving `3791.exe` was captured through host-based Windows event logging, specifically Sysmon. While a small number of the remaining events originated from network and security monitoring sources. 
+
+- The `XmlWinEventLog` entries indicates that the file was executed or interacted with at the endpoint level
+- And its presence in `stream:http` suggests it may have been downloaded or transferred via HTTP traffic.
+
+Overall, this correlation between host and network data points to a potential infection vector where `3791.exe` was delivered over the network and then executed on the host system.
 
 <blockquote>
 I ran this specific query to trace the presence and activity of a suspicious file (`3791.exe`) across multiple log sources.
@@ -779,13 +792,18 @@ index=botsv1
 ```
 - **"3791.exe"** – Search term for the suspected malware. This validates that the payload was run after upload.
 
-<h4>(Step 3)Now, I needed to confirm whether the file was executed, so I queried Windows Sysmon process creation logs</h4>
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-24.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 24</em>
+</p>
 
-After confirming traces of the executable `3791.exe` were identified in multiple sources including `Sysmon`, `WinEventLog`, and `Fortigate_UTM`, I needed to determine whether the file was executed on the host, Sysmon data was examined 
-
-Sysmon provides detailed system-level monitoring of process activity. In particular, **Event ID 1 (Process Creation)** logs evidence of newly started processes and includes valuable fields like ProcessGUID, command line arguments, and file hashes. Leveraging this event type allows me to confirm if and when `3791.exe` was executed on the system, and not just generic OS actions.
+<h4>(Step 4) After confirming traces of the executable `3791.exe` were identified in multiple sources including `Sysmon`, `WinEventLog`, and `Fortigate_UTM`, I needed to determine whether the file was executed on the host. Sysmon data was examined because the majority (about 91%) of the executable's presence was coming from `XmlWinEventLog`</h4>
 
 <blockquote>
+Sysmon provides detailed system-level monitoring of process activity. In particular, **Event ID 1 (Process Creation)** logs evidence of newly started processes and includes valuable fields like ProcessGUID, command line arguments, and file hashes. Leveraging this event type allows me to confirm and gather evidence of if `3791.exe` was executed on the system and when it was executed.
 <strong>Reference:</strong> https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
 </blockquote>
 
@@ -804,12 +822,14 @@ This query will look for the process creation logs containing the term `3791.exe
 </blockquote>
 
 <p align="left">
-  <img src="images/splunk-cyber-kill-chain-investigation-24.png?raw=true&v=2" 
+  <img src="images/splunk-cyber-kill-chain-investigation-25.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
-  <em>Figure 24</em>
+  <em>Figure 25</em>
 </p>
+
+I examined the "CommandLine" field to verify how `3791.exe` was executed on the host system. This field shows the exact command used to launch a process. Checking it provided clear evidence that the executable was actually run, which is crucial for understanding attacker behavior and intent.
 
 ### Findings / Analysis
 Results confirmed that `3791.exe` executed shortly after upload. This demonstrated the attacker successfully transitioned from exploitation to persistence. The malicious file likely connected to an external server to receive commands or send data.
