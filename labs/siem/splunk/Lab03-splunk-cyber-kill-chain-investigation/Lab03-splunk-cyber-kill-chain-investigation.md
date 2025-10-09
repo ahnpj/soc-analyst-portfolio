@@ -845,6 +845,18 @@ When examining the "CommandLine" field for `3791.exe`, I clicked the entry itsel
 ### Findings / Analysis
 Results confirmed that `3791.exe` executed shortly after upload. This demonstrated the attacker successfully transitioned from exploitation to persistence. The malicious file likely connected to an external server to receive commands or send data.
 
+I also examined the `user` and `user_id` fields within the event to identify which account executed the `3791.exe` process, allowing me to tie the activity to a specific user on the system. These fields are valuable for determining who initiated the execution and whether it was done under an administrative or standard user context. 
+
+To gather additional intelligence, I submitted the retrieved hash value of the executable to VirusTotal, a malware analysis platform that aggregates results from multiple antivirus engines. This provided further details on the file’s reputation, detection rate, and potential malicious behavior across other security databases.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-27.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 27</em>
+</p>
+
 ### What I Learned
 I learned how to validate malware execution through cross‑referencing network and endpoint data sources in Splunk. Sysmon Event ID 1 is a reliable indicator for process creation and should almost always be monitored in production environments using detection rules aligned with **MITRE ATT&CK T1059 (Command and Scripting Interpreter)**. This phase also illustrates **Security+ Domain 2.2 (Analyze Indicators of Malware)** and connected to the *Eradication** phase of the NIST Incident Response Lifecycle.
 
