@@ -120,7 +120,7 @@ The investigation was performed in a virtual machine (VM) environment preconfigu
 <strong>Important Note:</strong> IP addresses in this lab are ephemeral and were recorded at the time of each step (placeholders such as `MACHINE_IP` are used in this write-up when the IP changed between sessions).
 </blockquote>
 
-I accessed Splunk Enterprise on the target VM at `10.201.17.82` or `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`, `10.201.117-139`, or `10.201.117.123`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
+I accessed Splunk Enterprise on the target VM at `10.201.17.82` or `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`, `10.201.117-139`, `10.201.117.123`, and `10.201.119.166`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
 
 - **Target:**  `10.201.17.82` and `10.201.33.31` (deployed in an isolated virtual lab environment)  
 - **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
@@ -537,11 +537,13 @@ form_data=*username*passwd*
 - **sourcetype=stream:http** - Filters to HTTP events captured by Splunk Stream (application-layer HTTP requests and related fields).
 - **dest_ip="192.168.250.70"** – Specifies destination IP which only returns events whose destination IP is the web server.
 - **http_method=POST** - Keeps only HTTP POST requests (commonly used for form submissions, like login attempts).
-- **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
-- **http_method=POST** - Narrows results to requests targeting the Joomla admin login page (so basically only looking at login-portal activity specifically).
 - **uri="/joomla/administrator/index.php"** - Specifies the URI path being requested. In this case, it filters for requests targeting Joomla’s admin login page, which is a common location attackers probe when trying to gain access.
 - **form_data=*username*passwd*** - Wildcard match intended to find events where the `form_data` field contains the fields `username` and `passwd`.
 - **table _time uri src_ip dest_ip form_data** - Took all results from my search and displayed only the specific fields I cared about in a easy-to-read table.
+
+<blockquote>
+<strong>Note:</strong>I filtered HTTP POST traffic to `dest_ip=192.168.250.70` and the Joomla admin URI `/joomla/administrator/index.php` to find login attempts. I used the server IP rather than the domain because the IP reliably captures all traffic to that machine in this lab environment; adding the domain would only be necessary if the server hosted multiple sites and I needed to confirm the virtual host. I then displayed `form_data` to inspect submitted `username` and `passwd` values.
+</blockquote>
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-19.png?raw=true&v=2" 
@@ -551,15 +553,107 @@ form_data=*username*passwd*
   <em>Figure 19</em>
 </p>
 
-```spl
-rex field=form_data "passwd=(?<password>\w+)"
-```
-The successful credentials were `admin : batman`, originating from `40.80.148.42`.
+<h4>(4) After extracting the submitted form fields to see the username and password values those POST attempts used, I used regex in 2 Splunk queries to do this.</h4>
+  
+- **The first query** was to extract all password found in the `passwd` field.
+- **The second query** was used identify whether credential submissions came from normal browsers or from automated tools/scripts; patterns in user-agents help distinguish human traffic from likely scanning or brute-force activity.
 
-📸 **Screenshot Placeholder:** Table of POST requests showing multiple login attempts and the successful one.
+**First query:**
+
+```spl
+index=botsv1
+sourcetype=stream:http
+dest_ip="192.168.250.70"
+http_method=POST
+form_data=*username*passwd*
+| rex field=form_data "passwd=(?<creds>\w+)"
+| table src_ip creds
+```
+**Breakdown**
+- **sourcetype=stream:http** - Filters to HTTP events captured by Splunk Stream (application-layer HTTP requests and related fields).
+- **dest_ip="192.168.250.70"** – Specifies destination IP which only returns events whose destination IP is the web server.
+- **http_method=POST** - Keeps only HTTP POST requests (commonly used for form submissions, like login attempts).
+- **form_data=*username*passwd*** - Wildcard match intended to find events where the `form_data` field contains the fields `username` and `passwd`.
+- **| rex field=form_data "passwd=(?<creds>\w+)"** — extract the password value into a new field called `creds`.
+    - **?<creds>** — name for the capture. In Splunk rex, that becomes the field name `creds`.
+    - **\w** — a character class that matches any “word” character: letters (A–Z, a–z), digits (0–9), and underscore (_).
+    - **+** — a quantifier meaning “one or more” of the previous token.
+    - Together: **(?<creds>\w+)** captures one or more word characters and stores them in the field `creds`.
+- **| table src_ip creds** - Show a simple table with the client IP and the extracted password
+
+<blockquote>
+<strong>Note:</strong>I removed the `uri="/joomla/administrator/index.php"` filter to capture any HTTP POSTs to `192.168.250.70` that included login fields, since credential submissions can occur at multiple or inconsistent paths and the uri field is not always present in every event. The query then uses a rex to extract the `passwd` value into `creds` and shows the source IP and password attempts.
+</blockquote>
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-20.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 20</em>
+</p>
+
+**Second query:** This query finds POSTs to the server that look like login attempts, pulls out the password token into `creds`, and shows when they happened, who sent them, what `URI` was requested, and which client/tool made the request.
+
+```spl
+index=botsv1
+sourcetype=stream:http
+dest_ip="192.168.250.70"
+http_method=POST
+form_data=*username*passwd*
+| rex field=form_data "passwd=(?<creds>\w+)"
+| table _time src_ip uri http_user_agent creds
+```
+**Breakdown**
+- **sourcetype=stream:http** - Filters to HTTP events captured by Splunk Stream (application-layer HTTP requests and related fields).
+- **dest_ip="192.168.250.70"** – Specifies destination IP which only returns events whose destination IP is the web server.
+- **http_method=POST** - Keeps only HTTP POST requests (commonly used for form submissions, like login attempts).
+- **form_data=*username*passwd*** - Wildcard match intended to find events where the `form_data` field contains the fields `username` and `passwd`.
+- **| rex field=form_data "passwd=(?<creds>\w+)"** — extract the password value into a new field called `creds`.
+    - **?<creds>** — name for the capture. In Splunk rex, that becomes the field name `creds`.
+    - **\w** — a character class that matches any “word” character: letters (A–Z, a–z), digits (0–9), and underscore (_).
+    - **+** — a quantifier meaning “one or more” of the previous token.
+    - Together: **(?<creds>\w+)** captures one or more word characters and stores them in the field `creds`.
+- **| table _time src_ip uri http_user_agent creds** - Shows a table that outputs as a table showing:
+    - **_time** = when the request happened
+    - **src_ip** = client IP that made the request
+    - **uri** = requested path (even though you didn’t filter on it here)
+    - **http_user_agent** = the browser or tool used
+    - **creds** = the extracted password value
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-21.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 21</em>
+</p>
+
+This result clearly shows a continuous brute-force attack attempt from an IP `23.22.63.114` using what appears to be a python script. 1 login attempt from IP `40.80.148.42` using the Mozilla browser. The successful credentials were `admin : batman`, originating from `40.80.148.42`.
+
+<blockquote>
+<strong>Note:</strong>I updated the extraction to create separate fields (username and password) using rex with [^&\s]+ and urldecode() so both submitted credentials appear in the table (preventing one extraction from overwriting the other).
+</blockquote>
+
+```spl
+index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST form_data=*username*passwd*
+| rex field=form_data "passwd=(?<password>[^&\s]+)"
+| rex field=form_data "username=(?<username>[^&\s]+)"
+| eval username = urldecode(username), password = urldecode(password)
+| table _time src_ip uri http_user_agent username password
+```
+**Breakdown**
+- **password** and **username** are separate fields - Gives each reg a different name so one doesn’t overwrite the other; I end up with two columns (username, password) instead of one mixed-up creds.
+- **[^&\s]+** - Basically means “grab everything until the next & or space,” so it captures special characters and the full value (e.g., passwd=p@ss! → p@ss!) instead of stopping at non-word chars.
+- **urldecode()** converts URL-encoded characters to normal text (e.g., %40 → @, + → space), so I could read the actual username/password instead of gibberish.
 
 ### Findings / Analysis
-Evidence confirmed a brute‑force attack followed by successful authentication. `23.22.63.114` performed failed attempts while `40.80.148.42` achieved login success.
+
+- Evidence confirmed a brute‑force attack followed by successful authentication. `23.22.63.114` performed failed attempts while `40.80.148.42` achieved login success.
+- Analysis of the `botsv1` logs shows a coordinated scanning and credential-attack against the Joomla admin endpoint (`/joomla/administrator/index.php`) on `192.168.250.70`.
+- Two hostile IPs were prominent: `40.80.148.42` (the source of the majority of requests and broader Acunetix-style scanning) and `23.22.63.114` (which generated numerous repeated POSTs consistent with brute-force attempts).
+- By extracting `form_data` with rex I recovered submitted credentials and found that most attempts from `23.22.63.114` failed, while `40.80.148.42` achieved a successful login using `admin:batman`.
+- `User-agent`  further differentiated the traffic which was automated/scripted agents for the brute-force activity versus a browser-like agent for the successful login—so the activity aligns with scanning followed by credential compromise (ATT&CK T1110).
 
 ### What I Learned
 This task taught me how to use Splunk dto detect web-based brute-force and credential attacks through HTTP method filtering and field extraction. It emphasized the value of regex for pulling data points from raw logs and how statistics commands summarize large volumes eddiciently. From a SOC perspective, this correlated to MITRO ATT&CK T1110 (Brute Force) and Security Domain 3.2 (Analyze Indicators of Compromise).
