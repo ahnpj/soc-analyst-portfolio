@@ -461,7 +461,7 @@ http_method=POST
 
 - Through a quick online search, I learned that Joomla’s admin login page is usually found at: `/joomla/administrator/index.php`. 
 - <b>First query:</b> Immediately noticed after inspecting the `form_data` field that there were multiple login attempts to `/joomla/administrator/index.php`. The field `form_data` contained the requests sent through the form on the admin panel page, which has a login page.
-- <b>Second query:</b> Used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually extract the username and password credentials attempted.
+- <b>Second query:</b> Used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually IP `23.22.63.114` was trying to guess the password by brute-forcing and attempting numerous passwords.
 
 <b>The first query</b> was used to identify traffic coming into this URI (`/joomla/administrator/index.php`). 
 ```spl
@@ -486,7 +486,7 @@ uri="/joomla/administrator/index.php"
   <em>Figure 17</em>
 </p>
 
-<b>The second query</b> was used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually extract the username and password credentials attempted.
+<b>The second query</b> was used to create a table containing important fields such as destination ip (`dest_ip`), HTTP method (`http_method`), URI (`uri`), and form data (`form_data`), and eventually extract the username and password credentials attempted using `form_data`. 
 
 ```spl
 index=botsv1
@@ -512,7 +512,13 @@ uri="/joomla/administrator/index.php"
   <em>Figure 18</em>
 </p>
 
-To further narrow down my results, I could add a specific source IP to the query, such as src_ip="40.80.148.42". This would limit the search to only show HTTP requests sent from that particular client. Filtering by source IP helps identify which system initiated the traffic, making it easier to trace suspicious behavior or confirm repeated login attempts from the same host. This kind of filter is especially useful when analyzing targeted activity against the Joomla admin login page.
+<blockquote>
+Inspecting the `form_data` field revealed multiple login attempts to `/joomla/administrator/index.php` from IP `23.22.63.114`.
+</blockquote>
+
+<blockquote>
+<strong>Note:</strong> To further narrow down my results, I could add a specific source IP to the query, such as src_ip="40.80.148.42". This would limit the search to only show HTTP requests sent from that particular client. Filtering by source IP helps identify which system initiated the traffic, making it easier to trace suspicious behavior or confirm repeated login attempts from the same host. This kind of filter is especially useful when analyzing targeted activity against the Joomla admin login page.
+</blockquote>
 
 Inspecting the `form_data` field revealed multiple login attempts to `/joomla/administrator/index.php`. I used regex to extract submitted passwords:
 
@@ -527,7 +533,7 @@ The successful credentials were `admin : batman`, originating from `40
 Evidence confirmed a brute‑force attack followed by successful authentication. `23.22.63.114` performed failed attempts while `40.80.148.42` achieved login success.
 
 ### What I Learned
-This task taught me how to use Splunk to detect web‑based brute‑force and credential attacks through HTTP method filtering and field extraction. It emphasized the value of regex for pulling key data points from raw logs and how statistics commands summarize large volumes efficiently. From a SOC perspective, this correlates to **MITRE ATT&CK T1110 (Brute Force)** and **Security+ Domain 3.2 (Analyze Indicators of Compromise)**.
+This task taught me how to use Splunk dto detect web-based brute-force and credential attacks through HTTP method filtering and field extraction. It emphasized the value of regex for pulling data points from raw logs and how statistics commands summarize large volumes eddiciently. From a SOC perspective, this correlated to MITRO ATT&CK T1110 (Brute Force) and Security Domain 3.2 (Analyze Indicators of Compromise).
 
 </details>
 
