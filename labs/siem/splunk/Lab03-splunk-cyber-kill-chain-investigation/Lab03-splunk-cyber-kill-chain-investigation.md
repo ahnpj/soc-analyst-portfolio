@@ -476,7 +476,7 @@ uri="/joomla/administrator/index.php"
 - **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server's IP address at the network level. Ensured I was only capturing traffic sent to the actual web server, regardless of what hostname or alias was used in the request.
 - **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
 - **http_method=POST** - Narrowed the scope to HTTP POST requests directed specifically to the web server’s IP address.
-- **uri="/joomla/administrator/index.php" - Specifies the URI path being requested. In this case, it filters for requests targeting Joomla’s admin login page, which is a common location attackers probe when trying to gain access.
+- **uri="/joomla/administrator/index.php** - Specifies the URI path being requested. In this case, it filters for requests targeting Joomla’s admin login page, which is a common location attackers probe when trying to gain access.
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-17.png?raw=true&v=2" 
