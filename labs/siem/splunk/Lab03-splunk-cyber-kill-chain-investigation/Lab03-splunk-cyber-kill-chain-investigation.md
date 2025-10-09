@@ -831,6 +831,17 @@ This query will look for the process creation logs containing the term `3791.exe
 
 I examined the "CommandLine" field to verify how `3791.exe` was executed on the host system. This field shows the exact command used to launch a process. Checking it provided clear evidence that the executable was actually run, which is crucial for understanding attacker behavior and intent.
 
+When examining the "CommandLine" field for `3791.exe`, I clicked the entry itself, which automatically updated my query to `index=botsv1 "3791.exe" sourcetype="XmlWinEventLog" EventCode=1 CommandLine="3791.exe"`. I then focused on this specific process within the "Hashes" field to isolate its hash details and successfully retrieved the MD5 hash of the executable, confirming its integrity and providing evidence of its execution on the host.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-26.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 26</em>
+</p>
+
+
 ### Findings / Analysis
 Results confirmed that `3791.exe` executed shortly after upload. This demonstrated the attacker successfully transitioned from exploitation to persistence. The malicious file likely connected to an external server to receive commands or send data.
 
