@@ -419,7 +419,6 @@ index=botsv1 imreallynotbatman.com sourcetype=stream:*
 | sort -Requests
 ```
 
-**Breakdown**
 - **sourcetype=stream*** – Includes all protocol types captured by Splunk Stream. This provides a full view of potential attack vectors.  
 - **stats count(src_ip) as Requests by src_ip** – Counts events per source IP. Doing so identifies hosts generating abnormal traffic.  
 - **sort -Requests** – Orders results descending. This is to highlight the most active attackers first.
@@ -433,7 +432,7 @@ index=botsv1
 sourcetype=stream:http
 dest_ip="192.168.250.70"
 ```
-**Breakdown**
+
 - **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server.  
 - **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
 
@@ -454,7 +453,7 @@ sourcetype=stream:http
 dest_ip="192.168.250.70"
 http_method=POST
 ```
-**Breakdown**
+
 - **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server.  
 - **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
 - **http_method=POST** - Narrowed the scope to HTTP POST requests directed specifically to the web server’s IP address.
@@ -491,7 +490,7 @@ sourcetype=stream:http
 dest_ip="192.168.250.70"
 uri="/joomla/administrator/index.php"
 ```
-**Breakdown**
+
 - **imreallynotbatman** - Matches the domain name in the event data (like in the HTTP host header). This ensured I was only pulling events related to that specific website, especially if the same web server hosts multiple domains.
 - **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server's IP address at the network level. Ensured I was only capturing traffic sent to the actual web server, regardless of what hostname or alias was used in the request.
 - **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
@@ -517,7 +516,7 @@ dest_ip="192.168.250.70"
 uri="/joomla/administrator/index.php"
 | table _time uri src_ip dest_ip form_data
 ```
-**Breakdown**
+
 - **imreallynotbatman** - Matches the domain name in the event data (like in the HTTP host header). This ensured I was only pulling events related to that specific website, especially if the same web server hosts multiple domains.
 - **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes
 - **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server's IP address at the network level. Ensured I was only capturing traffic sent to the actual web server, regardless of what hostname or alias was used in the request.
@@ -553,7 +552,7 @@ uri="/joomla/administrator/index.php"
 form_data=*username*passwd*
 | table _time uri src_ip dest_ip form_data
 ```
-**Breakdown**
+
 - **sourcetype=stream:http** - Filters to HTTP events captured by Splunk Stream (application-layer HTTP requests and related fields).
 - **dest_ip="192.168.250.70"** – Specifies destination IP which only returns events whose destination IP is the web server.
 - **http_method=POST** - Keeps only HTTP POST requests (commonly used for form submissions, like login attempts).
@@ -595,7 +594,7 @@ form_data=*username*passwd*
 | rex field=form_data "passwd=(?<creds>\w+)"
 | table src_ip creds
 ```
-**Breakdown**
+
 - **sourcetype=stream:http** - Filters to HTTP events captured by Splunk Stream (application-layer HTTP requests and related fields).
 - **dest_ip="192.168.250.70"** – Specifies destination IP which only returns events whose destination IP is the web server.
 - **http_method=POST** - Keeps only HTTP POST requests (commonly used for form submissions, like login attempts).
@@ -634,7 +633,7 @@ form_data=*username*passwd*
 | rex field=form_data "passwd=(?<creds>\w+)"
 | table _time src_ip uri http_user_agent creds
 ```
-**Breakdown**
+
 - **sourcetype=stream:http** - Filters to HTTP events captured by Splunk Stream (application-layer HTTP requests and related fields).
 - **dest_ip="192.168.250.70"** – Specifies destination IP which only returns events whose destination IP is the web server.
 - **http_method=POST** - Keeps only HTTP POST requests (commonly used for form submissions, like login attempts).
@@ -672,7 +671,7 @@ index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST fo
 | eval username = urldecode(username), password = urldecode(password)
 | table _time src_ip uri http_user_agent username password
 ```
-**Breakdown**
+
 - **password** and **username** are separate fields - Gives each reg a different name so one doesn’t overwrite the other; I end up with two columns (username, password) instead of one mixed-up creds.
 - **[^&\s]+** - Basically means “grab everything until the next & or space,” so it captures special characters and the full value (e.g., passwd=p@ss! → p@ss!) instead of stopping at non-word chars.
 - **urldecode()** converts URL-encoded characters to normal text (e.g., %40 → @, + → space), so I could read the actual username/password instead of gibberish.
