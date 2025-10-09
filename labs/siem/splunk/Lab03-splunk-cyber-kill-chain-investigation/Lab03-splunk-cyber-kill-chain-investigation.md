@@ -698,37 +698,124 @@ This task taught me how to use Splunk dto detect web-based brute-force and crede
 <summary><b>(Click to expand)</b></summary>
 
 ### Overview
-The objective of this task was to verify whether the attacker successfully installed or executed any malicious payloads following exploitation. In the Cyber Kill Chain, **Installation** represents the stage where adversaries establish persistence within a target environment, typically by deploying malware or backdoors.
+The objective of this task was to now verify whether the attacker successfully installed or executed any malicious payloads following exploitation. In the Cyber Kill Chain, **Installation** represents the stage where adversaries establish persistence within a target environment, typically by deploying malware or backdoors. I ran 3 Splunk queries to achieve this:
+
+  - <b>First query:</b> I ran this query to search for evidence of file uploads to the compromised host (web server) with the IP `192.168.250.70`.
+  - <b>Second query:</b> Saw that `40.80.148.42`, `23.22.63.114`, and `192.168.2.50` have all made HTTP requests to the web server by looking into the `src_ip` field (Figure 14). Looking into the `http_method` field, I saw that most of the HTTP traffic observed consisted of POST requests directed at the web server (see Figure 15).
+  - <b>Third query:</b> Confirmed that both `40.80.148.42` and `23.22.63.114` sent POST requests to the web server, with the majority originating from `40.80.148.42` (see Figure 16).
+
+<blockquote>
+Below are more details about each query and the corresponding findings.
+</blockquote>
 
 ### Step‑by‑Step Walkthrough
-After confirming successful authentication from the prior phase, I searched for evidence of file uploads to the compromised host:
+
+<h4>(Step 1) After confirming successful authentication from the prior phase (`40.80.148.42` achieved a successful login using `admin:batman`), I searched for evidence of file uploads to the compromised host using the first query</h4>
 
 ```spl
-index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" *.exe
+index=botsv1
+sourcetype=stream:http
+dest_ip="192.168.250.70" *.exe
 ```
-**Breakdown**
-- **index=botsv1** – Targets the dataset containing simulated incident logs. *Why:* Ensures only relevant Splunk BOTSv1 data is queried.  
-- **sourcetype=stream:http** – Filters events to HTTP network traffic. *Why:* Malware is often delivered via HTTP uploads.  
-- **dest_ip="192.168.250.70"** – Specifies the compromised web server. *Why:* Focuses on inbound traffic directed at the victim.  
-- **.exe** – Keyword search for executable files. *Why:* Detects potential binary uploads used to install persistence agents.
+- **index=botsv1** – Targets the dataset containing simulated incident logs. Ensured only relevant Splunk BOTSv1 data is queried.  
+- **sourcetype=stream:http** – Filters events to HTTP network traffic. Malware is often delivered via HTTP uploads.  
+- **dest_ip="192.168.250.70"** – Specifies the compromised web server. Focuses on inbound traffic directed at the victim.  
+- **.exe** – Keyword search for executable files. This detects potential binary uploads used to install persistence agents.
 
-The results displayed two filenames—`3791.exe` and `agent.php`. Both were uploaded by the attacker IP `40.80.148.42`. To confirm execution, I queried Windows Sysmon process creation logs:
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-22.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 22</em>
+</p>
+
+The results displayed two filenames: `3791.exe` and `agent.php`, which appear to be executable files.
+
+<h4>(Step 2) I needed to confirm if any of these files came from the IP addresses that were found to be associated in objective 2</h4>
+
+- `40.80.148.42`,
+- `23.22.63.114`, or
+- `192.168.2.50`
+
+I ran the following search query to find out if the `3791.exe` came from any of the the IP addresses in question:
 
 ```spl
-index=botsv1 "3791.exe" sourcetype=XmlWinEventLog EventCode=1
+index=botsv1
+sourcetype=stream:http
+dest_ip="192.168.250.70"
+"part_filename{}"="3791.exe"
 ```
-**Breakdown**
-- **sourcetype=XmlWinEventLog** – Targets Windows event logs forwarded to Splunk. *Why:* Sysmon records detailed process events.  
-- **EventCode=1** – Filters for process creation events. *Why:* Event ID 1 confirms the execution of a binary.  
-- **"3791.exe"** – Search term for the suspected malware. *Why:* Validates that the payload was run after upload.
+- **index=botsv1** - Searches within the `botsv1` dataset (the index containing all related logs).
+- **sourcetype=stream:http** - Filters results to only include HTTP traffic logs captured by the Stream app.
+- **dest_ip="192.168.250.70"** - Limits results to web traffic where the destination IP is the target web server `192.168.250.70` which the compromised web server.
+- **"part_filename{}"="3791.exe"** - Finds HTTP events that reference or transfer the executable named `3791.exe` found from the previous query (potentially a malicious executable).
 
-📸 **Screenshot Placeholder:** Sysmon EventCode 1 log entry showing process creation for `3791.exe`.
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-23.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 23</em>
+</p>
+
+Both were uploaded by the attacker IP `40.80.148.42`. 
+
+<h4>Now, I needed to confirm whether the file `3791.exe` was executed</h4>
+
+I ran the query `index=botsv1 "3791.exe"`, which returned 76 events distributed across multiple sourcetypes, with the majority (about 91%) coming from `XmlWinEventLog`, followed by a few from `WinEventLog`, `stream:http`, `fortigate_utm`, and `suricata`. This distribution shows that most of the activity involving `3791.exe` was captured through host-based Windows event logging, specifically Sysmon. While a small number of the remaining events originated from network and security monitoring sources. The `XmlWinEventLog` entries indicates that the file was executed or interacted with at the endpoint level, though its presence in `stream:http` suggests it may have been downloaded or transferred via HTTP traffic. Overall, this correlation between host and network data points to a potential infection vector where `3791.exe` was delivered over the network and then executed on the host system.
+
+<blockquote>
+I ran this specific query to trace the presence and activity of a suspicious file (`3791.exe`) across multiple log sources.
+</blockquote>
+
+<blockquote>
+It’s called out as Sysmon because the `XmlWinEventLog` entries come from the Sysmon Operational log, which records detailed host-based activity. It's basically showing that `3791.exe` wasn’t just downloaded, but also ran on the endpoint.
+</blockquote>
+
+```spl
+index=botsv1
+"3791.exe"
+```
+- **"3791.exe"** – Search term for the suspected malware. This validates that the payload was run after upload.
+
+<h4>(Step 3)Now, I needed to confirm whether the file was executed, so I queried Windows Sysmon process creation logs</h4>
+
+After confirming traces of the executable `3791.exe` were identified in multiple sources including `Sysmon`, `WinEventLog`, and `Fortigate_UTM`, I needed to determine whether the file was executed on the host, Sysmon data was examined 
+
+Sysmon provides detailed system-level monitoring of process activity. In particular, **Event ID 1 (Process Creation)** logs evidence of newly started processes and includes valuable fields like ProcessGUID, command line arguments, and file hashes. Leveraging this event type allows me to confirm if and when `3791.exe` was executed on the system, and not just generic OS actions.
+
+<blockquote>
+<strong>Reference:</strong> https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+</blockquote>
+
+```spl
+index=botsv1
+"3791.exe"
+sourcetype="XmlWinEventLog"
+EventCode=1
+```
+- **sourcetype=XmlWinEventLog** – Targets Windows event logs forwarded to Splunk. Sysmon records detailed process events.  
+- **"3791.exe"** – Search term for the suspected malware. Validates that the payload was run after upload.
+- **EventCode=1** – Filters for process creation events. Event ID 1 confirms the execution of a binary.
+
+<blockquote>
+This query will look for the process creation logs containing the term `3791.exe` in the logs.
+</blockquote>
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-24.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 24</em>
+</p>
 
 ### Findings / Analysis
-Results confirmed that `3791.exe` executed shortly after upload. This demonstrated the attacker successfully transitioned from exploitation to persistence. The malicious binary likely established communication with external infrastructure for command and control.
+Results confirmed that `3791.exe` executed shortly after upload. This demonstrated the attacker successfully transitioned from exploitation to persistence. The malicious file likely connected to an external server to receive commands or send data.
 
 ### What I Learned
-I learned how to validate malware execution through cross‑referencing network and endpoint data sources in Splunk. Sysmon EventCode 1 is a reliable indicator for process creation and should be monitored in production environments using detection rules aligned with **MITRE ATT&CK T1059 (Command and Scripting Interpreter)**. This phase also illustrates **Security+ Domain 2.2 (Analyze Indicators of Malware)** and connects to the **Eradication** phase of the NIST Incident Response Lifecycle.
+I learned how to validate malware execution through cross‑referencing network and endpoint data sources in Splunk. Sysmon Event ID 1 is a reliable indicator for process creation and should almost always be monitored in production environments using detection rules aligned with **MITRE ATT&CK T1059 (Command and Scripting Interpreter)**. This phase also illustrates **Security+ Domain 2.2 (Analyze Indicators of Malware)** and connected to the *Eradication** phase of the NIST Incident Response Lifecycle.
 
 </details>
 
