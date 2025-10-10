@@ -894,6 +894,28 @@ This query revealed outbound requests to `prankglassinebracket.jumpingcrab
 ### Findings / Analysis
 The attacker’s intent was to publicly deface the website to demonstrate control. Outbound IDS alerts and web traffic correlation validated data exfiltration and modification activities. This phase provided a clear end goal of the intrusion campaign.
 
+The investigation revealed that the file poisonivy-is-coming-for-you-batman.jpeg was fetched by the compromised web server from the external host prankglassinebracket.jumpingcrab.com. No inbound traffic from an attacker IP was observed because the web server itself (or visitors’ browsers) initiated the outbound connection after its content had already been modified. This indicates the attacker had previously injected malicious code or edited a template so the page automatically requested the external image—essentially causing the victim server to pull the defacement file rather than the attacker pushing it. The absence of a new inbound IP suggests that the initial compromise occurred earlier through another vector such as CMS credential abuse, a vulnerable plugin, or a prior file upload.
+
+To understand how that could happen, I looked at how different log sources work together. Each type of log provides a different view of what happened:
+
+| Log Layer | Description | Purpose |
+|------------|--------------|----------|
+| **Application-level** | Logs from the website or CMS, such as Apache access logs or web app errors. | Show requests made by the web server, changes to web pages, or injected content. |
+| **System / OS-level** | Logs from the operating system like `/var/log/auth.log` or command history. | Reveal who logged in, what commands were run, or when files were changed. |
+| **Network-level** | Logs from firewalls, proxies, or DNS resolvers. | Show outbound connections or lookups to suspicious domains. |
+| **Host / Endpoint** | Logs from security tools or local monitoring (e.g., Sysmon, EDR). | Show which process downloaded or executed a file. |
+
+Looking at logs from multiple layers helps connect the dots. Web logs show the symptom (the server fetched the image), while system and network logs could show how that happened or when the compromise began. This demonstrates why analysts use data from many sources — each layer reveals part of the full story.
+
+
+Recommended next steps:
+- 1) Review outbound firewall, proxy, or VPC flow logs for connections to prankglassinebracket.jumpingcrab.com or its resolved IPs to confirm the egress source and timing.
+- 2) Inspect webroot and CMS directories for recently modified files referencing that domain or image name, and compare inode timestamps to identify when the injection occurred.
+- 3) Examine web application and admin audit logs for suspicious POSTs, file uploads, or unauthorized logins around the same period.
+- 4) Search system and process telemetry (bash history, scheduled tasks, PHP error logs) for any curl, wget, or remote-file-inclusion activity.
+- 5) Capture or review DNS resolver logs to validate that the server resolved the attacker’s domain.
+- 6) Correlate findings to determine whether the defacement was client-side (browser image include) or server-side (server-executed fetch), then document remediation steps such as file restoration, credential rotation, and patching the exploited entry point.
+
 ### What I Learned
 This task taught me how to trace adversary objectives using Splunk by following the attack from reconnaissance to impact. Understanding “Actions on Objectives” is vital for incident classification and damage assessment within a SOC. The technique relates to **MITRE ATT&CK T1491 (Defacement)** and NIST’s **Recovery Phase** of incident handling. Documenting such activity supports executive reporting and post‑incident remediation plans.
 
