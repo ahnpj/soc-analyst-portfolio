@@ -911,12 +911,12 @@ Looking at logs from multiple layers helps connect the dots. Web logs show the s
 
 
 Recommended next steps:
-- 1) Review outbound firewall, proxy, or VPC flow logs for connections to prankglassinebracket.jumpingcrab.com or its resolved IPs to confirm the egress source and timing.
-- 2) Inspect webroot and CMS directories for recently modified files referencing that domain or image name, and compare inode timestamps to identify when the injection occurred.
-- 3) Examine web application and admin audit logs for suspicious POSTs, file uploads, or unauthorized logins around the same period.
-- 4) Search system and process telemetry (bash history, scheduled tasks, PHP error logs) for any curl, wget, or remote-file-inclusion activity.
-- 5) Capture or review DNS resolver logs to validate that the server resolved the attacker’s domain.
-- 6) Correlate findings to determine whether the defacement was client-side (browser image include) or server-side (server-executed fetch), then document remediation steps such as file restoration, credential rotation, and patching the exploited entry point.
+1. Review outbound firewall, proxy, or VPC flow logs for connections to prankglassinebracket.jumpingcrab.com or its resolved IPs to confirm the egress source and timing.
+2. Inspect webroot and CMS directories for recently modified files referencing that domain or image name, and compare inode timestamps to identify when the injection occurred.
+3. Examine web application and admin audit logs for suspicious POSTs, file uploads, or unauthorized logins around the same period.
+4. Search system and process telemetry (bash history, scheduled tasks, PHP error logs) for any curl, wget, or remote-file-inclusion activity.
+5. Capture or review DNS resolver logs to validate that the server resolved the attacker’s domain.
+6. Correlate findings to determine whether the defacement was client-side (browser image include) or server-side (server-executed fetch), then document remediation steps such as file restoration, credential rotation, and patching the exploited entry point.
 
 ### What I Learned
 This task taught me how to trace adversary objectives using Splunk by following the attack from reconnaissance to impact. Understanding “Actions on Objectives” is vital for incident classification and damage assessment within a SOC. The technique relates to **MITRE ATT&CK T1491 (Defacement)** and NIST’s **Recovery Phase** of incident handling. Documenting such activity supports executive reporting and post‑incident remediation plans.
