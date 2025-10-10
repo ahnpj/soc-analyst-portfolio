@@ -518,7 +518,7 @@ uri="/joomla/administrator/index.php"
 ```
 
 - **imreallynotbatman** - Matches the domain name in the event data (like in the HTTP host header). This ensured I was only pulling events related to that specific website, especially if the same web server hosts multiple domains.
-- **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes
+- **sourcetype=stream:http** - Specifically records HTTP protocol events, including details like source/destination IPs, methods (GET/POST), URLs, headers, and response codes.
 - **dest_ip="192.168.250.70"** – Specifies the web server. Helps focus on attacker traffic targeting the web server's IP address at the network level. Ensured I was only capturing traffic sent to the actual web server, regardless of what hostname or alias was used in the request.
 - **uri="/joomla/administrator/index.php" - Specifies the URI path being requested. In this case, it filters for requests targeting Joomla’s admin login page, which is a common location attackers probe when trying to gain access.
 - **table _time uri src_ip dest_ip form_data** - Took all results from my search and displayed only the specific fields I cared about in a easy-to-read table.
@@ -539,7 +539,7 @@ Inspecting the `form_data` field revealed multiple login attempts to `
 <strong>Note:</strong> To further narrow down my results, I could add a specific source IP to the query, such as src_ip="40.80.148.42". This would limit the search to only show HTTP requests sent from that particular client. Filtering by source IP helps identify which system initiated the traffic, making it easier to trace suspicious behavior or confirm repeated login attempts from the same host. This kind of filter is especially useful when analyzing targeted activity against the Joomla admin login page.
 </blockquote>
 
-<h4>(Step 3) After confirming that most traffic to `/joomla/administrator/index.php` (Joomla's admin login page) were POST requests (mostly from `40.80.148.42`, with some from `23.22.63.114`), I wanted to extract the submitted form fields to see the username and password values those POST attempts used.</h4>
+<h4>(Step 3) After confirming that most traffic to "/joomla/administrator/index.php" (Joomla's admin login page) were POST requests (mostly from `40.80.148.42`, with some from `23.22.63.114`), I wanted to extract the submitted form fields to see the username and password values those POST attempts used.</h4>
 
 Previously, after inspecting the `form_data` field and confirmed multiple login attempts to `/joomla/administrator/index.php`, I used regex to extract only the username (`username`) and password (`passwd`) fields:
 
@@ -561,7 +561,7 @@ form_data=*username*passwd*
 - **table _time uri src_ip dest_ip form_data** - Took all results from my search and displayed only the specific fields I cared about in a easy-to-read table.
 
 <blockquote>
-<strong>Note:</strong> I filtered HTTP POST traffic to `dest_ip=192.168.250.70` and the Joomla admin URI `/joomla/administrator/index.php` to find login attempts. I used the server IP rather than the domain because the IP reliably captures all traffic to that machine in this lab environment; adding the domain would only be necessary if the server hosted multiple sites and I needed to confirm the virtual host. I then displayed `form_data` to inspect submitted `username` and `passwd` values.
+<strong>Note:</strong> I filtered HTTP POST traffic to `dest_ip=192.168.250.70` and the Joomla admin URI `/joomla/administrator/index.php` to find login attempts. I used the server IP rather than the domain because the IP reliably captures all traffic to that machine in this lab environment; adding the domain would only be necessary if the server hosted multiple sites and I needed to confirm the virtual host. I then displayed "form_data" to inspect submitted "username" and "passwd" values.
 </blockquote>
 
 <p align="left">
@@ -572,9 +572,9 @@ form_data=*username*passwd*
   <em>Figure 19</em>
 </p>
 
-<h4>(Step 4) After extracting the submitted form fields to see the username and password values those POST attempts used, I used regex in 2 Splunk queries to do this.</h4>
+<h4>(Step 4) After extracting the submitted form fields to see the username and password values those POST attempts used, I ran two Splunk queries utilizing regular expressions.</h4>
   
-- **The first query** was to extract all password found in the `passwd` field.
+- **The first query** was to extract all password found in the "passwd" field.
 - **The second query** was used identify whether credential submissions came from normal browsers or from automated tools/scripts; patterns in user-agents help distinguish human traffic from likely scanning or brute-force activity.
 
 <blockquote>
@@ -600,14 +600,14 @@ form_data=*username*passwd*
 - **http_method=POST** - Keeps only HTTP POST requests (commonly used for form submissions, like login attempts).
 - **form_data=*username*passwd*** - Wildcard match intended to find events where the `form_data` field contains the fields `username` and `passwd`.
 - **| rex field=form_data "passwd=(?<creds>\w+)"** — extract the password value into a new field called `creds`.
-    - **?<creds>** — name for the capture. In Splunk rex, that becomes the field name `creds`.
-    - **\w** — a character class that matches any “word” character: letters (A–Z, a–z), digits (0–9), and underscore (_).
-    - **+** — a quantifier meaning “one or more” of the previous token.
-    - Together: **(?<creds>\w+)** captures one or more word characters and stores them in the field `creds`.
-- **| table src_ip creds** - Show a simple table with the client IP and the extracted password
+    - **?<creds>** — name for the capture. In Splunk rex, that becomes the field name `creds`
+    - **\w** — a character class that matches any “word” character: letters (A–Z, a–z), digits (0–9), and underscore (_)
+    - **+** — a quantifier meaning “one or more” of the previous token
+    - Together: **(?<creds>\w+)** captures one or more word characters and stores them in the field `creds`
+- **| table src_ip creds** - Show a simple table with the client IP and the extracted password.
 
 <blockquote>
-<strong>Note:</strong>I removed the `uri="/joomla/administrator/index.php"` filter to capture any HTTP POSTs to `192.168.250.70` that included login fields, since credential submissions can occur at multiple or inconsistent paths and the uri field is not always present in every event. The query then uses a rex to extract the `passwd` value into `creds` and shows the source IP and password attempts.
+<strong>Note:</strong>I removed the uri filter (uri="/joomla/administrator/index.php") filter to capture any HTTP POSTs to `192.168.250.70` that included login fields, since credential submissions can occur at multiple or inconsistent paths and the uri field is not always present in every event. The query then uses a rex to extract the "passwd" value into "creds" and shows the source IP and password attempts.
 </blockquote>
 
 <p align="left">
@@ -620,7 +620,7 @@ form_data=*username*passwd*
 
 _<b>Second query (Step 4)</b>_ 
 
-Used identify whether credential submissions came from normal browsers or from automated tools/scripts; patterns in user-agents help distinguish human traffic from likely scanning or brute-force activity.
+I ran this query to identify whether credential submissions came from normal browsers or from automated tools/scripts. Patterns in "user-agents" helped distinguish human traffic from likely scanning or brute-force activity.
 
 This query finds POSTs to the server that look like login attempts, pulls out the password token into `creds`, and shows when they happened (`_time`), who sent them (`src_ip`), what `URI` was requested, and which client/tool (`user_agent`) made the request.
 
@@ -639,10 +639,10 @@ form_data=*username*passwd*
 - **http_method=POST** - Keeps only HTTP POST requests (commonly used for form submissions, like login attempts).
 - **form_data=*username*passwd*** - Wildcard match intended to find events where the `form_data` field contains the fields `username` and `passwd`.
 - **| rex field=form_data "passwd=(?<creds>\w+)"** — extract the password value into a new field called `creds`.
-    - **?<creds>** — name for the capture. In Splunk rex, that becomes the field name `creds`.
-    - **\w** — a character class that matches any “word” character: letters (A–Z, a–z), digits (0–9), and underscore (_).
-    - **+** — a quantifier meaning “one or more” of the previous token.
-    - Together: **(?<creds>\w+)** captures one or more word characters and stores them in the field `creds`.
+    - **?<creds>** — name for the capture. In Splunk rex, that becomes the field name `creds`
+    - **\w** — a character class that matches any “word” character: letters (A–Z, a–z), digits (0–9), and underscore (_)
+    - **+** — a quantifier meaning “one or more” of the previous token
+    - Together: **(?<creds>\w+)** captures one or more word characters and stores them in the field `creds`
 - **| table _time src_ip uri http_user_agent creds** - Shows a table that outputs as a table showing:
     - **_time** = when the request happened
     - **src_ip** = client IP that made the request
@@ -661,7 +661,7 @@ form_data=*username*passwd*
 This result clearly shows a continuous brute-force attack attempt from an IP `23.22.63.114` using what appears to be a python script. 1 login attempt from IP `40.80.148.42` using the Mozilla browser. The successful credentials were `admin : batman`, originating from `40.80.148.42`.
 
 <blockquote>
-<strong>Note:</strong> I updated the extraction to create separate fields (username and password) using rex with [^&\s]+ and urldecode() so both submitted credentials appear in the table (preventing one extraction from overwriting the other).
+<strong>Note:</strong> I updated the extraction to create separate fields (username and password) using rex, [^&\s]+ and urldecode(), so both submitted credentials appear in the table (preventing one extraction from overwriting the other).
 </blockquote>
 
 ```spl
@@ -698,7 +698,9 @@ This task taught me how to use Splunk dto detect web-based brute-force and crede
 <summary><b>(Click to expand)</b></summary>
 
 ### Overview
-The objective of this task was to now verify whether the attacker successfully installed or executed any malicious payloads following exploitation. In the Cyber Kill Chain, **Installation** represents the stage where adversaries establish persistence within a target environment, typically by deploying malware or backdoors. I ran 3 Splunk queries to achieve this:
+The objective of this task was to now verify whether the attacker successfully installed or executed any malicious payloads following exploitation. In the Cyber Kill Chain, **Installation** represents the stage where adversaries establish persistence within a target environment, typically by deploying malware or backdoors. 
+
+I ran 3 Splunk queries to achieve this:
 
   - <b>First query:</b> I ran this query to search for evidence of file uploads to the compromised host (web server) with the IP `192.168.250.70`.
   - <b>Second query:</b> Saw that `40.80.148.42`, `23.22.63.114`, and `192.168.2.50` have all made HTTP requests to the web server by looking into the `src_ip` field (Figure 14). Looking into the `http_method` field, I saw that most of the HTTP traffic observed consisted of POST requests directed at the web server (see Figure 15).
@@ -732,13 +734,13 @@ dest_ip="192.168.250.70" *.exe
 
 I examined the "part_filename{}" field in Splunk to identify any files transferred over the network during the activity. The results displayed two filenames: `3791.exe` and `agent.php`, which appear to be executable files in HTTP traffic that were either downloaded or executed on the web server.
 
-<h4>(Step 2) I needed to confirm if any of these files came from the IP addresses that were found to be associated in objective 2</h4>
+<h4>(Step 2) I had to confirm if any of these files came from the IP addresses that were found to be associated in objective 2</h4>
 
 - `40.80.148.42`,
 - `23.22.63.114`, or
 - `192.168.2.50`
 
-I ran the following search query to find out if the `3791.exe` came from any of the the IP addresses in question:
+I ran the following search query to find out if `3791.exe` came from any of the the IP addresses in question:
 
 ```spl
 index=botsv1
@@ -759,19 +761,21 @@ dest_ip="192.168.250.70"
   <em>Figure 23</em>
 </p>
 
-I checked the "c_ip" (client IP address) field to see which host on the network requested or downloaded `3791.exe`. This allowed me to trace the origin of the activity within the environment. They were uploaded by the attacker IP `40.80.148.42`.
+I checked the **c_ip** (client IP address) field to see which host on the network requested or downloaded `3791.exe`. This allowed me to trace the origin of the activity within the environment. They were uploaded by the attacker IP `40.80.148.42`.
 
 <blockquote>
-Both "src_ip" and "c_ip" confirms the ip that started any process, but "c_ip" is application-focused (the client in a session), while "src_ip" is network-focused (the raw source of the packet).
+Both "src_ip" and "c_ip" confirms the IP that started any process, but "c_ip" is application-focused (the client in a session), while "src_ip" is network-focused (the raw source of the packet).
 </blockquote>
 
 <blockquote>
 I reviewed the "c_ip" field to identify which host initiated the HTTP request for `3791.exe`. Since the data came from the `stream:http` sourcetype, it records application-level traffic using client/server roles, so the "c_ip" field shows the requesting client, while "src_ip" isn’t present in this type of log.
 </blockquote>
 
-<h4>(Step 3) Now, I needed to confirm whether the file `3791.exe` was executed</h4>
+<h4>(Step 3) Now, I needed to confirm whether the file, `3791.exe`, was executed</h4>
 
-I ran the query `index=botsv1 "3791.exe"`, which returned 76 events distributed across multiple sourcetypes, with the majority (about 91%) coming from `XmlWinEventLog`, followed by a few from `WinEventLog`, `stream:http`, `fortigate_utm`, and `suricata`. This distribution shows that most of the activity involving `3791.exe` was captured through host-based Windows event logging, specifically Sysmon. While a small number of the remaining events originated from network and security monitoring sources. 
+I ran the query `index=botsv1 "3791.exe"`, which returned 76 events distributed across multiple sourcetypes, with the majority (about 91%) coming from `XmlWinEventLog`, followed by a few from `WinEventLog`, `stream:http`, `fortigate_utm`, and `suricata`. 
+
+This distribution shows that most of the activity involving `3791.exe` was captured through host-based Windows event logging, specifically Sysmon. While a small number of the remaining events originated from network and security monitoring sources. 
 
 - The `XmlWinEventLog` entries indicates that the file was executed or interacted with at the endpoint level
 - And its presence in `stream:http` suggests it may have been downloaded or transferred via HTTP traffic.
@@ -829,9 +833,9 @@ This query will look for the process creation logs containing the term `3791.exe
   <em>Figure 25</em>
 </p>
 
-I examined the "CommandLine" field to verify how `3791.exe` was executed on the host system. This field shows the exact command used to launch a process. Checking it provided clear evidence that the executable was actually run, which is crucial for understanding attacker behavior and intent.
+I examined the **CommandLine** field to verify how `3791.exe` was executed on the host system. This field shows the exact command used to launch a process. Checking it provided clear evidence that the executable was actually run, which is crucial for understanding attacker behavior and intent.
 
-When examining the "CommandLine" field for `3791.exe`, I clicked the entry itself, which automatically updated my query to `index=botsv1 "3791.exe" sourcetype="XmlWinEventLog" EventCode=1 CommandLine="3791.exe"`. I then focused on this specific process within the "Hashes" field to isolate its hash details and successfully retrieved the MD5 hash of the executable, confirming its integrity and providing evidence of its execution on the host.
+When examining the "CommandLine" field for `3791.exe`, I clicked the entry itself, which automatically updated my query to `index=botsv1 "3791.exe" sourcetype="XmlWinEventLog" EventCode=1 CommandLine="3791.exe"`. I then focused on this specific process within the **Hashes** field to isolate its hash details and successfully retrieved the MD5 hash of the executable, confirming its integrity and providing evidence of its execution on the host.
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-26.png?raw=true&v=2" 
@@ -845,7 +849,7 @@ When examining the "CommandLine" field for `3791.exe`, I clicked the entry itsel
 ### Findings / Analysis
 Results confirmed that `3791.exe` executed shortly after upload. This demonstrated the attacker successfully transitioned from exploitation to persistence. The malicious file likely connected to an external server to receive commands or send data.
 
-I also examined the `user` and `user_id` fields within the event to identify which account executed the `3791.exe` process, allowing me to tie the activity to a specific user on the system. These fields are valuable for determining who initiated the execution and whether it was done under an administrative or standard user context. 
+I also examined the **user** and **user_id** fields within the event to identify which account executed the `3791.exe` process, allowing me to tie the activity to a specific user on the system. These fields are valuable for determining who initiated the execution and whether it was done under an administrative or standard user context. 
 
 To gather additional intelligence, I submitted the retrieved hash value of the executable to VirusTotal, a malware analysis platform that aggregates results from multiple antivirus engines. This provided further details on the file’s reputation, detection rate, and potential malicious behavior across other security databases.
 
