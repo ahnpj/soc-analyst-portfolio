@@ -300,7 +300,7 @@ sourcetype=stream:http
 ```
 - **sourcetype=stream:http** – Selects HTTP network flows to focus on web communication logs and investigate potential enumeration behavior.  
 
-From this search, I identified two IPs (`40.80.148.42` and `23.22.63.114`) repeatedly connecting to the server (identified via "src_ip" field in Splunk). `40.80.148.42` was by far generating the majority of the HTTP requests. So I investigated `40.80.148.42` first.
+From this search, I identified two IPs (`40.80.148.42` and `23.22.63.114`) repeatedly connecting to the server (identified via `src_ip` field in Splunk). `40.80.148.42` was by far generating the majority of the HTTP requests. So I investigated `40.80.148.42` first.
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-09.png?raw=true&v=2" 
@@ -574,7 +574,7 @@ form_data=*username*passwd*
 
 <h4>(Step 4) After extracting the submitted form fields to see the username and password values those POST attempts used, I ran two Splunk queries utilizing regular expressions.</h4>
   
-- **The first query** was to extract all password found in the "passwd" field.
+- **The first query** was to extract all password found in the `passwd` field.
 - **The second query** was used identify whether credential submissions came from normal browsers or from automated tools/scripts; patterns in user-agents help distinguish human traffic from likely scanning or brute-force activity.
 
 <blockquote>
@@ -661,7 +661,7 @@ form_data=*username*passwd*
 This result clearly shows a continuous brute-force attack attempt from an IP `23.22.63.114` using what appears to be a python script. 1 login attempt from IP `40.80.148.42` using the Mozilla browser. The successful credentials were `admin : batman`, originating from `40.80.148.42`.
 
 <blockquote>
-<strong>Note:</strong> I updated the extraction to create separate fields (username and password) using rex, [^&\s]+ and urldecode(), so both submitted credentials appear in the table (preventing one extraction from overwriting the other).
+<strong>Note:</strong> I updated the extraction to create separate fields (`username` and `passwd`) using rex, [^&\s]+ and urldecode(), so both submitted credentials appear in the table (preventing one extraction from overwriting the other).
 </blockquote>
 
 ```spl
@@ -732,7 +732,7 @@ dest_ip="192.168.250.70" *.exe
   <em>Figure 22</em>
 </p>
 
-I examined the "part_filename{}" field in Splunk to identify any files transferred over the network during the activity. The results displayed two filenames: `3791.exe` and `agent.php`, which appear to be executable files in HTTP traffic that were either downloaded or executed on the web server.
+I examined the `part_filename{}` field in Splunk to identify any files transferred over the network during the activity. The results displayed two filenames: `3791.exe` and `agent.php`, which appear to be executable files in HTTP traffic that were either downloaded or executed on the web server.
 
 <h4>(Step 2) I had to confirm if any of these files came from the IP addresses that were found to be associated in objective 2</h4>
 
@@ -761,7 +761,7 @@ dest_ip="192.168.250.70"
   <em>Figure 23</em>
 </p>
 
-I checked the **c_ip** (client IP address) field to see which host on the network requested or downloaded `3791.exe`. This allowed me to trace the origin of the activity within the environment. They were uploaded by the attacker IP `40.80.148.42`.
+I checked the `c_ip` (client IP address) field to see which host on the network requested or downloaded `3791.exe`. This allowed me to trace the origin of the activity within the environment. They were uploaded by the attacker IP `40.80.148.42`.
 
 <blockquote>
 Both "src_ip" and "c_ip" confirms the IP that started any process, but "c_ip" is application-focused (the client in a session), while "src_ip" is network-focused (the raw source of the packet).
@@ -833,9 +833,9 @@ This query will look for the process creation logs containing the term `3791.exe
   <em>Figure 25</em>
 </p>
 
-I examined the **CommandLine** field to verify how `3791.exe` was executed on the host system. This field shows the exact command used to launch a process. Checking it provided clear evidence that the executable was actually run, which is crucial for understanding attacker behavior and intent.
+I examined the `CommandLine` field to verify how `3791.exe` was executed on the host system. This field shows the exact command used to launch a process. Checking it provided clear evidence that the executable was actually run, which is crucial for understanding attacker behavior and intent.
 
-When examining the "CommandLine" field for `3791.exe`, I clicked the entry itself, which automatically updated my query to `index=botsv1 "3791.exe" sourcetype="XmlWinEventLog" EventCode=1 CommandLine="3791.exe"`. I then focused on this specific process within the **Hashes** field to isolate its hash details and successfully retrieved the MD5 hash of the executable, confirming its integrity and providing evidence of its execution on the host.
+When examining the `CommandLine` field for `3791.exe`, I clicked the entry itself, which automatically updated my query to `index=botsv1 "3791.exe" sourcetype="XmlWinEventLog" EventCode=1 CommandLine="3791.exe"`. I then focused on this specific process within the `Hashes` field to isolate its hash details and successfully retrieved the MD5 hash of the executable, confirming its integrity and providing evidence of its execution on the host.
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-26.png?raw=true&v=2" 
@@ -849,7 +849,7 @@ When examining the "CommandLine" field for `3791.exe`, I clicked the entry itsel
 ### Findings / Analysis
 Results confirmed that `3791.exe` executed shortly after upload. This demonstrated the attacker successfully transitioned from exploitation to persistence. The malicious file likely connected to an external server to receive commands or send data.
 
-I also examined the **user** and **user_id** fields within the event to identify which account executed the `3791.exe` process, allowing me to tie the activity to a specific user on the system. These fields are valuable for determining who initiated the execution and whether it was done under an administrative or standard user context. 
+I also examined the `user` and `user_id` fields within the event to identify which account executed the `3791.exe` process, allowing me to tie the activity to a specific user on the system. These fields are valuable for determining who initiated the execution and whether it was done under an administrative or standard user context. 
 
 To gather additional intelligence, I submitted the retrieved hash value of the executable to VirusTotal, a malware analysis platform that aggregates results from multiple antivirus engines. This provided further details on the file’s reputation, detection rate, and potential malicious behavior across other security databases.
 
