@@ -120,7 +120,7 @@ The investigation was performed in a virtual machine (VM) environment preconfigu
 <strong>Important Note:</strong> IP addresses in this lab are ephemeral and were recorded at the time of each step (placeholders such as `MACHINE_IP` are used in this write-up when the IP changed between sessions).
 </blockquote>
 
-I accessed Splunk Enterprise on the target VM at `10.201.17.82` or `http://10.201.33.31` using the AttackBox browser (AttackBox IP `10.201.122.5`, `10.201.117-139`, `10.201.117.123`, `10.201.119.166`, and `10.201.5.103`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
+I accessed Splunk Enterprise on the target VM (`10.201.17.82`, `http://10.201.33.31`, `10.201.117.123`, `10.201.119.166`, `10.201.5.103`, or `10.201.35.24`) using the AttackBox browser (AttackBox IP `10.201.122.5`,  `10.201.117-139`, or `10.201.81.194`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
 
 - **Target:**  `10.201.17.82` and `10.201.33.31` (deployed in an isolated virtual lab environment)  
 - **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
@@ -875,21 +875,127 @@ I learned how to validate malware execution through cross‑referencing ne
 <summary><b>(Click to expand)</b></summary>
 
 ### Overview
-The goal of this phase was to determine the attacker’s ultimate objective after establishing persistence. In this scenario, the malicious actor defaced the company’s public website—a clear indicator of the **Actions on Objectives** stage of the Cyber Kill Chain.
+The goal of this phase was to determine how the malicious actor defaced the company’s public website, which is a clear indicator of the **Actions on Objectives** stage of the Cyber Kill Chain.
 
 ### Step‑by‑Step Walkthrough
-I examined outbound traffic from the compromised host to identify files or domains related to the defacement activity.
+
+<h4>(Step 1): I first examined inbound traffic to the defaced website at IP `192.168.250.70`.</h4>
+
+To do so, I ran the following query to analyze inbound network traffic targeting the web server at IP `192.168.250.70` and looked at the `src_ip` field:
 
 ```spl
-index=botsv1 src=192.168.250.70 sourcetype=suricata
+index=botsv1
+dest=192.168.250.70
+sourcetype=suricata
 ```
-**Breakdown**
-- **src=192.168.250.70** – Specifies the infected host as the source. *Why:* Identifies outgoing traffic from the compromised system.  
+- **dest=192.168.250.70** – Specifies the infected host as the source. Identifies outgoing traffic from the compromised system.  
+- **sourcetype=suricata** – Filters for network IDS alerts. Detects anomalous connections or file transfers to external domains.
+
+<blockquote>
+This query looks at inbound network traffic going to the web server 192.168.250.70 using Suricata IDS logs from the botsv1 dataset. Unlike http logs that show normal web requests, Suricata captures all network activity, including scans or attack attempts. This helps spot suspicious or malicious traffic before it reaches the server. It gives a clear picture of what kind of threats were targeting the Joomla web server.
+</blockquote>
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-28.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 28</em>
+</p>
+
+This was unusual as the logs did not show any external IP communicating with the server.
+
+<h4>(Step 2) Because there were no external IP communicating with the server, I reversed the flow so that 192.168.250.70 was the source. I wanted to see if any outbound traffic originated from the server instead.</h4>
+
+To do so, I ran the following query to analyze outbound network traffic from the web server at IP `192.168.250.70`, then looked at the `dest_ip` field:
+
+```spl
+index=botsv1
+dest=192.168.250.70
+sourcetype=suricata
+```
+- **src=192.168.250.70** – Specifies the infected host as the source. Identifies outgoing traffic from the compromised system.  
 - **sourcetype=suricata** – Filters for network IDS alerts. *Why:* Detects anomalous connections or file transfers to external domains.
 
-This query revealed outbound requests to `prankglassinebracket.jumpingcrab.com` transferring a file named `poisonivy-is-coming-for-you-batman.jpeg`. This image replaced the homepage of the target server, confirming defacement.
+<blockquote></blockquote>
+This query revealed outbound requests to `prankglassinebracket.jumpingcrab.com` transferring a file named `poisonivy-is-coming-for-you-batman.jpeg`. This image replaced the homepage, which confirmed defacement.
+</blockquote>
 
-📸 **Screenshot Placeholder:** Suricata alert showing outbound connection to `jumpingcrab.com`.
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-29.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 29</em>
+</p>
+
+What was interesting about this output is that web servers don't usually originate traffic. The browser or client would originate the traffic as the source and the server would be the destination. I noticed immediately that the web server initiated large traffic to `40.80.148.42`, `22.23.63.114`, and `192.168.250.40`. 
+
+<h4>(Step 3) I checked Suricata logs for the top three destination IPs and found evidence of defacement from `192.168.250.40`</h4>
+
+I found evidence from `192.168.250.70` by running the following query, then looking into the `url` field:
+
+```spl
+index=botsv1
+src=192.168.250.70
+sourcetype=suricata
+dest_ip=23.22.63.114
+```
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-30.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 30</em>
+</p>
+
+<blockquote>
+That query filters Suricata logs to show outbound network traffic from the web server (192.168.250.70) to the external IP (23.22.63.114). Checking the url field let me see what specific web resource or endpoint the server tried to access.
+</blockquote>
+
+The `url` field showed 2 PHP files and a JPEG file. The JPEG file looked interesting, so I investigated more into it.
+
+<h4>(Step 4) I wanted to investigate the JPEG file and created a table to get a hollistic view</h4>
+
+To do so, I ran the following query:
+
+```spl
+index=botsv1
+url="/poisonivy-is-coming-for-you-batman.jpeg"
+dest_ip="192.168.250.70"
+| table _time src dest_ip http.hostname url
+```
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-31.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 31</em>
+</p>
+
+<blockquote>
+The investigation revealed that the file `poisonivy-is-coming-for-you-batman.jpeg` was fetched by the compromised web server from the external host `prankglassinebracket.jumpingcrab.com`. No inbound traffic from an attacker IP was observed because the web server itself (or visitors’ browsers) initiated the outbound connection after its content had already been modified. 
+</blockquote>
+
+<h4>(Step 5) To deepen my investigaton, I used a query to review firewall logs for traffic sent from the web server to 23.22.63.114</h4>
+
+To do so, I checked Fortigate UTM data to help determine whether this outbound connection was permitted, blocked, or flagged as suspicious, which gave more insight into the server’s network behavior and possible compromise indicators. I searched for the top three external IPs that showed when I searched outbound traffic from the webserver: `40.80.148.42`, `22.23.63.114`, and `192.168.250.40`. I found an SQL injection attempt  from `40.80.148.42` by looking at the `signature` field.
+
+```spl
+index=botsv1
+src=192.168.250.70
+sourcetype=fortigate_utm
+```
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-32.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 32</em>
+</p>
 
 ### Findings / Analysis
 The attacker’s intent was to publicly deface the website to demonstrate control. Outbound IDS alerts and web traffic correlation validated data exfiltration and modification activities. This phase provided a clear end goal of the instrusion.
@@ -909,9 +1015,8 @@ To understand how that could happen, I looked at how different log sources work 
 
 Looking at logs from multiple layers helps connect the dots. Web logs show the symptom (the server fetched the image), while system and network logs could show how that happened or when the compromise began. This demonstrates why analysts use data from many sources — each layer reveals part of the full story.
 
-
 Recommended next steps:
-1. Review outbound firewall, proxy, or VPC flow logs for connections to prankglassinebracket.jumpingcrab.com or its resolved IPs to confirm the egress source and timing.
+1. Review outbound firewall, proxy, or VPC flow logs for connections to `prankglassinebracket.jumpingcrab.com` or its resolved IPs to confirm the egress source and timing.
 2. Inspect webroot and CMS directories for recently modified files referencing that domain or image name, and compare inode timestamps to identify when the injection occurred.
 3. Examine web application and admin audit logs for suspicious POSTs, file uploads, or unauthorized logins around the same period.
 4. Search system and process telemetry (bash history, scheduled tasks, PHP error logs) for any curl, wget, or remote-file-inclusion activity.
