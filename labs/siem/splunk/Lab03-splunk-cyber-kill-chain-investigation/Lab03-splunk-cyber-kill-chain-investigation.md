@@ -931,9 +931,9 @@ This query revealed outbound requests to `prankglassinebracket.jumpingcrab
 
 What was interesting about this output is that web servers don't usually originate traffic. The browser or client would originate the traffic as the source and the server would be the destination. I noticed immediately that the web server initiated large traffic to `40.80.148.42`, `22.23.63.114`, and `192.168.250.40`. 
 
-<h4>(Step 3) I checked Suricata logs for the top three destination IPs and found evidence of defacement from `192.168.250.40`</h4>
+<h4>(Step 3) I checked Suricata logs for the top three destination IPs and found evidence of defacement from `23.22.63.114`</h4>
 
-I found evidence from `192.168.250.70` by running the following query, then looking into the `url` field:
+I found evidence from `23.22.63.114` by running the following query, then looking into the `url` field:
 
 ```spl
 index=botsv1
