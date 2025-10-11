@@ -999,11 +999,11 @@ sourcetype=fortigate_utm
 
 ### Findings / Analysis
 
-The attacker’s intent was to publicly deface the website to demonstrate control. Outbound IDS alerts and web traffic correlation validated data exfiltration and modification activities. This phase provided a clear end goal of the intrustion.
+The attacker’s intent was to publicly deface the website to demonstrate control.
 
-The investigation revealed that the file `poisonivy-is-coming-for-you-batman.jpeg` was fetched by the compromised web server from the external host `prankglassinebracket.jumpingcrab.com`. No inbound traffic from an attacker IP was observed because the web server itself (or visitors’ browsers) initiated the outbound connection after its content had already been modified. 
-
-This suggests the attacker had previously injected malicious code or edited a template so the page automatically requested the external image, essentially causing the victim server to pull the defacement file rather than the attacker pushing it. The absence of any new inbound IP suggests that the initial compromise occurred earlier through another vector such as CMS credential abuse, a vulnerable plugin, or a prior file upload.
+- Outbound IDS alerts and web traffic correlation validated data exfiltration and modification activities. This phase provided a clear end goal of the intrustion.
+- The investigation revealed that the file `poisonivy-is-coming-for-you-batman.jpeg` was fetched by the compromised web server from the external host `prankglassinebracket.jumpingcrab.com`. No inbound traffic from an attacker IP was observed because the web server itself (or visitors’ browsers) initiated the outbound connection after its content had already been modified. 
+- This suggests the attacker had previously injected malicious code or edited a template so the page automatically requested the external image, essentially causing the victim server to pull the defacement file rather than the attacker pushing it. The absence of any new inbound IP suggests that the initial compromise occurred earlier through another vector such as CMS credential abuse, a vulnerable plugin, or a prior file upload.
 
 To understand how that could happen, I looked at how different log sources work together. Each type of log provides a different view of what happened:
 
