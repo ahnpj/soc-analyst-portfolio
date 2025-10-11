@@ -998,6 +998,7 @@ sourcetype=fortigate_utm
 </p>
 
 ### Findings / Analysis
+
 The attacker’s intent was to publicly deface the website to demonstrate control. Outbound IDS alerts and web traffic correlation validated data exfiltration and modification activities. This phase provided a clear end goal of the instrusion.
 
 The investigation revealed that the file `poisonivy-is-coming-for-you-batman.jpeg` was fetched by the compromised web server from the external host `prankglassinebracket.jumpingcrab.com`. No inbound traffic from an attacker IP was observed because the web server itself (or visitors’ browsers) initiated the outbound connection after its content had already been modified. 
