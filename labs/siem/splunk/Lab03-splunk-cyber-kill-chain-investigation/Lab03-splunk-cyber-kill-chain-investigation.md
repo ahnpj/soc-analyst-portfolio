@@ -1026,11 +1026,7 @@ Recommended next steps:
 
 ### What I Learned
 
-This task taught me how to trace adversary objectives using Splunk by following the attack from reconnaissance to impact. 
-
-Understanding “Actions on Objectives” is vital for incident classification and damage assessment within a SOC. 
-
-The technique relates to **MITRE ATT&CK T1491 (Defacement)** and NIST’s **Recovery Phase** of incident handling. Documenting such activity supports executive reporting and post‑incident remediation plans.
+This task taught me how to trace adversary objectives using Splunk by following the attack from reconnaissance to impact. Understanding "Actions on Objectives" is vital for incident classification and damage assessment with a DOC. The technique relates to **MITRE ATT&CK T1491 (Defacement** and NIST's **Recovery Phase** of incident handling. Documenting such activity supports executive reporting and post-incident remediation plans.
 
 </details>
 
@@ -1047,7 +1043,8 @@ The technique relates to **MITRE ATT&CK T1491 (Defacement)** and
 This task focused on identifying if the attacker establed a **Command and Control (C2)** channel with external infrastrucutre. C2 allows threat actors to remotely control infected hosts and execute further commands.
 
 ### Step‑by‑Step Walkthrough
-I searched firewall and network logs for evidence of communication with the domain `prankglassinebracket.jumpingcrab.com`.
+
+I searched firewall and network logs for evidence of communication with the domain `prankglassinebracket.jumpingcrab.com`.
 
 ```spl
 index=botsv1 sourcetype=fortigate_utm "poisonivy-is-coming-for-you-batman.jpeg"
@@ -1061,11 +1058,12 @@ The results showed repeated connections from `192.168.250.70` to�
 📸 **Screenshot Placeholder:** Firewall logs displaying C2 communication over port 1337.
 
 ### Findings / Analysis
-The attacker used a Dynamic DNS service to obfuscate their C2 server IP. Port 1337 indicated custom malware communication, matching signatures of the Poison Ivy remote access tool. This showed a successful persistence channel was active.
+
+The attacker used a Dynamic DNS service to obfuscate their C2 server IP. Port 1337 indicated custom malware communication, matching signatures of the Poison Ivy remote access tool. This showed a successful persistence channel was active.
 
 ### What I Learned
 
-I learned to detect C2 communications by correlating IDS, firewall, and endpoint data. Dynamic DNS is a common tactic for maintaining C2 reachability, and Splunk queries can identify these patterns through consistent destination hostnames and ports. This aligns with **MITRE ATT&CK T1071 (Application Layer Protocol)** and **Security+ Domain 3.3 (Analyze threat data to support an incident response)**.
+I learned to detect C2 communications by correlating IDS, firewall, and endpoint data. Dynamic DNS is a common tactic for maintaining C2 reachability, and Splunk queries can identify these patterns through consistent destiniation host names and ports. This aligns with **MITRE ATT&CK T1071 (Application Layer Protocol)** and **Securty+ Domain 3.3 (Analyze thread data to support an incident response)**.
 
 </details>
 
