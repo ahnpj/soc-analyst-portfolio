@@ -1055,7 +1055,7 @@ sourcetype=fortigate_utm
 - **sourcetype=fortigate_utm** – Specifies Fortigate Unified Threat Management logs. *Why:* Captures firewall and web‑filter activity.  
 - **Search term for JPEG file** – Links the known defacement artifact to potential C2 communication. *Why:* The same infrastructure may host C2 services.
 
-Immediately I noticed I could see the source IP (`src_ip`), the destination IP (`dest_ip`), and the URL (`url`) where the image was sent. I clicked the `url` field and saw the Fully Qualified Domain Name of the where the image was being called from on the attacker's host.
+Immediately I noticed I could see the source IP (`src_ip`), the destination IP (`dest_ip`), and the URL (`url`) where the external server the internal host contacted. I clicked the `url` field and saw the Fully Qualified Domain Name of the where the image was being called from on the attacker's host. All of this indicates the infected host made outbound requests to the external domain, which is a common indicator of beaconing to a C2 server.
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-33.png?raw=true&v=2" 
@@ -1077,7 +1077,7 @@ dest_ip=23.22.63.114
 src_ip=192.168.250.70
 ```
 
-I identified the suspicious domain as the C2 server, which seems to where the attacker contacted after gaining control of the server.
+I identified the suspicious domain as the C2 server, which seems to where the attacker contacted after gaining control of the server. Through this, it was clear that the same file name, internal source IP, and the suspicious external domain have indeed established communication between the web server and the attacker's system.
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-34.png?raw=true&v=2" 
