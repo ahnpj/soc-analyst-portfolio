@@ -1044,7 +1044,7 @@ The technique relates to **MITRE ATT&CK T1491 (Defacement)** and
 
 ### Overview
 
-This task focused on identifying if the attacker established a **Command and Control (C2)** channel with external infrastructure. C2 allows threat actors to remotely control infected hosts and execute further commands.
+This task focused on identifying if the attacker establed a **Command and Control (C2)** channel with external infrastrucutre. C2 allows threat actors to remotely control infected hosts and execute further commands.
 
 ### Step‑by‑Step Walkthrough
 I searched firewall and network logs for evidence of communication with the domain `prankglassinebracket.jumpingcrab.com`.
