@@ -1026,7 +1026,7 @@ Recommended next steps:
 
 ### What I Learned
 
-This task taught me how to trace adversary objectives using Splunk by following the attack from reconnaissance to impact. Understanding "Actions on Objectives" is vital for incident classification and damage assessment with a DOC. The technique relates to **MITRE ATT&CK T1491 (Defacement** and NIST's **Recovery Phase** of incident handling. Documenting such activity supports executive reporting and post-incident remediation plans.
+This task taught me how to trace adversary objectives using Splunk by following the attack from reconnaissance to impact. Understanding "Actions on Objectives" is vital for incident classification and damage assessment with a DOC. The technique relates to **MITRE ATT&CK T1491 (Defacement)** and NIST's **Recovery Phase** of incident handling. Documenting such activity supports executive reporting and post-incident remediation plans.
 
 </details>
 
