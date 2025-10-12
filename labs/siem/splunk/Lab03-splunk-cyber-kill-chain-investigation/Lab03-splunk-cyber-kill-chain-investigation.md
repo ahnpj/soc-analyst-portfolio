@@ -120,7 +120,7 @@ The investigation was performed in a virtual machine (VM) environment preconfigu
 <strong>Important Note:</strong> IP addresses in this lab are ephemeral and were recorded at the time of each step (placeholders such as `MACHINE_IP` are used in this write-up when the IP changed between sessions).
 </blockquote>
 
-I accessed Splunk Enterprise on the target VM (`10.201.17.82`, `http://10.201.33.31`, `10.201.117.123`, `10.201.119.166`, `10.201.5.103`, or `10.201.35.24`) using the AttackBox browser (AttackBox IP `10.201.122.5`,  `10.201.117-139`, or `10.201.81.194`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
+I accessed Splunk Enterprise on the target VM (`10.201.17.82`, `http://10.201.33.31`, `10.201.117.123`, `10.201.119.166`, `10.201.5.103`, `10.201.35.24`, or `10.201.116.59`) using the AttackBox browser (AttackBox IP `10.201.122.5`,  `10.201.117-139`, or `10.201.81.194`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
 
 - **Target:**  `10.201.17.82` and `10.201.33.31` (deployed in an isolated virtual lab environment)  
 - **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
@@ -1044,22 +1044,52 @@ This task focused on identifying if the attacker establed a **Command and Contro
 
 ### Step‑by‑Step Walkthrough
 
-I searched firewall and network logs for evidence of communication with the domain `prankglassinebracket.jumpingcrab.com`.
+<h4>(Step 1) I searched firewall and network logs for evidence of communication with the domain `prankglassinebracket.jumpingcrab.com`</h4>
 
 ```spl
-index=botsv1 sourcetype=fortigate_utm "poisonivy-is-coming-for-you-batman.jpeg"
+index=botsv1
+sourcetype=fortigate_utm
+"poisonivy-is-coming-for-you-batman.jpeg"
 ```
 **Breakdown**
 - **sourcetype=fortigate_utm** – Specifies Fortigate Unified Threat Management logs. *Why:* Captures firewall and web‑filter activity.  
 - **Search term for JPEG file** – Links the known defacement artifact to potential C2 communication. *Why:* The same infrastructure may host C2 services.
 
-The results showed repeated connections from `192.168.250.70` to `23.22.63.114` over port 1337, correlating with the dynamic DNS domain `jumpingcrab.com`.
+Immediately I noticed I could see the source IP (`src_ip`), the destination IP (`dest_ip`), and the URL (`url`) where the image was sent. I clicked the `url` field and saw the Fully Qualified Domain Name of the where the image was being called from on the attacker's host.
 
-📸 **Screenshot Placeholder:** Firewall logs displaying C2 communication over port 1337.
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-33.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 33</em>
+</p>
+
+<h4>(Step 2) I verified by looking at other log sources. For this step, I checked HTTP sources</h4>
+
+To do so, I ran the following query:
+
+```spl
+index=botsv1
+sourcetype=stream:http
+dest_ip=23.22.63.114
+"poisonivy-is-coming-for-you-batman.jpeg"
+src_ip=192.168.250.70
+```
+
+I identified the suspicious domain as the C2 server, which seems to where the attacker contacted after gaining control of the server.
+
+<p align="left">
+  <img src="images/splunk-cyber-kill-chain-investigation-34.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 34</em>
+</p>
 
 ### Findings / Analysis
 
-The attacker used a Dynamic DNS service to obfuscate their C2 server IP. Port 1337 indicated custom malware communication, matching signatures of the Poison Ivy remote access tool. This showed a successful persistence channel was active.
+Using Fortigate UTM logs, I discovered that the compromised web server (`192.168.250.70`) reached out to an external IP (`23.22.63.114`) while requesting a suspicious file named `poisonivy-is-coming-for-you-batman.jpeg`. The request’s URL revealed the domain `prankglassinebracket.jumpingcrab.com:1337`, indicating outbound communication to a likely attacker-controlled host. I validated this finding by examining HTTP stream logs, which confirmed consistent traffic between the infected server and the same domain. Finally, DNS logs showed that the attacker used a dynamic DNS to resolve the malicious IP, confirming that `jumpingcrab.com` functioned as the attacker’s C2 domain. This correlation across multiple log sources demonstrated the full command-and-control phase of the attack.
 
 ### What I Learned
 
