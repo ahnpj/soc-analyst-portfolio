@@ -120,7 +120,7 @@ The investigation was performed in a virtual machine (VM) environment preconfigu
 <strong>Important Note:</strong> IP addresses in this lab are ephemeral and were recorded at the time of each step (placeholders such as `MACHINE_IP` are used in this write-up when the IP changed between sessions).
 </blockquote>
 
-I accessed Splunk Enterprise on the target VM (`10.201.17.82`, `http://10.201.33.31`, `10.201.117.123`, `10.201.119.166`, `10.201.5.103`, `10.201.35.24`, or `10.201.116.59`) using the AttackBox browser (AttackBox IP `10.201.122.5`,  `10.201.117-139`, or `10.201.81.194`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
+I accessed Splunk Enterprise on the target VM (`10.201.17.82`, `http://10.201.33.31`, `10.201.117.123`, `10.201.119.166`, `10.201.5.103`, `10.201.35.24`, `10.201.116.59`, or `10.201.112.116`) using the AttackBox browser (AttackBox IP `10.201.122.5`,  `10.201.117-139`, or `10.201.81.194`). From the provided AttackBox (on the lab network) I verified reachability with ping, enumerated services with nmap, and inspected any web interfaces by opening `10.201.17.82` or `http://10.201.33.31` in the AttackBox browser.
 
 - **Target:**  `10.201.17.82` and `10.201.33.31` (deployed in an isolated virtual lab environment)  
 - **Context:**  I deployed the target machine and used the attacker VM to perform reconnaissance and basic connection tests.
@@ -1106,18 +1106,41 @@ I learned to detect C2 communications by correlating IDS, firewall, and endpoint
 <summary><b>(Click to expand)</b></summary>
 
 ### Overview
-The objective was to analyze how the attacker prepared and delivered their payloads by pivoting on known indicators through OSINT tools. In the Cyber Kill Chain, Weaponization covers the creation of malware and exploitation packages used later in Delivery.
+
+The goal here was to see how the attacker built and delivered their paylods by looking up known indicators with OSINT tools. In the Cyber Kill Chain, **Weaponization** is the stage where the attacker creates the malware or exploit files that will later be used in the **Delivery** phase. 
+
+I conducted open-source lookups on malicious domain and associated infrastructure using external intelligent sources (OSINT). For this objective, I utilized the following OSINT tools:
+
+- Robtex - I used this tool to gather domain and IP intelligence, such as DNS records and connected domains. It helped me see how the suspicious domain was linked to other IPs and hosts.
+- VirusTotal - I used VirusTotal to check file hashes, URLs, and domains against several antivirus engines. This helped confirm whether the payloads or domains were flagged as malicious and provided more context about known malware behavior.
+
+<blockquote>
+From the previous objective, we know that the domain `prankglassinebracket.jumpingcrab.com` was associated with the attack.
+</blockquote>
 
 ### Step‑by‑Step Walkthrough
-I conducted open‑source lookups on the malicious domain and associated infrastructure using external intelligence sources (VirusTotal, Robtex, and Whois). These lookups linked `jumpingcrab.com` to an email address `lillian.rose@po1son1vy.com`, indicating possible threat‑actor attribution.
 
-📸 **Screenshot Placeholder:** VirusTotal graph view showing domain relationships.
+<h4>(Step 1) Went to Robtex to find the IP address tied to the domains that may potentially be pre-staged to attack the web server</h4>
+
+- I went to [Robotex's website](https://www.robtex.com/) and entered `prankglassinebracket.jumpingcrab.com` in the search field at the top. I was able to identify several other IP addresses associated with this domain. I was also able to see other domains and subdomains associated with this domain.
+- I then entered the attacker's IP (`23.22.63.114`) in the search bar at the top and found this IP associated with domains that looked pretty similar to websites from the fictional company, Wayne Enterprises.
+
+<h4>(Step 2) Went on Virustotal to analyze suspicious files, domains, IP, etc, but more specifically to search for the IP address on the virustotal site</h4>
+
+I investigated the suspicious domain `po1s0n1vy.com` using VirusTotal to identify any malicious activity or links to known infrastructure. The results showed that none of the 95 security vendors flagged the domain as malicious. However, passive DNS records revealed that the domain has resolved to multiple IP addresses over time, including `38.207.236.88`, `156.254.170.147`, and `23.22.63.114`.
+
+- I went to [Virustotal's website](https://www.virustotal.com/gui/home/upload), clicked the **Search** tab, then entered the IP address (`23.22.63.114`) associated with the attack.
+- I then clicked the **Relations** tab to see all the domains associated with this IP, which again, looked similar to the Wayne Enterprises company.
+- In the list of domains, I saw the domain that is associated with the attacker (`www.po1s0n1vy.com`). I searched the domain in the search field on Virustotal.
+- I saw that Virustotal listed several related subdomains such as `ftp.po1s0n1vy.com`, `smtp.po1s0n1vy.com`, and `lillian.po1s0n1vy.com`, which might indicate shared hosting or possible attacker infrastructure reuse.
 
 ### Findings / Analysis
-The domain was associated with multiple subdomains and related IP addresses used in previous campaigns. This confirmed the attacker leveraged pre‑existing malware infrastructure to deliver payloads, a common APT pattern.
+
+The domain was associated with multiple subdomains and related IP addresses used in previous campaigns. This confirmed the attacker leveraged pre-existing malware infrastructure to deliver payloads, a common APT pattern. These lookups linked `jumpingcrab.com` to an email address `lillian.rose@po1son1vy.com`, indicated possible threat-actor attribution.
 
 ### What I Learned
-Weaponization is rarely observable in internal logs, but threat intelligence correlation can expose it indirectly. I learned how OSINT enriches SIEM data and helps analysts build context beyond raw events. This relates to **MITRE ATT&CK T1587 (Develop Capabilities)** and **Security+ Domain 1.4 (Explain threat actors and attributes)**.
+
+Weaponization is rarely observable in internal logs, but threat-based OSINT correlation can expose it indirectly. I learned how OSINT supports SIEM data and helps analysts build context beyond raw data. This related to **MITRE ATT&CK T1587 (Develop Capabilities)** and **Security+ Domain 1.4 (Explain threat actors and attributes)**. 
 
 </details>
 
