@@ -1153,10 +1153,12 @@ Weaponization is rarely observable in internal logs, but threat-based OSINT corr
 <summary><b>(Click to expand)</b></summary>
 
 ### Overview
-The purpose of this phase was to examine malware delivery artifacts identified during the Weaponization stage and determine how the malicious payload reached the target.
+
+The purpose of this phase was to examine malware delivery artifacts identified during the **Weaponization** stage and determine how the malicious payload reached the target.
 
 ### Step‑by‑Step Walkthrough
-I queried threat intelligence sources for the hashes of the malware identified in the Fortigate and Sysmon logs:
+
+I queried threat intelligence sources for the hashes of the malware identified in the Fortigate and Sysmon logs from **Objective 3, 4, and 5**
 
 ```spl
 index=botsv1 hash=* OR file_name="MirandaTateScreensaver.scr.exe"
@@ -1167,13 +1169,13 @@ index=botsv1 hash=* OR file_name="MirandaTateScreensaver.scr.exe"
 
 Cross‑referencing with VirusTotal and Hybrid Analysis showed the file was a Poison Ivy variant with MD5 `c99131e0169171935c5ac32615ed6261`. It was delivered via HTTP download and executed through a user interaction.
 
-📸 **Screenshot Placeholder:** Hybrid‑Analysis summary of malware behavior.
-
 ### Findings / Analysis
-Analysis confirmed that the malware was delivered through social engineering and web downloads, not email. This represents the **Delivery** phase of the Cyber Kill Chain, bridging reconnaissance and exploitation.
+
+Analysis confirmed that the malware was delivered through social engineering and web downloads, not email. This represents the **Delivery** phase of the Cyber Kill Chain. This bridges reconnaissance and exploitation.
 
 ### What I Learned
-I learned how threat intelligence enrichment enhances forensic findings within Splunk. Malware delivery mechanisms must be monitored for early warning signs, particularly HTTP downloads of executables. This maps to **Security+ Domain 1.2 (Compare and contrast attack types)** and **MITRE ATT&CK T1566 (Phishing)** for social delivery vectors.
+
+I learned how threat intelligence enhances forensic findings within Splunk. Malware delivery mechanisms must be monitored for early warning signs, especially HTTP downloads of executables. This maps to **Security+ Domain 1.2 (Compare and contrast attack types)** and **MITRE ATT&CK T1566** for social delivery vectors.
 
 </details>
 
@@ -1186,7 +1188,8 @@ I learned how threat intelligence enrichment enhances forensic f
 <summary><b>(Click to expand)</b></summary>
 
 ### Overview
-The final task consolidated the findings from the entire investigation and reviewed each phase of the Cyber Kill Chain to produce a comprehensive summary for executive reporting and process improvement.
+
+Here I consolidated my findings from the entire investigation and reviewed each phase of the Cyber Kill Chain to produce a comprehensive summary for executive reporting and process improvement.
 
 ### Findings / Analysis
 | Phase | Evidence | Indicators |
@@ -1200,9 +1203,8 @@ The final task consolidated the findings from the entire inves
 | Delivery | Poison Ivy variant delivery | MirandaTateScreensaver.scr.exe |
 
 ### What I Learned
-This final phase reinforced how SIEM platforms like Splunk enable end‑to‑end attack mapping and incident documentation. I learned to connect each stage of the Cyber Kill Chain to real telemetry sources and apply Security+ and NIST principles to practical incident response. The key takeaway is that consistent data enrichment, timeline reconstruction, and cross‑source correlation are essential for proactive threat hunting and strategic defense operations.
 
-📸 **Screenshot Placeholder:** Summary dashboard displaying timeline of attack phases and associated indicators.
+I learned how SIEM platforms like Splunk enable end-to-end attack mapping and incident documentation. I learned to connect each stage of the Cyber Kill Chain to real telemetry sources and apply Security+ and NIST principles to practical incident response. The key takeware is that consistent data enrichment, timeline reconstructions, and cross-source OSINT correlation are essential for practive threat hunting and strategic defenses.
 
 </details>
 
