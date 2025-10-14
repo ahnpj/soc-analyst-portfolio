@@ -1164,7 +1164,7 @@ I conducted open-source lookups on malicious domains and using external intellig
 - VirusTotal - I used VirusTotal to check file hashes, URLs, and domains against several antivirus engines. This helped confirm whether the payloads or domains were flagged as malicious and provided more context about known malware behavior.
 - Hybrid Analysis - I used this site to conduct a behavioral analysis of the malicious file identified from ThreatMiner
 
-<h4>(Step 1) ThreatMinder - I found three files and their corresponding hashes, one of which was the malware identified in the Fortigate and Sysmon logs from **Objective 3, Step 4**</h4>
+<h4>(Step 1) ThreatMiner - I found three files and their corresponding hashes, one of which was the malware identified in the Fortigate and Sysmon logs from **Objective 3, Step 4**</h4>
 
 After identifying the same MD5 hash (`c99131e0169171935c5ac32615ed6261`) of the malicious file (`3791.exe`) found in **Objective 3, Step 4**, I clicked on it and observed that the file appeared under a different name, indicating that although the filenames were different, the file content was identical. The file name appeared as `MirandaTateScreensaver.scr.exe`, and as noted in **Objective 3**, it was delivered via HTTP download and executed through a user interaction.
 
