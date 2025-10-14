@@ -835,7 +835,7 @@ This query will look for the process creation logs containing the term `3791.exe
 
 I examined the `CommandLine` field to verify how `3791.exe` was executed on the host system. This field shows the exact command used to launch a process. Checking it provided clear evidence that the executable was actually run, which is crucial for understanding attacker behavior and intent.
 
-When examining the `CommandLine` field for `3791.exe`, I clicked the entry itself, which automatically updated my query to `index=botsv1 "3791.exe" sourcetype="XmlWinEventLog" EventCode=1 CommandLine="3791.exe"`. I then focused on this specific process within the `Hashes` field to isolate its hash details and successfully retrieved the MD5 hash of the executable, confirming its integrity and providing evidence of its execution on the host.
+When examining the `CommandLine` field for `3791.exe`, I clicked the entry itself, which automatically updated my query to `index=botsv1 "3791.exe" sourcetype="XmlWinEventLog" EventCode=1 CommandLine="3791.exe"`. I then focused on this specific process within the `Hashes` field to isolate its hash details and successfully retrieved the MD5 hash of the executable (`c99131e0169171935c5ac32615ed6261`), confirming its integrity and providing evidence of its execution on the host.
 
 <p align="left">
   <img src="images/splunk-cyber-kill-chain-investigation-26.png?raw=true&v=2" 
@@ -1109,7 +1109,7 @@ I learned to detect C2 communications by correlating IDS, firewall, and endpoint
 
 The goal here was to see how the attacker built and delivered their paylods by looking up known indicators with OSINT tools. In the Cyber Kill Chain, **Weaponization** is the stage where the attacker creates the malware or exploit files that will later be used in the **Delivery** phase. 
 
-I conducted open-source lookups on malicious domain and associated infrastructure using external intelligent sources (OSINT). For this objective, I utilized the following OSINT tools:
+I conducted open-source lookups on malicious domains and associated infrastructure using external intelligent sources (OSINT). For this objective, I utilized the following OSINT tools:
 
 - Robtex - I used this tool to gather domain and IP intelligence, such as DNS records and connected domains. It helped me see how the suspicious domain was linked to other IPs and hosts.
 - VirusTotal - I used VirusTotal to check file hashes, URLs, and domains against several antivirus engines. This helped confirm whether the payloads or domains were flagged as malicious and provided more context about known malware behavior.
@@ -1154,24 +1154,31 @@ Weaponization is rarely observable in internal logs, but threat-based OSINT corr
 
 ### Overview
 
-The purpose of this phase was to examine malware delivery artifacts identified during the **Weaponization** stage and determine how the malicious payload reached the target.
+The purpose of this phase was to use the information I have so far about the attack and use various OSINT sites to find any malware identified during the **Weaponization** stage and determine how the malicious payload reached the target.
 
 ### Step‑by‑Step Walkthrough
 
-I queried threat intelligence sources for the hashes of the malware identified in the Fortigate and Sysmon logs from **Objective 3, 4, and 5**
+I conducted open-source lookups on malicious domains and using external intelligent sources (OSINT). For this objective, I utilized the following OSINT sites:
 
-```spl
-index=botsv1 hash=* OR file_name="MirandaTateScreensaver.scr.exe"
-```
-**Breakdown**
-- **hash=*** – Searches for hash values in indexed logs. *Why:* Allows pivoting on known file identifiers.  
-- **file_name="MirandaTateScreensaver.scr.exe"** – Targets the malware sample. *Why:* Validates if the payload appears within local telemetry.
+- ThreatMiner - I used ThreatMiner to look up the attacker's IP (`23.22.63.114`) and collected related intelligence, such as any associated files and their corresponding MD5 hashes.
+- VirusTotal - I used VirusTotal to check file hashes, URLs, and domains against several antivirus engines. This helped confirm whether the payloads or domains were flagged as malicious and provided more context about known malware behavior.
+- Hybrid Analysis - I used this site to conduct a behavioral analysis of the malicious file identified from ThreatMiner
 
-Cross‑referencing with VirusTotal and Hybrid Analysis showed the file was a Poison Ivy variant with MD5 `c99131e0169171935c5ac32615ed6261`. It was delivered via HTTP download and executed through a user interaction.
+<h4>(Step 1) ThreatMinder - I found three files and their corresponding hashes, one of which was the malware identified in the Fortigate and Sysmon logs from **Objective 3, Step 4**</h4>
+
+After identifying the same MD5 hash (`c99131e0169171935c5ac32615ed6261`) of the malicious file (`3791.exe`) found in **Objective 3, Step 4**, I clicked on it and observed that the file appeared under a different name, indicating that although the filenames were different, the file content was identical. The file name appeared as `MirandaTateScreensaver.scr.exe`, and as noted in **Objective 3**, it was delivered via HTTP download and executed through a user interaction.
+
+<h4>(Step 2) VirusTotal - To gather more intelligence, I entered this hash value on VirusTotal and saw other important details</h4>
+
+One of the first things I noticed was that this hash value was associated with the IP `23.22.63.114`, was was previously identified and confirmed as the attacker who attacked the website.
+
+<h4>(Step 3) Hybrid Analysis - I entered the malicious executable identified in ThreatMiner to gather more intelligence such as metadata, DNS requests, MITRE ATT&CK mappings, and more</h4>
+
+I confirmed that the file `MirandaTateScreensaver.scr.exe` has the same MD5 hash (`c99131e0169171935c5ac32615ed6261`) as the malicious file `3791.exe`, meaning they are identical in content but have different names. The file is a Windows executable compiled with Microsoft C++, confirming it’s the same malware under a new name.
 
 ### Findings / Analysis
 
-Analysis confirmed that the malware was delivered through social engineering and web downloads, not email. This represents the **Delivery** phase of the Cyber Kill Chain. This bridges reconnaissance and exploitation.
+In this phase, I used OSINT tools to learn more about the malware used in the attack. Through ThreatMiner, I discovered that the attacker’s IP (`23.22.63.114`) was linked to several files, including one matching the same MD5 hash as the malicious file `3791.exe` found earlier. VirusTotal confirmed this file and IP were associated with known malicious activity. Finally, Hybrid Analysis showed that the file was a Windows executable with identical content but a different name (`MirandaTateScreensaver.scr.exe`), confirming it was the same malware reused under a new filename.
 
 ### What I Learned
 
@@ -1189,25 +1196,22 @@ I learned how threat intelligence enhances forensic findings within Splunk. Malw
 
 ### Overview
 
-Here I consolidated my findings from the entire investigation and reviewed each phase of the Cyber Kill Chain to produce a comprehensive summary for executive reporting and process improvement.
+In this phase, I consolidated everything I found during the investigation and reviewed each stage of the Cyber Kill Chain to summarize the attacker’s actions from start to finish. This summary also helped me see how each step connects and how threat intelligence can be used for reporting and process improvement.
 
 ### Findings / Analysis
-| Phase | Evidence | Indicators |
-|:------|:----------|:-----------|
-| Reconnaissance | Scanning of imreallynotbatman.com | IP 40.80.148.42 |
-| Exploitation | Brute‑force on Joomla CMS | IP 23.22.63.114, Creds admin/batman |
-| Installation | Upload and execution of 3791.exe | Process Creation Event Code 1 |
-| Action on Objectives | Website defacement | poisonivy‑is‑coming‑for‑you‑batman.jpeg |
-| Command & Control | C2 communication over port 1337 | jumpingcrab.com |
-| Weaponization | Malware infrastructure setup | Email lillian.rose@po1son1vy.com |
-| Delivery | Poison Ivy variant delivery | MirandaTateScreensaver.scr.exe |
+
+1. During the **Reconnaissance** phase, I identified that the attacker scanned the target website `imreallynotbatman.com` using the IP `40.80.148.42`.
+2. The **Exploitation** phase showed a brute-force attack on the Joomla CMS from IP `23.22.63.114`, where the attacker successfully logged in using the credentials `admin/batman`.
+3. In the **Installation** phase, I observed the upload and execution of a malicious file named `3791.exe`, which was captured in the Sysmon logs with Event Code 1 (process creation).
+4. Once access was established, the attacker moved into the **Action on Objective** phase, defacing the website with an image titled `poisonivy-is-coming-for-you-batman.jpeg`.
+5. Further investigation revealed that the attacker maintained **Command and Control** communication over `port 1337` with the domain `jumpingcrab.com`.
+6. During the **Weaponization** phase, I found evidence of the attacker’s infrastructure setup, including the email `lillian.rose@po1son1vy.com`, likely used to manage or distribute the malware.
+7. Finally, in the **Delivery** phase, I identified a Poison Ivy variant named `MirandaTateScreensaver.scr.exe`, which had the same MD5 hash as the previously found `3791.exe`, confirming it was the same malware delivered under a different name.
 
 ### What I Learned
 
-I learned how SIEM platforms like Splunk enable end-to-end attack mapping and incident documentation. I learned to connect each stage of the Cyber Kill Chain to real telemetry sources and apply Security+ and NIST principles to practical incident response. The key takeware is that consistent data enrichment, timeline reconstructions, and cross-source OSINT correlation are essential for practive threat hunting and strategic defenses.
+This investigation helped me understand how SIEM tools like Splunk can be used to map an entire attack lifecycle and document findings clearly. I learned how to connect each stage of the Cyber Kill Chain to real telemetry data, correlate IOCs using OSINT tools, and validate findings with threat intelligence sites like ThreatMiner, VirusTotal, and Hybrid Analysis. Most importantly, I learned that consistent enrichment, timeline building, and cross-source verification are key to proactive threat hunting and building stronger defensive strategies.
 
 </details>
 
 ---
-
-
