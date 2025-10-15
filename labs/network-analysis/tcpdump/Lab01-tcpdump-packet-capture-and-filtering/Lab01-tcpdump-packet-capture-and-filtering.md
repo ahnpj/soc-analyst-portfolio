@@ -82,11 +82,17 @@ After execution, the output showed five TCP packets exchanged between local IPs.
 -->
 
 ### Findings / Analysis
-I found that Tcpdump provides full control over how much data I capture and display. It can quickly become overwhelming if I do not use filters or limit the capture. Saving captures to files is helpful for detailed analysis later, especially if I need to share results or correlate with intrusion detection tools. Using `-n` and `-c` made the capture process much more efficient, and verbosity levels provided flexibility depending on how deep I wanted to go into packet details.
+I found that Tcpdump provides full control over how much data I capture and display. It can quickly become overwhelming if I do not use filters or limit the capture. Saving captures to files is helpful for detailed analysis later, especially if I need to share results or correlate with intrusion detection tools.
+- Using `-n` and `-c` made the capture process much more efficient, and verbosity levels provided flexibility depending on how deep I wanted to go into packet details.
 
-I learned how to use tcpdump more effectively to capture and analyze network packets. I discovered that I could save captured packets to a file by using the `-w` flag, for example `sudo tcpdump -i ens5 -w data.pcap`. The `.pcap` file format can be opened later in tools like Wireshark for deeper inspection. I also learned that I can replay previously captured packets using the `-r` flag, which makes it easier to review network activity without running a live capture again.
+I learned how to use tcpdump more effectively to capture and analyze network packets. 
+- I discovered that I could save captured packets to a file by using the `-w` flag, for example `sudo tcpdump -i ens5 -w data.pcap`. The `.pcap` file format can be opened later in tools like Wireshark for deeper inspection.
+- I also learned that I can replay previously captured packets using the `-r` flag, which makes it easier to review network activity without running a live capture again.
 
-I practiced limiting captures with the `-c` option, which stops recording after a specific number of packets, and used `-n` (tells tcpdump not to resolve DNS) or `-nn` (tells tcpdump not to resolve port names) to prevent hostname and port name lookups, showing only the numeric value. Using `-v`, `-vv`, or `-vvv` helped display extra details such as TTL values, window sizes, and protocol flags. For the purposes of this lab, I used a capture file named `data.pcap` to test these features and better understand how tcpdump works for basic packet analysis.
+I practiced limiting captures.
+- I used the `-c` option, which stopped recording after a specific number of packets, and
+- I used `-n` (tells tcpdump not to resolve DNS) or `-nn` (tells tcpdump not to resolve port names) to prevent hostname and port name lookups, showing only the numeric value.
+- Using `-v`, `-vv`, or `-vvv` helped display extra details such as TTL values, window sizes, and protocol flags. For the purposes of this lab, I used a capture file named `data.pcap` to test these features and better understand how tcpdump works for basic packet analysis.
 
 ### What I Learned
 I learned how to start and stop packet captures, choose interfaces, and save or replay packet data. These basic Tcpdump skills are the foundation for more advanced filtering and analysis techniques that I used later in the lab.
