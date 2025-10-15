@@ -63,13 +63,13 @@ The command `sudo tcpdump -i ens5 -c 5 -n` told the system to listen on the `ens
 
 After execution, the output showed five TCP packets exchanged between local IPs. This confirmed that the `ens5` interface was active and that I successfully captured real network traffic in real time using tcpdump.
 
-<--
+<!--
 - To save packets to a file for later analysis, I used the `-w` flag, such as `sudo tcpdump -i ens5 -w data.pcap`. The file extension `.pcap` allows compatibility with other tools like Wireshark.
 - I learned how to read previously captured packets using `tcpdump -r data.pcap`, which replays packets in readable form.
 - I limited the capture size using the `-c` flag, for example `-c 10`, which stops the capture after a specific number of packets.
 - To avoid unnecessary DNS lookups and make the output faster and cleaner, I used `-n` or `-nn` to prevent IP and port name resolution.
 - I increased verbosity with `-v`, `-vv`, and `-vvv` to see more details about each packet, such as TTL, window size, and protocol flags.
---!>
+-->
 
 ### Findings / Analysis
 I found that Tcpdump provides full control over how much data I capture and display. It can quickly become overwhelming if I do not use filters or limit the capture. Saving captures to files is helpful for detailed analysis later, especially if I need to share results or correlate with intrusion detection tools. Using `-n` and `-c` made the capture process much more efficient, and verbosity levels provided flexibility depending on how deep I wanted to go into packet details.
