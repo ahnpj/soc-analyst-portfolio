@@ -4,6 +4,10 @@
 
 ## Introduction / Overview / Objective
 
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
 ### Objective
 The purpose of this lab was to explore the Tcpdump command-line tool for packet capture and filtering. I wanted to learn how to collect, view, and analyze network packets using real commands instead of relying on graphical tools like Wireshark. Tcpdump gives analysts the ability to see network traffic at a very granular level, making it a valuable skill for network troubleshooting and cybersecurity analysis. 
 
@@ -28,9 +32,15 @@ I accessed a remote Ubuntu 20.04 LTS Linux environment via SSH to perform comman
   <em>Figure 1</em>
 </p>
 
+</details>
+
 ---
 
 ## Task 1 – Basic Packet Capture
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 The goal of this section was to understand how to perform basic packet captures using Tcpdump, specify which network interface to listen on, and save the captured data for later review.
@@ -81,9 +91,15 @@ I practiced limiting captures with the `-c` option, which stops recording after 
 ### What I Learned
 I learned how to start and stop packet captures, choose interfaces, and save or replay packet data. These basic Tcpdump skills are the foundation for more advanced filtering and analysis techniques that I used later in the lab.
 
+</details>
+
 ---
 
 ## Task 2 – Filtering Expressions
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 This section was about learning how to focus my captures on specific hosts, ports, or protocols using Tcpdump filtering expressions. Without filters, packet captures can be massive and difficult to analyze.
@@ -102,9 +118,15 @@ Filtering made a huge difference in how readable and manageable the packet data 
 ### What I Learned
 I learned how to construct efficient filters to capture only what I needed. In real-world network investigations, this ability to narrow down traffic is crucial. It saves time and focuses analysis on relevant packets, whether for troubleshooting, intrusion detection, or malware analysis.
 
+</details>
+
 ---
 
 ## Task 3 – Advanced Filtering
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 In this task, I experimented with more advanced Tcpdump filters, including binary operations, packet length comparisons, and TCP flag analysis.
@@ -124,9 +146,15 @@ This section revealed how powerful Tcpdump can be when analyzing lower-level pro
 ### What I Learned
 I learned how to perform deep-level packet analysis using binary logic and TCP flag filtering. These skills are particularly valuable for cybersecurity investigations where recognizing network patterns—such as repeated SYN packets without ACKs—can reveal potential attacks.
 
+</details>
+
 ---
 
 ## Task 4 – Displaying Packets
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 This section focused on customizing Tcpdump’s output to better interpret packet data. I learned how to display packet headers and payloads in multiple formats, including ASCII and hexadecimal.
@@ -145,9 +173,15 @@ Each display mode serves a different purpose. ASCII mode (`-A`) was useful when 
 ### What I Learned
 I learned how to present captured packets in various output styles depending on the analysis goal. This flexibility is important when switching between examining human-readable text and low-level network structures.
 
+</details>
+
 ---
 
 ## Conclusions
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Summary
 Throughout this lab, I practiced using Tcpdump to capture, filter, and interpret network traffic from a command-line interface. I moved from basic captures to advanced filtering techniques that allowed me to identify very specific types of network activity. The experience reinforced how important it is to filter data effectively, since raw packet captures can be overwhelming without structure.
@@ -165,3 +199,4 @@ I learned how to:
 
 Overall, this lab strengthened my ability to use Tcpdump as a practical analysis tool for both troubleshooting and security purposes.
 
+</details>
