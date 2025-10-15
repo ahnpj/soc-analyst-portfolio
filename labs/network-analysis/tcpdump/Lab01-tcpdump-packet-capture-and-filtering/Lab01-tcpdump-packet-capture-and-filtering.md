@@ -1,4 +1,4 @@
-# Lab04 – Tcpdump Packet Capture and Filtering
+# Tcpdump Packet Capture and Filtering
 
 ---
 
