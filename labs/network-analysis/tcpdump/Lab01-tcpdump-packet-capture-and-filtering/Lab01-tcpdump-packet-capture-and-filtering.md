@@ -23,7 +23,6 @@ I accessed a remote Ubuntu 20.04 LTS Linux environment via SSH to perform comman
 
 <p align="left">
   <img src="images/tcpdump_packet_capture_and_filtering_01.png?raw=true&v=2" 
-       alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="500"><br>
   <em>Figure 1</em>
@@ -42,17 +41,42 @@ The goal of this section was to understand how to perform basic packet captures 
 
 I checked which network interfaces were available to decide which one to listen to by using the command `ip a s` (which is short for `ip address show`). This showed interfaces like `lo` for loopback and `ens5` for Ethernet.
 
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_02.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 2</em>
+</p>
 
+<h4>(Step 2) I started a capture session by specifying the interface</h4>
 
-- I started a capture session by specifying the interface with the command `sudo tcpdump -i ens5`. This began printing live traffic directly to the terminal.
+I started a capture session by specifying the interface with the command `sudo tcpdump -i ens5 -c 5 -n`. This began printing live traffic directly to the terminal.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_03.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 3</em>
+</p>
+
+The command `sudo tcpdump -i ens5 -c 5 -n` told the system to listen on the `ens5` network interface, capture five packets, and display them without converting IPs to hostnames. Running it with sudo gave the necessary root permissions to access the network interface.
+
+After execution, the output showed five TCP packets exchanged between local IPs. This confirmed that the `ens5` interface was active and that I successfully captured real network traffic in real time using tcpdump.
+
+<--
 - To save packets to a file for later analysis, I used the `-w` flag, such as `sudo tcpdump -i ens5 -w data.pcap`. The file extension `.pcap` allows compatibility with other tools like Wireshark.
 - I learned how to read previously captured packets using `tcpdump -r data.pcap`, which replays packets in readable form.
 - I limited the capture size using the `-c` flag, for example `-c 10`, which stops the capture after a specific number of packets.
 - To avoid unnecessary DNS lookups and make the output faster and cleaner, I used `-n` or `-nn` to prevent IP and port name resolution.
 - I increased verbosity with `-v`, `-vv`, and `-vvv` to see more details about each packet, such as TTL, window size, and protocol flags.
+--!>
 
 ### Findings / Analysis
 I found that Tcpdump provides full control over how much data I capture and display. It can quickly become overwhelming if I do not use filters or limit the capture. Saving captures to files is helpful for detailed analysis later, especially if I need to share results or correlate with intrusion detection tools. Using `-n` and `-c` made the capture process much more efficient, and verbosity levels provided flexibility depending on how deep I wanted to go into packet details.
+
+I learned how to use tcpdump more effectively to capture and analyze network packets. I discovered that I could save captured packets to a file by using the `-w` flag, for example `sudo tcpdump -i ens5 -w data.pcap`. The `.pcap` file format can be opened later in tools like Wireshark for deeper inspection. I also learned that I can replay previously captured packets using the `-r` flag, which makes it easier to review network activity without running a live capture again.
+
+I practiced limiting captures with the `-c` option, which stops recording after a specific number of packets, and used `-n` (tells tcpdump not to resolve DNS) or `-nn` (tells tcpdump not to resolve port names) to prevent hostname and port name lookups, showing only the numeric value. Using `-v`, `-vv`, or `-vvv` helped display extra details such as TTL values, window sizes, and protocol flags. For the purposes of this lab, I used a capture file named `data.pcap` to test these features and better understand how tcpdump works for basic packet analysis.
 
 ### What I Learned
 I learned how to start and stop packet captures, choose interfaces, and save or replay packet data. These basic Tcpdump skills are the foundation for more advanced filtering and analysis techniques that I used later in the lab.
