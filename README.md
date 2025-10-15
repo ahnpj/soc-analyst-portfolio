@@ -41,6 +41,22 @@ Currently includes:
 </details>
 
 
+
+<details>
+<summary><b>Network Analysis</b></summary>
+
+> <details>
+> <summary>tcpdump</summary>
+>
+> - <a href="labs/network-analysis/tcpdump/Lab01-tcpdump-packet-capture-and-filtering/Lab01-tcpdump-packet-capture-and-filtering.md">Lab01 – Tcpdump Packet Capture and Filtering</a><br/>
+>   <em>Level: Beginner</em> → Capturing and analyzing network traffic using tcpdump to understand packet structures, apply filters, and identify key fields for basic network troubleshooting and security monitoring.
+>
+> </details>
+
+</details>
+
+
+
 <details>
 <summary><b>Endpoint Analysis & Investigation</b></summary>
 
