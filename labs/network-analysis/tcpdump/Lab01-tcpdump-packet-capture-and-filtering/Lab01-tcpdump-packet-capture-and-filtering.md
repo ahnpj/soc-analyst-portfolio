@@ -12,6 +12,23 @@ Tcpdump is built on the **libpcap** library, which is responsible for capturing 
 
 I began by reviewing basic network concepts such as IP addressing, protocols, and the TCP/IP model. Then, I started a virtual lab machine, which allowed me to run Tcpdump commands in a controlled environment. The following sections document the commands I ran, what they accomplished, and what I learned from each step.
 
+### Environment
+I accessed a remote Ubuntu 20.04 LTS Linux environment via SSH to perform command-line and system analysis tasks. I entered commands in the Linux terminal (bash shell) of an Ubuntu virtual machine.
+
+- **OS:** Ubuntu 20.04.6 LTS
+- **Kernel:** 5.15.0-1066-aws → indicates it’s hosted on AWS
+- **Access Type:** SSH (remote login)
+- **Environment Type:** Virtual Machine (VM)
+- **IP Address: 10.201.121.21** (private network, internal lab subnet)
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_01.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="500"><br>
+  <em>Figure 1</em>
+</p>
+
 ---
 
 ## Task 1 – Basic Packet Capture
@@ -20,7 +37,13 @@ I began by reviewing basic network concepts such as IP addressing, protocols, an
 The goal of this section was to understand how to perform basic packet captures using Tcpdump, specify which network interface to listen on, and save the captured data for later review.
 
 ### Step-by-Step Walkthrough
-- I first checked which network interfaces were available using the command `ip a s`. This showed interfaces like `lo` for loopback and `ens5` for Ethernet.
+
+<h4>(Step 1) I first checked which network interfaces were available</h4> 
+
+I checked which network interfaces were available to decide which one to listen to by using the command `ip a s` (which is short for `ip address show`). This showed interfaces like `lo` for loopback and `ens5` for Ethernet.
+
+
+
 - I started a capture session by specifying the interface with the command `sudo tcpdump -i ens5`. This began printing live traffic directly to the terminal.
 - To save packets to a file for later analysis, I used the `-w` flag, such as `sudo tcpdump -i ens5 -w data.pcap`. The file extension `.pcap` allows compatibility with other tools like Wireshark.
 - I learned how to read previously captured packets using `tcpdump -r data.pcap`, which replays packets in readable form.
