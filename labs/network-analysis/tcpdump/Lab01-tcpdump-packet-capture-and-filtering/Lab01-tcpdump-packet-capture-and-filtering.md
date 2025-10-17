@@ -28,7 +28,7 @@ I accessed a remote Ubuntu 20.04 LTS Linux environment via SSH to perform comman
 <p align="left">
   <img src="images/tcpdump_packet_capture_and_filtering_01.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
-       width="500"><br>
+       width="800"><br>
   <em>Figure 1</em>
 </p>
 
@@ -54,7 +54,7 @@ I checked which network interfaces were available to decide which one to listen 
 <p align="left">
   <img src="images/tcpdump_packet_capture_and_filtering_02.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
-       width="500"><br>
+       width="800"><br>
   <em>Figure 2</em>
 </p>
 
@@ -65,7 +65,7 @@ I started a capture session by specifying the interface with the command `sudo t
 <p align="left">
   <img src="images/tcpdump_packet_capture_and_filtering_03.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
-       width="500"><br>
+       width="800"><br>
   <em>Figure 3</em>
 </p>
 
