@@ -238,6 +238,57 @@ The results showed that there were `910` number of lines, which roughly estimate
 
 The most useful number for packet analysis here is the first one (`910`), which is showing the number of packets from `192.168.124.1` in the `traffic.pcap` file.
 
+<h4>More Packet Analysis Practice with tcpdump/h4>
+
+I wnated to practice analyzing captured network traffic using `tcpdump` by filtering specific protocols and identifying key network details such as packet counts, IP addresses, and DNS queries.
+
+**First** I analyzed packets in `traffic.pcap` that were using the `ICMP` protocol. To do so, I ran the following command:
+
+`sudo tcpdump -r traffic.pcap icmp -n | wc`
+
+I used the `-r` flag to read packets from a saved capture file (`traffic.pcap`) and filtered for the `ICMP` protocol, which includes ping requests and replies. The `-n` flag disabled hostname lookups to display numeric IPs. Piping the output into `wc` allowed me to count the results. 
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_12.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 12</em>
+</p>
+
+The results showed that there were `26` number of lines, which  estimates to about 26 packets displayed by `tcpdump`, `358` total number of words printed in the `traffic.pcap` file, and `2722` total number of individual characters printed in that same file.
+
+**Second** I analyzed packets in `traffic.pcap` to look for the IP address of the host that asked for the MAC address of `92.168.124.137`. To do so, I ran the following command:
+
+`sudo tcpdump -r traffic.pcap arp and host 192.168.124.137`
+
+I filtered the capture file to display ARP (Address Resolution Protocol) traffic related to the host `192.168.124.137`. ARP is used to map IP addresses to physical MAC addresses on the local network.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_13.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 13</em>
+</p>
+
+From the ARP request, I could see that the host `192.168.124.148` was asking for the MAC address of `192.168.124.137`.
+
+**Lastly** I identified the hostname (not IP) that appeared in the first DNS query in the `traffic.pcap` file. To do so, I ran the following command:
+
+`sudo tcpdump -r traffic.pcap port 53 -A`
+
+This command filtered the capture to show `DNS` traffic (which uses `port 53`) and prints the data in ASCII (`-A`) for readability. This allows viewing the actual domain names being queried.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_14.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 14</em>
+</p>
+
+`07:18:24.058626 IP ip-192-168-124-137.eu-west-1.compute.internal.33672 > ip-192-168-124-1.eu-west-1.compute.internal.domain: 39913+ A? mirrors.rockylinux.org. (40)`
+
+This packet capture entry showed that the `mirrors.rockylinux.org` was the hostname that appeared in the first DNS query in the `traffic.pcap` file.
+
 ### Findings / Analysis
 Filtering made a huge difference in how readable and manageable the packet data was. Instead of seeing thousands of lines of unrelated traffic, I could focus on the specific interactions I cared about. For example, filtering ICMP packets showed how ping operates at the network layer, while filtering port 53 helped me visualize DNS resolution. Logical operators allowed me to build complex yet very precise queries.
 
