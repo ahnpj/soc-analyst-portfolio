@@ -118,6 +118,8 @@ This section was about learning how to focus my captures on specific hosts, port
 - (Step 4) Filtering Packets from a PCAP file
 - (Step 5) More Packet Analysis Practice with tcpdump
 
+---
+
 <h4>(Step 1) Filtering by Host: I started by filtering packets from a specific host</h4> 
 
 I captured filtering packets from a specific host using `sudo tcpdump host example.com -w http.pcap`. This allowed me to capture only traffic to and from that domain and capture traffic that passes through and writes it to a file named `http.pcap` file on my computer. 
@@ -150,6 +152,8 @@ I used `Ctrl + C` which stopped the capture and provided a short summary of all 
 
 I could also filter by direction including `src host` and `dst host` in my filter to focus on specific source or destination traffic only.
 
+---
+
 <h4>(Step 2) Filtering by Port: I moved to capturing traffic from specific ports</h4> 
 
 I went on and started capturing traffic from specific ports. I used `sudo tcpdump -i ens5 port 53 -n`, which captured all DNS requests and responses (since DNS uses port 53).
@@ -176,6 +180,8 @@ Again, I used `Ctrl + C` which stopped the capture and provided a short summary 
 </p>
 
 I could also use `src port` or `dst port` to filter traffic going to or coming from a particular port.
+
+---
 
 <h4>(Step 3) Filtering by Protocol: I captured traffic by specific protocols</h4>
 
@@ -215,6 +221,8 @@ I could also create a longer filter with multiple conditions such as `tcpdump -i
 - `tcp` specifies the protocol so that the capture only shows TCP packets
 - `port 443` specifies the port number, which would be HTTPS
 
+---
+
 <h4>(Step 4) Filtering Packets from a PCAP file</h4>
 
 To analyze a previously captured packet file and filter network traffic originating from a specific IP address, I ran the command `tcpdump -r traffic.pcap src 192.168.124.1 -n | wc -l`. 
@@ -244,9 +252,13 @@ The results showed that there were `910` number of lines, which roughly estimate
 
 The most useful number for packet analysis here is the first one (`910`), which is showing the number of packets from `192.168.124.1` in the `traffic.pcap` file.
 
+---
+
 <h4>(Step 5) More Packet Analysis Practice with tcpdump</h4>
 
 I wnated to practice analyzing captured network traffic using `tcpdump` by filtering specific protocols and identifying key network details such as packet counts, IP addresses, and DNS queries.
+
+---
 
 **(Step 5a)** I analyzed packets in `traffic.pcap` that were using the `ICMP` protocol. To do so, I ran the following command:
 
@@ -263,6 +275,8 @@ I used the `-r` flag to read packets from a saved capture file (`traffic.pcap`) 
 
 The results showed that there were `26` number of lines, which  estimates to about 26 packets displayed by `tcpdump`, `358` total number of words printed in the `traffic.pcap` file, and `2722` total number of individual characters printed in that same file.
 
+---
+
 **(Step 5b)** I analyzed packets in `traffic.pcap` to look for the IP address of the host that asked for the MAC address of `92.168.124.137`. To do so, I ran the following command:
 
 `sudo tcpdump -r traffic.pcap arp and host 192.168.124.137`
@@ -277,6 +291,8 @@ I filtered the capture file to display ARP (Address Resolution Protocol) traffic
 </p>
 
 From the ARP request, I could see that the host `192.168.124.148` was asking for the MAC address of `192.168.124.137`.
+
+---
 
 **(Step 5c)** I identified the hostname (not IP) that appeared in the first DNS query in the `traffic.pcap` file. To do so, I ran the following command:
 
@@ -294,6 +310,8 @@ This command filtered the capture to show `DNS` traffic (which uses `port 53`) a
 `07:18:24.058626 IP ip-192-168-124-137.eu-west-1.compute.internal.33672 > ip-192-168-124-1.eu-west-1.compute.internal.domain: 39913+ A? mirrors.rockylinux.org. (40)`
 
 This packet capture entry showed that the `mirrors.rockylinux.org` was the hostname that appeared in the first DNS query in the `traffic.pcap` file.
+
+---
 
 ### Findings / Analysis
 Filtering made a huge difference in how readable and manageable the packet data was. Instead of seeing thousands of lines of unrelated traffic, I could focus on the specific interactions I cared about. For example, filtering ICMP packets showed how ping operates at the network layer, while filtering port 53 helped me visualize DNS resolution. Logical operators allowed me to build complex yet very precise queries.
