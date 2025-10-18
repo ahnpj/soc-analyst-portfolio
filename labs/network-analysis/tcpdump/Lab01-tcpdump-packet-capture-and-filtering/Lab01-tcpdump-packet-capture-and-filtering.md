@@ -1,4 +1,4 @@
-# Tcpdump Packet Capture and Filtering
+<img width="715" height="88" alt="image" src="https://github.com/user-attachments/assets/d0c74a0b-b44e-48f2-8422-24dddc62bc9e" /># Tcpdump Packet Capture and Filtering
 
 ---
 
@@ -434,12 +434,131 @@ I pressed `Ctrl + C` to stop the live capture to see a short summary of all `TCP
 
 ---
 
-- I reviewed binary operations (`&`, `|`, and `!`) to understand how Tcpdump processes bits. These operations are often used in protocol-level filtering.
-- I explored the concept of header bytes and learned that I could filter based on specific byte positions using the syntax `proto[expr:size]`. This allowed for very detailed inspection, such as targeting parts of the Ethernet or IP header.
-- I then focused on TCP flags. Using expressions like `tcp[tcpflags] == tcp-syn`, I was able to isolate SYN packets, which represent connection initiation.
-- I also captured ACK and FIN packets using variations such as:
-  - `tcp[tcpflags] & tcp-ack != 0`
-  - `tcp[tcpflags] & (tcp-syn|tcp-ack) != 0`
+<h4>(Step 2) I reviewed binary operations</h4> 
+
+I reviewed three binary operations (`&`, `|`, and `!`) to understand how tcpdump processes bits. These operations are often used in protocol-level filtering. I learned:
+
+- The `&` operation takes two bits and returns 0 unless both inputs are 1.
+- The `|` operation takes two bits and returns 1 unless both inpurts are 0.
+- The `!` operation takes only one bit and inverts it. So an input of 1 returns 0, and an input of 0 gives 1.
+
+---
+
+<h4>(Step 3) I explored the concept of header bytes and learned that I could filter based on specific byte positions</h4> 
+
+I explored the concept of header bytes and learned that I could filter based on specific byte positions using the syntax `proto[expr:size]`. This allowed for very detailed inspection, such as targeting parts of the Ethernet or IP header.
+
+- `proto` refers to the protocol I want to specify
+- `expr` is the byte offset, where `0` refers to the first byte
+- `size` indicates the number of bytes, which can be either `1`, `2`, or `4` and is `1` by default. This field is optional.
+
+---
+
+<h4>(Step 3a) Combining Header Byte Filters (Bitwise) and Host Filters</h4>
+
+I incportated `ether[0] & 1 != 0` to display packets sent to multicast addresses. This filter checks the first byte (`[0]`) in the Ethernet header (`ether`) and uses a binary AND operation (`&`) with `1` to see if the result is not (`!=`) `0`. This is to see if the packet was sent to a multicast group instead of a single device.
+
+I experimented with combining bitwise filters and host filters in tcpdump to capture more specific packet types. I learned that filters like `ether[0] & 1 != 0` can be used alongside host filters to refine captures. For example, the command: `sudo tcpdump -i ens5 'host example.com and ether[0] & 1 != 0'` captured packets sent to and from `example.com` whose Ethernet destination address is a multicast address.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_23.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 23</em>
+</p>
+
+I pressed `Ctrl + C` to stop the capture and get a short summary of all packets captured:
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_24.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 24</em>
+</p>
+
+---
+
+<h4>(Step 4) I then focused on TCP flags.</h4> 
+
+I then explored TCP flags to understand how they indicate the state and behavior of a TCP connection, such as connection setup (SYN), acknowledgment (ACK), termination (FIN), and resets (RST). By analyzing these flags in captured packets, I could identify different stages of TCP communication and detect unusual patterns like retransmissions or abrupt connection resets. 
+
+<blockquote>TCP flags are 1-bit in size and exist in TCP headers. These flags describe the state or purpose of a TCP packet during communication.</blockquote>
+
+---
+
+<h4>(Step 4a) I captured TCP packets with only the SYN (Synchronization) flag in their headers with all other flags unset</h4>
+  
+To achieve this, I used the expression: `tcpdump -i ens5 'tcp[tcpflags] == tcp-syn'`. I was able to isolate SYN packets, which represent the initial connection attempt, on the `ens5` network. This also filters for packets where only the SYN flag is present, as indicated by the `==` operator. 
+
+<blockquote>
+When I ran this tcpdump command to capture SYN packets, no packets appeared. This occurred because the test environment wasn’t generating any active TCP traffic at that moment. The filter specifically looks for TCP packets initiating new connections (SYN flags). Because there were no real network activity, no matches were found. In a live environment or during active network use, this command would display packets involved in TCP connection setup.
+</blockquote>
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_25.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 25</em>
+</p>
+
+I pressed `Ctrl + C` to stop the capture and get a short summary of all packets captured:
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_26.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 26</em>
+</p>
+
+---
+
+<h4>(Step 4b) I captured TCP packets with at least the SYN (Synchronization) flag in their headers regardless of the presence of other flags</h4>
+
+To achieve this, I used the expression: `tcpdump -i ens5 'tcp[tcpflags] & tcp-syn != 0'`. I was able to isolate TCP packets with at least the SYN flag present, regardless if other flags were present, as indicated by the `!=` operator, and were making the initial connection attempt on the `ens5` network.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_27.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 27</em>
+</p>
+
+I pressed `Ctrl + C` to stop the live capture and get a short summary of all packets captured:
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_28.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 28</em>
+</p>
+
+---
+
+<h4>(Step 4c) I captured TCP packets with at least the SYN (Synchronization) or ACK (Acknowledge) flag in their headers regardless of the presence of other flags</h4>
+
+To achieve this, I used the expression: `tcpdump -i ens5 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0'`. I was able to isolate TCP packets with at least the SYN or ACK flags present, regardless if other flags were present, as indicated by the `!=` operator, and were making the initial connection attempt on the `ens5` network. This filter identifies traffic involved in establishing (SYN) or acknowledging (ACK) TCP connections. This includes the handshake process between two hosts. It helped me observe the flow of connection initiation and acknowledgment packets on the network interface `ens5`.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_29.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 29</em>
+</p>
+
+<blockquote>
+I took this screenshot before running the command because once I executed it, the terminal (Linux Bash) displayed a continuous stream of live packet captures. To avoid flooding the screen, I pressed Ctrl +C shortly after starting the capture to stop the output.
+</blockquote>
+
+I pressed `Ctrl + C` to stop the live capture and get a short summary of all packets captured:
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_30.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 30</em>
+</p>
+
+---
 
 ### Findings / Analysis
 This section revealed how powerful Tcpdump can be when analyzing lower-level protocol behavior. By filtering specific TCP flags, I could observe the TCP handshake (SYN, SYN-ACK, ACK) in action. This understanding is essential for identifying abnormal connection behavior or incomplete handshakes that may indicate scanning or denial-of-service attempts.
