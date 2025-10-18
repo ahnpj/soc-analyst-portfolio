@@ -111,11 +111,93 @@ I learned how to start and stop packet captures, choose interfaces, and save or 
 This section was about learning how to focus my captures on specific hosts, ports, or protocols using Tcpdump filtering expressions. Without filters, packet captures can be massive and difficult to analyze.
 
 ### Step-by-Step Walkthrough
-- I started by filtering packets from a specific host using `sudo tcpdump host example.com -w http.pcap`. This allowed me to capture only traffic to and from that domain.
-- I practiced filtering by direction using `src host` and `dst host` to focus on source or destination traffic only.
-- To capture traffic from specific ports, I used `sudo tcpdump -i ens5 port 53 -n`, which captured DNS requests and responses (since DNS uses port 53).
-- I used `src port` and `dst port` to filter traffic going to or coming from a particular service.
-- I filtered by protocol using commands like `sudo tcpdump -i ens5 icmp -n` to capture only ICMP traffic, which showed ping requests and replies.
+
+<h4>Filtering by Host: I started by filtering packets from a specific host</h4> 
+
+I captured filtering packets from a specific host using `sudo tcpdump host example.com -w http.pcap`. This allowed me to capture only traffic to and from that domain and capture traffic that passes through and writes it to a file named `http.pcap` file on my computer. 
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_04.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 4</em>
+</p>
+
+- `tcpdump` is the command that starts the packet capture session
+- `host example.com` specifies the capture to traffic going to and coming from `example.com`
+- `-w http.pcap` saves all captured packets into a file named `http.pcap`
+
+<blockquote>
+In this case, `tcpdump` is listening on the network interface `ens5`, but since there was no actual traffic to or from `example.com`, no packets were recorded. `example.com` is just a placeholder domain used for demonstration.
+</blockquote>
+
+If this has been a live, active domain that my computer was communicating with, `tcpdump` would have displayed real-time capture activity. 
+
+I used `Ctrl + C` which stopped the capture and provided a short summary of all packets that were captured. The short summary includes the number of packets captured, number of packets received by the filter, and the number of packets dropped be the kernel. The file `http.pcap` would contain those captured packets, which could later be opened in Wireshark for further inspection such as IP addresses, ports, HTTP requests, etc.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_05.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 5</em>
+</p>
+
+I could also filter by direction including `src host` and `dst host` in my filter to focus on specific source or destination traffic only.
+
+<h4>Filtering by Port: I moved to capturing traffic from specific ports</h4> 
+
+I went on and started capturing traffic from specific ports. I used `sudo tcpdump -i ens5 port 53 -n`, which captured all DNS requests and responses (since DNS uses port 53).
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_06.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 6</em>
+</p>
+
+- `tcpdump` is the command that starts the packet capture session
+- `-i ens5` specifies the network interface to listen on
+- `port 53` specifies the port number
+- `-n` basically stops `tcpdump` from resolving IP addresses or port numbers into names, so I see numberic IPs instead
+
+Again, I used `Ctrl + C` which stopped the capture and provided a short summary of all packets that were captured.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_07.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 7</em>
+</p>
+
+I could also use `src port` or `dst port` to filter traffic going to or coming from a particular port.
+
+<h4>Filtering by Protocol: I captured traffic by specific protocols</h4>
+
+Finally, I started filtering by protocol using commands like `sudo tcpdump -i ens5 icmp -n` to capture only ICMP traffic, which showed ping requests and replies.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_08.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 8</em>
+</p>
+
+- `tcpdump` is the command that starts the packet capture session
+- `-i ens5` specifies the network interface to listen on
+- `icmp` specifies the protocol so that the capture only shows ICMP packets
+- `-n` basically stops `tcpdump` from resolving IP addresses or hostnames into names, so I see numberic versions instead
+
+Again, I used `Ctrl + C` which stopped the capture and provided a short summary of all packets that were captured.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_09.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 9</em>
+</p>
+
+If this has been a live network interface that my computer was communicating with, `tcpdump` would have displayed real-time capture activity. For this exercise, it captured 0 packets.
+
 - Finally, I combined multiple filters with logical operators like `and`, `or`, and `not` to refine the output. For example, `tcpdump tcp and port 80` captured only HTTP packets, while `not port 22` excluded SSH traffic.
 
 ### Findings / Analysis
