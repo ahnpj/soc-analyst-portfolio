@@ -238,7 +238,7 @@ The results showed that there were `910` number of lines, which roughly estimate
 
 The most useful number for packet analysis here is the first one (`910`), which is showing the number of packets from `192.168.124.1` in the `traffic.pcap` file.
 
-<h4>More Packet Analysis Practice with tcpdump/h4>
+<h4>More Packet Analysis Practice with tcpdump</h4>
 
 I wnated to practice analyzing captured network traffic using `tcpdump` by filtering specific protocols and identifying key network details such as packet counts, IP addresses, and DNS queries.
 
