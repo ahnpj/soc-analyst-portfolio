@@ -23,7 +23,7 @@ I accessed a remote Ubuntu 20.04 LTS Linux environment via SSH to perform comman
 - **Kernel:** 5.15.0-1066-aws → indicates it’s hosted on AWS
 - **Access Type:** SSH (remote login)
 - **Environment Type:** Virtual Machine (VM)
-- **IP Address: 10.201.121.21** (private network, internal lab subnet)
+- **IP Address: 10.201.121.21, 10.11.81.126** (ephemeral/dynamic)
 
 <p align="left">
   <img src="images/tcpdump_packet_capture_and_filtering_01.png?raw=true&v=2" 
