@@ -47,6 +47,8 @@ The goal of this section was to understand how to perform basic packet captures 
 
 ### Step-by-Step Walkthrough
 
+---
+
 <h4>(Step 1) I first checked which network interfaces were available</h4> 
 
 I checked which network interfaces were available to decide which one to listen to by using the command `ip a s` (which is short for `ip address show`). This showed interfaces like `lo` for loopback and `ens5` for Ethernet.
@@ -57,6 +59,8 @@ I checked which network interfaces were available to decide which one to listen 
        width="800"><br>
   <em>Figure 2</em>
 </p>
+
+---
 
 <h4>(Step 2) I started a capture session by specifying the interface</h4>
 
@@ -70,6 +74,8 @@ I started a capture session by specifying the interface with the command `sudo t
 </p>
 
 The command `sudo tcpdump -i ens5 -c 5 -n` told the system to listen on the `ens5` network interface, capture five packets, and display them without converting IPs to hostnames. Running it with sudo gave the necessary root permissions to access the network interface.
+
+---
 
 After execution, the output showed five TCP packets exchanged between local IPs. This confirmed that the `ens5` interface was active and that I successfully captured real network traffic in real time using tcpdump.
 
