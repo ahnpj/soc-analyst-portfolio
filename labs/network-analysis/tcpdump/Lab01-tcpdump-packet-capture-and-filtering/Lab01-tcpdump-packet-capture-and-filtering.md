@@ -198,7 +198,45 @@ Again, I used `Ctrl + C` which stopped the capture and provided a short summary 
 
 If this has been a live network interface that my computer was communicating with, `tcpdump` would have displayed real-time capture activity. For this exercise, it captured 0 packets.
 
-- Finally, I combined multiple filters with logical operators like `and`, `or`, and `not` to refine the output. For example, `tcpdump tcp and port 80` captured only HTTP packets, while `not port 22` excluded SSH traffic.
+I could also combine multiple filters with logical operators like `and`, `or`, and `not` to be more specific. For example, `tcpdump tcp and port 80` captures only HTTP packets, `tcpdump udp or icmp` captured UDP or ICMP traffic if at least one of the conditions is true, and adding other conditions like `not port 22` excludes SSH traffic.
+
+I could also create a longer filter with multiple conditions such as `tcpdump -i ens5 host example.com and tcp port 443 -w https.pcap`. This will capture and filter traffic going to and coming from `example.com` that uses `tcp` and `port 443`, which is for filtering HTTPS traffic.
+
+- `tcpdump` will start the capture session
+- `-i ens5` will specify the network interface to listen on
+- `host example.com` captures traffic going to and coming from `example.com` since the `src port` or `dst port` wasn't defined
+- `and` is the logical operator meaning both conditions must be true to capture the packet
+- `tcp` specifies the protocol so that the capture only shows TCP packets
+- `port 443` specifies the port number, which would be HTTPS
+
+<h4>Filtering Packets from a PCAP file</h4>
+
+To analyze a previously captured packet file and filter network traffic originating from a specific IP address, I ran the command `tcpdump -r traffic.pcap src 192.168.124.1 -n | wc -l`. 
+
+I used the `tcpdump` command with the `-r` flag to read packets from an existing capture file (`traffic.pcap`) instead of capturing live traffic. The filter src `192.168.124.1` limited the output to only packets sent from the source IP address `192.168.124.1`. The `-n` option prevented hostname resolution which kept the IPs in numeric form. By piping the output into `wc -l`, I counted how many packets in the file matched this filter, giving me a quick summary of how many transmissions came from that source host.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_10.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 10</em>
+</p>
+
+- `tcpdump -r traffic.pcap` read packets from a saved capture file named `traffic.pcap` instead of live traffic
+- `src 192.168.124.1` filtered the output to show only packets originating from the IP address `192.168.124.1`
+- `-n` disabled hostname lookups so IPs stay numeric.
+- `| wc` piped the output into the word count (`wc`) command, which counts the number of lines, words, and characters in the output.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_11.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 11</em>
+</p>
+
+The results showed that there were `910` number of lines, which roughly estimates to about 910 packets displayed by `tcpdump`, `17415` total number of words printed in the `traffic.pcap` file, and `140616` total number of individual characters printed in that same file.
+
+The most useful number for packet analysis here is the first one (`910`), which is showing the number of packets from `192.168.124.1` in the `traffic.pcap` file.
 
 ### Findings / Analysis
 Filtering made a huge difference in how readable and manageable the packet data was. Instead of seeing thousands of lines of unrelated traffic, I could focus on the specific interactions I cared about. For example, filtering ICMP packets showed how ping operates at the network layer, while filtering port 53 helped me visualize DNS resolution. Logical operators allowed me to build complex yet very precise queries.
