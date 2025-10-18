@@ -266,7 +266,7 @@ I wnated to practice analyzing captured network traffic using `tcpdump` by filte
 
 ---
 
-**(Step 5a)** I analyzed packets in `traffic.pcap` that were using the `ICMP` protocol. To do so, I ran the following command:
+**(Step 5-a)** I analyzed packets in `traffic.pcap` that were using the `ICMP` protocol. To do so, I ran the following command:
 
 `sudo tcpdump -r traffic.pcap icmp -n | wc`
 
@@ -283,7 +283,7 @@ The results showed that there were `26` number of lines, which  estimates to abo
 
 ---
 
-**(Step 5b)** I analyzed packets in `traffic.pcap` to look for the IP address of the host that asked for the MAC address of `92.168.124.137`. To do so, I ran the following command:
+**(Step 5-b)** I analyzed packets in `traffic.pcap` to look for the IP address of the host that asked for the MAC address of `92.168.124.137`. To do so, I ran the following command:
 
 `sudo tcpdump -r traffic.pcap arp and host 192.168.124.137`
 
@@ -300,7 +300,7 @@ From the ARP request, I could see that the host `192.168.124.148` was asking for
 
 ---
 
-**(Step 5c)** I identified the hostname (not IP) that appeared in the first DNS query in the `traffic.pcap` file. To do so, I ran the following command:
+**(Step 5-c)** I identified the hostname (not IP) that appeared in the first DNS query in the `traffic.pcap` file. To do so, I ran the following command:
 
 `sudo tcpdump -r traffic.pcap port 53 -A`
 
@@ -346,7 +346,7 @@ In this task, I experimented with more advanced Tcpdump filters, including binar
 
 ---
 
-<h4>(Step 1a) I practiced using length-based filters in tcpdump to capture packets according to their size. </h4>
+<h4>(Step 1-a) I practiced using length-based filters in tcpdump to capture packets according to their size. </h4>
 
 I learned that the keywords `greater` and `less` allow filtering packets based on their byte length, regardless of source, destination, or protocol. For example, the command `tcpdump greater 1000` captures all packets larger than `1000` bytes on the default interface. 
 
@@ -368,7 +368,7 @@ At any point, I can use `Ctrl + C` to stop the live capture and see a short summ
 
 ---
 
-<h4>(Step 1b) I specified an interface</h4>
+<h4>(Step 1-b) I specified an interface</h4>
 
 For example, the command `tcpdump -i ens5 greater 1000` captured all packets on the `ens5` interface that are larger than 1000 bytes.
 
@@ -390,7 +390,7 @@ I pressed `Ctrl + C` to stop the live capture to see a short summary of all pack
 
 ---
 
-<h4>(Step 1c) I specified an interface and a host</h4>
+<h4>(Step 1-c) I specified an interface and a host</h4>
   
 I also modified the filter command by only capturing packets that are larger than 1000 bytes involving the host `example.com` on the `ens5` interface by using: `tcpdump -i ens5 host example.com and greater 1000`
 
@@ -412,7 +412,7 @@ I pressed `Ctrl + C` to stop the live capture to see a short summary of all pack
 
 ---
 
-<h4>(Step 1d) I specified an interface, host, and protocol using the and operator</h4>
+<h4>(Step 1-d) I specified an interface, host, and protocol using the and operator</h4>
 
 I also discovered that I can capture only TCP packets larger than 1000 bytes on a specific network involving a specific domain. So I modified my command filter as such: `tcpdump -i ens5 tcp and host example.com and greater 1000`, which captured all TCP packets that are greater than 1000 bytes on the `ens5` network involved the host `example.com`
 
@@ -454,7 +454,7 @@ I explored the concept of header bytes and learned that I could filter based on 
 
 ---
 
-<h4>(Step 3a) Combining Header Byte Filters (Bitwise) and Host Filters</h4>
+<h4>(Step 3-a) Combining Header Byte Filters (Bitwise) and Host Filters</h4>
 
 I incportated `ether[0] & 1 != 0` to display packets sent to multicast addresses. This filter checks the first byte (`[0]`) in the Ethernet header (`ether`) and uses a binary AND operation (`&`) with `1` to see if the result is not (`!=`) `0`. This is to see if the packet was sent to a multicast group instead of a single device.
 
@@ -486,7 +486,7 @@ I then explored TCP flags to understand how they indicate the state and behavior
 
 ---
 
-<h4>(Step 4a) I captured TCP packets with only the SYN (Synchronization) flag in their headers with all other flags unset</h4>
+<h4>(Step 4-a) I captured TCP packets with only the SYN (Synchronization) flag in their headers with all other flags unset</h4>
   
 To achieve this, I used the expression: `tcpdump -i ens5 'tcp[tcpflags] == tcp-syn'`. I was able to isolate SYN packets, which represent the initial connection attempt, on the `ens5` network. This also filters for packets where only the SYN flag is present, as indicated by the `==` operator. 
 
@@ -512,7 +512,7 @@ I pressed `Ctrl + C` to stop the capture and get a short summary of all packets 
 
 ---
 
-<h4>(Step 4b) I captured TCP packets with at least the SYN (Synchronization) flag in their headers regardless of the presence of other flags</h4>
+<h4>(Step 4-b) I captured TCP packets with at least the SYN (Synchronization) flag in their headers regardless of the presence of other flags</h4>
 
 To achieve this, I used the expression: `tcpdump -i ens5 'tcp[tcpflags] & tcp-syn != 0'`. I was able to isolate TCP packets with at least the SYN flag present, regardless if other flags were present, as indicated by the `!=` operator, and were making the initial connection attempt on the `ens5` network.
 
@@ -534,7 +534,7 @@ I pressed `Ctrl + C` to stop the live capture and get a short summary of all pac
 
 ---
 
-<h4>(Step 4c) I captured TCP packets with at least the SYN (Synchronization) or ACK (Acknowledge) flag in their headers regardless of the presence of other flags</h4>
+<h4>(Step 4-c) I captured TCP packets with at least the SYN (Synchronization) or ACK (Acknowledge) flag in their headers regardless of the presence of other flags</h4>
 
 To achieve this, I used the expression: `tcpdump -i ens5 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0'`. I was able to isolate TCP packets with at least the SYN or ACK flags present, regardless if other flags were present, as indicated by the `!=` operator, and were making the initial connection attempt on the `ens5` network. This filter identifies traffic involved in establishing (SYN) or acknowledging (ACK) TCP connections. This includes the handshake process between two hosts. It helped me observe the flow of connection initiation and acknowledgment packets on the network interface `ens5`.
 
