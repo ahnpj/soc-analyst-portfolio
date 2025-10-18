@@ -139,6 +139,8 @@ In Splunk’s Search & Reporting app I confirmed the index=botsv1 dataset with `
 
 I performed some independent, exploratory checks outside the provided lab instructions to validate connectivity and practice reconnaissance techniques.
 
+---
+
 <h4>(1) Checking Basic Connectivity (AttackBox Linux Bash terminal)</h4>
 
 My goal here is to quickly confirm  whether the target is reachable from the AttackBox (verifies network connectivity and that the VM is up).
@@ -157,6 +159,8 @@ ping -c 3 10.201.17.82
 - `ping` — Sends ICMP Echo Request packets to the target to check if the host responds. Useful for basic reachability checks.
 - `-c 3` — Limits the ping to 3 ICMP packets so the test is quick and concise.
 - `10.201.17.82` — Target IP assigned to the analysis VM.
+
+---
 
 <h4>(2) Discovering Open Ports via Nmap (Attackbox Linux Bash terminal)</h4>
 
@@ -181,6 +185,8 @@ nmap -sS -sV -p- 10.201.17.82
 - `-p-` — Scan every TCP port (1–65535). Useful if you want a full port sweep rather than just common ports.
 - `10.201.17.82` — The target IP.
 
+---
+
 <h4>(3) Checking Basic Connectivity (AttackBox Linux Bash terminal)</h4>
 
 My goal here is to try verifying that the web server is present, inspect response headers (server, cookies, redirects, status codes), and quickly retrieve pages for manual review or to inform later automated testing.
@@ -201,6 +207,8 @@ curl http://10.201.17.82/index.php
 - `-I` — Requests only the HTTP headers (HEAD request), useful for quickly seeing server type, status code, and response headers without downloading the full page.
 - `http://10.201.17.82` — The target’s web root. If a web service listens on a nonstandard port, include `:port` (for example `http://10.201.17.82:8000`).
 - `http://10.201.17.82/index.php` — Example path to fetch a specific page or endpoint to see content or responses.
+
+---
 
 <h4>(4) Testing Specific TCP Ports via netcat (AttackBox Linux Bash terminal)</h4>
 
@@ -233,6 +241,8 @@ nc -vz 10.201.17.82 22
 - If SSH is exposed and credentials are provided by the lab, use `ssh` for interactive access.  
 - Terminate or extend the VM when finished with the investigation.
 
+---
+
 ### Findings / Analysis
 
 All expected sourcetypes were present. Understanding these sources early streamlined later correlation searches across network and host data. This setup phase emphasized the importance of situational awareness before analysis. Knowing data sources and their fields prevents misinterpretation of logs—a skill fundamental to blue‑team operations. This relates to **MITRE ATT&CK TA0001 (Initial Access)** and Security+ objectives covering data collection and correlation.
@@ -253,6 +263,8 @@ The objective was to detect early reconnaissance activity targeting `imreallynot
 
 
 ### Step‑by‑Step Walkthrough
+
+---
 
 <h4>(Step 1) I began by searching the dataset for any logs referencing the domain.</h4>
 
@@ -280,6 +292,8 @@ This returned several sourcetypes, including `suricata`, `stream:http`, `fortiga
        width="1000"><br>
   <em>Figure 7</em>
 </p>
+
+---
 
 <h4>(Step 2) I refined the query to focus on HTTP traffic because the domain represents a web address.</h4>
 
@@ -309,6 +323,8 @@ From this search, I identified two IPs (`40.80.148.42` and `23.22.63.114`)
        width="1000"><br>
   <em>Figure 9</em>
 </p>
+
+---
 
 <h4>(Step 3) I needed to validate that this was indeed a scanning attempt by `40.80.148.42`.</h4>
 
@@ -354,6 +370,8 @@ HTTP requests with empty headers are common with automated vulnerability scanner
 
 Because this activity doesn’t exploit a specific vulnerability but instead maps and tests the server’s behavior, it’s a strong indicator of active reconnaissance.
 
+---
+
 ### Findings / Analysis
 
 - `40.80.148.42` accounted for over  90 % of the requests, and was consistent with automated vulnerability scanning. Active recon evidence included frequent GET requests.
@@ -390,6 +408,8 @@ The objective was to confirm whether the attacker attempted or succeeded in expl
  - The webserver is using the Joomla CMS.
 
 ### Step‑by‑Step Walkthrough
+
+---
 
 <h4>(Step 1) I began by running three Splunk searches to analyze web activity targeting the imreallynotbatman.com web server</h4>
 
@@ -466,6 +486,8 @@ http_method=POST
   <em>Figure 16</em>
 </p>
 
+---
+
 <h4>(Step 2) After identifying that the target web server uses the Joomla CMS, I wanted to check if anyone tried accessing the admin login page. Admin pages are important to monitor because attackers often try to reach them first when attempting to log in or exploit a site. I began by running two Splunk queries</h4>
 
 <blockquote>
@@ -539,6 +561,8 @@ Inspecting the `form_data` field revealed multiple login attempts to `
 <strong>Note:</strong> To further narrow down my results, I could add a specific source IP to the query, such as src_ip="40.80.148.42". This would limit the search to only show HTTP requests sent from that particular client. Filtering by source IP helps identify which system initiated the traffic, making it easier to trace suspicious behavior or confirm repeated login attempts from the same host. This kind of filter is especially useful when analyzing targeted activity against the Joomla admin login page.
 </blockquote>
 
+---
+
 <h4>(Step 3) After confirming that most traffic to "/joomla/administrator/index.php" (Joomla's admin login page) were POST requests (mostly from `40.80.148.42`, with some from `23.22.63.114`), I wanted to extract the submitted form fields to see the username and password values those POST attempts used.</h4>
 
 Previously, after inspecting the `form_data` field and confirmed multiple login attempts to `/joomla/administrator/index.php`, I used regex to extract only the username (`username`) and password (`passwd`) fields:
@@ -571,6 +595,8 @@ form_data=*username*passwd*
        width="1000"><br>
   <em>Figure 19</em>
 </p>
+
+---
 
 <h4>(Step 4) After extracting the submitted form fields to see the username and password values those POST attempts used, I ran two Splunk queries utilizing regular expressions.</h4>
   
@@ -676,6 +702,8 @@ index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST fo
 - **[^&\s]+** - Basically means “grab everything until the next & or space,” so it captures special characters and the full value (e.g., passwd=p@ss! → p@ss!) instead of stopping at non-word chars.
 - **urldecode()** converts URL-encoded characters to normal text (e.g., %40 → @, + → space), so I could read the actual username/password instead of gibberish.
 
+---
+
 ### Findings / Analysis
 
 - Evidence confirmed a brute‑force attack followed by successful authentication. `23.22.63.114` performed failed attempts while `40.80.148.42` achieved login success.
@@ -712,6 +740,8 @@ Below are more details about each query and the corresponding findings.
 
 ### Step‑by‑Step Walkthrough
 
+---
+
 <h4>(Step 1) After confirming successful authentication from the prior phase (`40.80.148.42` achieved a successful login using `admin:batman`), I searched for evidence of file uploads to the compromised host using the first query</h4>
 
 ```spl
@@ -733,6 +763,8 @@ dest_ip="192.168.250.70" *.exe
 </p>
 
 I examined the `part_filename{}` field in Splunk to identify any files transferred over the network during the activity. The results displayed two filenames: `3791.exe` and `agent.php`, which appear to be executable files in HTTP traffic that were either downloaded or executed on the web server.
+
+---
 
 <h4>(Step 2) I had to confirm if any of these files came from the IP addresses that were found to be associated in objective 2</h4>
 
@@ -771,6 +803,8 @@ Both "src_ip" and "c_ip" confirms the IP that started any process, but "c_ip" is
 I reviewed the "c_ip" field to identify which host initiated the HTTP request for `3791.exe`. Since the data came from the `stream:http` sourcetype, it records application-level traffic using client/server roles, so the "c_ip" field shows the requesting client, while "src_ip" isn’t present in this type of log.
 </blockquote>
 
+---
+
 <h4>(Step 3) Now, I needed to confirm whether the file, `3791.exe`, was executed</h4>
 
 I ran the query `index=botsv1 "3791.exe"`, which returned 76 events distributed across multiple sourcetypes, with the majority (about 91%) coming from `XmlWinEventLog`, followed by a few from `WinEventLog`, `stream:http`, `fortigate_utm`, and `suricata`. 
@@ -803,6 +837,8 @@ index=botsv1
        width="1000"><br>
   <em>Figure 24</em>
 </p>
+
+---
 
 <h4>(Step 4) After confirming traces of the executable `3791.exe` were identified in multiple sources including `Sysmon`, `WinEventLog`, and `Fortigate_UTM`, I needed to determine whether the file was executed on the host. Sysmon data was examined because the majority (about 91%) of the executable's presence was coming from `XmlWinEventLog`</h4>
 
@@ -845,6 +881,7 @@ When examining the `CommandLine` field for `3791.exe`, I clicked the entry itsel
   <em>Figure 26</em>
 </p>
 
+---
 
 ### Findings / Analysis
 Results confirmed that `3791.exe` executed shortly after upload. This demonstrated the attacker successfully transitioned from exploitation to persistence. The malicious file likely connected to an external server to receive commands or send data.
@@ -879,6 +916,8 @@ The goal of this phase was to determine how the malicious actor defaced the comp
 
 ### Step‑by‑Step Walkthrough
 
+---
+
 <h4>(Step 1): I first examined inbound traffic to the defaced website at IP `192.168.250.70`.</h4>
 
 To do so, I ran the following query to analyze inbound network traffic targeting the web server at IP `192.168.250.70` and looked at the `src_ip` field:
@@ -904,6 +943,8 @@ This query looks at inbound network traffic going to the web server 192.168.250.
 </p>
 
 This was unusual as the logs did not show any external IP communicating with the server.
+
+---
 
 <h4>(Step 2) Because there were no external IP communicating with the server, I reversed the flow so that 192.168.250.70 was the source. I wanted to see if any outbound traffic originated from the server instead.</h4>
 
@@ -931,6 +972,8 @@ This query revealed outbound requests to `prankglassinebracket.jumpingcrab
 
 What was interesting about this output is that web servers don't usually originate traffic. The browser or client would originate the traffic as the source and the server would be the destination. I noticed immediately that the web server initiated large traffic to `40.80.148.42`, `22.23.63.114`, and `192.168.250.40`. 
 
+---
+
 <h4>(Step 3) I checked Suricata logs for the top three destination IPs and found evidence of defacement from `23.22.63.114`</h4>
 
 I found evidence from `23.22.63.114` by running the following query, then looking into the `url` field:
@@ -956,6 +999,8 @@ That query filters Suricata logs to show outbound network traffic from the web s
 
 The `url` field showed 2 PHP files and a JPEG file. The JPEG file looked interesting, so I investigated more into it.
 
+---
+
 <h4>(Step 4) I wanted to investigate the JPEG file and created a table to get a hollistic view</h4>
 
 To do so, I ran the following query:
@@ -979,6 +1024,8 @@ dest_ip="192.168.250.70"
 The investigation revealed that the file `poisonivy-is-coming-for-you-batman.jpeg` was fetched by the compromised web server from the external host `prankglassinebracket.jumpingcrab.com`. No inbound traffic from an attacker IP was observed because the web server itself (or visitors’ browsers) initiated the outbound connection after its content had already been modified. 
 </blockquote>
 
+---
+
 <h4>(Step 5) To deepen my investigaton, I used a query to review firewall logs for traffic sent from the web server to 23.22.63.114</h4>
 
 To do so, I checked Fortigate UTM data to help determine whether this outbound connection was permitted, blocked, or flagged as suspicious, which gave more insight into the server’s network behavior and possible compromise indicators. I searched for the top three external IPs that showed when I searched outbound traffic from the webserver: `40.80.148.42`, `22.23.63.114`, and `192.168.250.40`. I found an SQL injection attempt  from `40.80.148.42` by looking at the `signature` field.
@@ -996,6 +1043,8 @@ sourcetype=fortigate_utm
        width="1000"><br>
   <em>Figure 32</em>
 </p>
+
+---
 
 ### Findings / Analysis
 
@@ -1044,6 +1093,8 @@ This task focused on identifying if the attacker establed a **Command and Contro
 
 ### Step‑by‑Step Walkthrough
 
+---
+
 <h4>(Step 1) I searched firewall and network logs for evidence of communication with the domain `prankglassinebracket.jumpingcrab.com`</h4>
 
 ```spl
@@ -1064,6 +1115,8 @@ Immediately I noticed I could see the source IP (`src_ip`), the destination IP (
        width="1000"><br>
   <em>Figure 33</em>
 </p>
+
+---
 
 <h4>(Step 2) I verified by looking at other log sources. For this step, I checked HTTP sources</h4>
 
@@ -1086,6 +1139,8 @@ I identified the suspicious domain as the C2 server, which seems to where the at
        width="1000"><br>
   <em>Figure 34</em>
 </p>
+
+---
 
 ### Findings / Analysis
 
@@ -1120,10 +1175,14 @@ From the previous objective, we know that the domain `prankglassinebracket.jumpi
 
 ### Step‑by‑Step Walkthrough
 
+---
+
 <h4>(Step 1) Went to Robtex to find the IP address tied to the domains that may potentially be pre-staged to attack the web server</h4>
 
 - I went to [Robotex's website](https://www.robtex.com/) and entered `prankglassinebracket.jumpingcrab.com` in the search field at the top. I was able to identify several other IP addresses associated with this domain. I was also able to see other domains and subdomains associated with this domain.
 - I then entered the attacker's IP (`23.22.63.114`) in the search bar at the top and found this IP associated with domains that looked pretty similar to websites from the fictional company, Wayne Enterprises.
+
+---
 
 <h4>(Step 2) Went on Virustotal to analyze suspicious files, domains, IP, etc, but more specifically to search for the IP address on the virustotal site</h4>
 
@@ -1133,6 +1192,8 @@ I investigated the suspicious domain `po1s0n1vy.com` using VirusTotal to identif
 - I then clicked the **Relations** tab to see all the domains associated with this IP, which again, looked similar to the Wayne Enterprises company.
 - In the list of domains, I saw the domain that is associated with the attacker (`www.po1s0n1vy.com`). I searched the domain in the search field on Virustotal.
 - I saw that Virustotal listed several related subdomains such as `ftp.po1s0n1vy.com`, `smtp.po1s0n1vy.com`, and `lillian.po1s0n1vy.com`, which might indicate shared hosting or possible attacker infrastructure reuse.
+
+---
 
 ### Findings / Analysis
 
@@ -1164,17 +1225,25 @@ I conducted open-source lookups on malicious domains and using external intellig
 - VirusTotal - I used VirusTotal to check file hashes, URLs, and domains against several antivirus engines. This helped confirm whether the payloads or domains were flagged as malicious and provided more context about known malware behavior.
 - Hybrid Analysis - I used this site to conduct a behavioral analysis of the malicious file identified from ThreatMiner
 
+---
+
 <h4>(Step 1) ThreatMiner - I found three files and their corresponding hashes, one of which was the malware identified in the Fortigate and Sysmon logs from Objective 3, Step 4</h4>
 
 After identifying the same MD5 hash (`c99131e0169171935c5ac32615ed6261`) of the malicious file (`3791.exe`) found in **Objective 3, Step 4**, I clicked on it and observed that the file appeared under a different name, indicating that although the filenames were different, the file content was identical. The file name appeared as `MirandaTateScreensaver.scr.exe`, and as noted in **Objective 3**, it was delivered via HTTP download and executed through a user interaction.
+
+---
 
 <h4>(Step 2) VirusTotal - To gather more intelligence, I entered this hash value on VirusTotal and saw other important details</h4>
 
 One of the first things I noticed was that this hash value was associated with the IP `23.22.63.114`, was was previously identified and confirmed as the attacker who attacked the website.
 
+---
+
 <h4>(Step 3) Hybrid Analysis - I entered the malicious executable identified in ThreatMiner to gather more intelligence such as metadata, DNS requests, MITRE ATT&CK mappings, and more</h4>
 
 I confirmed that the file `MirandaTateScreensaver.scr.exe` has the same MD5 hash (`c99131e0169171935c5ac32615ed6261`) as the malicious file `3791.exe`, meaning they are identical in content but have different names. The file is a Windows executable compiled with Microsoft C++, confirming it’s the same malware under a new name.
+
+---
 
 ### Findings / Analysis
 
