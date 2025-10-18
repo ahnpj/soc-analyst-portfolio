@@ -560,6 +560,35 @@ I pressed `Ctrl + C` to stop the live capture and get a short summary of all pac
 
 ---
 
+<h4>(Step 5) Retrieving TCP Flag Information from a PCAP file</h4>
+
+I practiced analyzing an existing capture file instead of live network traffic. I used the command: `sudo tcpdump -r traffic.pcap 'tcp[tcpflags] == tcp-rst' | wc -l` to count how many packets had only the TCP Reset (RST) flag set. 
+- The `-r traffic.pcap` option tells tcpdump to read packets from the saved file rather than capturing live traffic
+- The `'tcp[tcpflags] == tcp-rst'` isolates packets with the `RST` flag.
+- The `| wc -l` part pipes the output through the word count command, returning the number of lines, which equals the total number of matching packets.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_31.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 31</em>
+</p>
+
+Next, I ran: `sudo tcpdump -r traffic.pcap 'greater 15000' -n` to find the IP address of the host that sent packets larger than 15,000 bytes.
+
+- The `traffic.pcap` file is the existing file that contains packet captures from a previous exercise
+- The `'greater 15000'` filter displays only packets exceeding that size, and
+- The `-n` option disables DNS resolution, ensuring that IP addresses are shown directly instead of hostnames
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_32.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 32</em>
+</p>
+
+---
+
 ### Findings / Analysis
 This section revealed how powerful Tcpdump can be when analyzing lower-level protocol behavior. By filtering specific TCP flags, I could observe the TCP handshake (SYN, SYN-ACK, ACK) in action. This understanding is essential for identifying abnormal connection behavior or incomplete handshakes that may indicate scanning or denial-of-service attempts.
 
