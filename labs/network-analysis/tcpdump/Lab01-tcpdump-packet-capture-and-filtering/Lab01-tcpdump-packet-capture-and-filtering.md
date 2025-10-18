@@ -339,7 +339,101 @@ I learned how to construct efficient filters to capture only what I needed. In r
 In this task, I experimented with more advanced Tcpdump filters, including binary operations, packet length comparisons, and TCP flag analysis.
 
 ### Step-by-Step Walkthrough
-- I used filters like `greater LENGTH` and `less LENGTH` to display packets based on their size. For instance, `tcpdump greater 1000` captured packets larger than 1000 bytes.
+
+---
+
+<h4>(Step 1) I used filters like `greater [LENGTH]` and `less [LENGTH]` to display packets based on their size.</h4>
+
+---
+
+<h4>(Step 1a) I practiced using length-based filters in tcpdump to capture packets according to their size. </h4>
+
+I learned that the keywords `greater` and `less` allow filtering packets based on their byte length, regardless of source, destination, or protocol. For example, the command `tcpdump greater 1000` captures all packets larger than `1000` bytes on the default interface. 
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_15.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 15</em>
+</p>
+
+At any point, I can use `Ctrl + C` to stop the live capture and see a short summary of all packets captured on the default interface. That's exactly what I did:
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_16.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 16</em>
+</p>
+
+---
+
+<h4>(Step 1b) I specified an interface</h4>
+
+For example, the command `tcpdump -i ens5 greater 1000` captured all packets on the `ens5` interface that are larger than 1000 bytes.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_17.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 17</em>
+</p>
+
+I pressed `Ctrl + C` to stop the live capture to see a short summary of all packets captured on the `ens5` interface:
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_18.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 18</em>
+</p>
+
+---
+
+<h4>(Step 1c) I specified an interface and a host</h4>
+  
+I also modified the filter command by only capturing packets that are larger than 1000 bytes involving the host `example.com` on the `ens5` interface by using: `tcpdump -i ens5 host example.com and greater 1000`
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_19.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 19</em>
+</p>
+
+I pressed `Ctrl + C` to stop the live capture to see a short summary of all packets captured involving the host `example.com` on the `ens5` interface that are larger than 1000 bytes:
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_20.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 20</em>
+</p>
+
+---
+
+<h4>(Step 1d) I specified an interface, host, and protocol using the and operator</h4>
+
+I also discovered that I can capture only TCP packets larger than 1000 bytes on a specific network involving a specific domain. So I modified my command filter as such: `tcpdump -i ens5 tcp and host example.com and greater 1000`, which captured all TCP packets that are greater than 1000 bytes on the `ens5` network involved the host `example.com`
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_21.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 21</em>
+</p>
+
+I pressed `Ctrl + C` to stop the live capture to see a short summary of all `TCP` packets captured involving the host `example.com` on the `ens5` interface that are larger than 1000 bytes:
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_22.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 22</em>
+</p>
+
+---
+
 - I reviewed binary operations (`&`, `|`, and `!`) to understand how Tcpdump processes bits. These operations are often used in protocol-level filtering.
 - I explored the concept of header bytes and learned that I could filter based on specific byte positions using the syntax `proto[expr:size]`. This allowed for very detailed inspection, such as targeting parts of the Ethernet or IP header.
 - I then focused on TCP flags. Using expressions like `tcp[tcpflags] == tcp-syn`, I was able to isolate SYN packets, which represent connection initiation.
