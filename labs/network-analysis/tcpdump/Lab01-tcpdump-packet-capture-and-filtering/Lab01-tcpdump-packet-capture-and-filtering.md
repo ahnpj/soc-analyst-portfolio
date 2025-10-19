@@ -1,4 +1,4 @@
-<img width="715" height="88" alt="image" src="https://github.com/user-attachments/assets/d0c74a0b-b44e-48f2-8422-24dddc62bc9e" /># Tcpdump Packet Capture and Filtering
+# Tcpdump Packet Capture and Filtering
 
 ---
 
