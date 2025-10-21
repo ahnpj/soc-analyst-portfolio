@@ -682,12 +682,44 @@ To view packet data in readable text, I added `-A`, which printed the ASCII repr
 
 <h4>(Step 5) Displayed packets in Hexadecimal Format </h4>
 
-To view packet data in hexidecimal format, I added `-xx`, which printed the the bytes of each packet. The command was `tcpdump -r traffic.pcap -xx -c 2`
+To view packet data in hexidecimal format, I added `-xx`, which printed the the bytes of each packet. The command was `tcpdump -r traffic.pcap -xx -c 2`. The results also show the IP and TCP headers in addition to the packet contents.
 
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_37.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 37</em>
+</p>
 
 ---
 
-- Finally, I combined both hex and ASCII output using `-X`, which showed packets in both formats simultaneously.
+<h4>(Step 6) Displayed packets using both ASCII and Hexadecimal Format</h4>
+
+Finally, I combined both hex and ASCII output using `-X`, which showed packets in both formats simultaneously. I used `tcpdump -r traffic.pcap -X -c 2`.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_38.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 38</em>
+</p>
+
+---
+
+<h4>(Step 7) Finding the MAC address of host that sent an ARP request</h4>
+
+As a test, I sought to find the MAC address of any hosts that sent ARP requests. To achieve this, I ran `tcpdump -r traffic.pcap arp -e`
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_39.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 39</em>
+</p>
+
+I identified an ARP request asking “who has `192.168.124.137`” that was broadcast to the network. The MAC address before the `>` symbol in tcpdump’s output represents the source (sender), while the one after represents the destination. Using this format, I determined that the host with MAC address `52:54:00:7c:d3:5b` sent the ARP request. The reply came from `52:54:00:23:60:2b`, confirming it as the device associated with `192.168.124.137`.
+
+---
 
 ### Findings / Analysis
 Each display mode serves a different purpose. ASCII mode (`-A`) was useful when inspecting plaintext protocols like HTTP, while hexadecimal mode (`-xx`) provided insight into binary structures and headers. The combined `-X` mode made it easy to correlate header data with payload information. These display options help analysts interpret packets quickly, especially when verifying encoded data or identifying suspicious payloads.
