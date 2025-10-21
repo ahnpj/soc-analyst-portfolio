@@ -46,10 +46,18 @@ Currently includes:
 <summary><b>Network Analysis</b></summary>
 
 > <details>
-> <summary>tcpdump</summary>
+> <summary>Tcpdump</summary>
 >
 > - <a href="labs/network-analysis/tcpdump/Lab01-tcpdump-packet-capture-and-filtering/Lab01-tcpdump-packet-capture-and-filtering.md">Lab01 – Tcpdump Packet Capture and Filtering</a><br/>
 >   <em>Level: Beginner</em> → Capturing and analyzing network traffic using tcpdump to understand packet structures, apply filters, and identify key fields for basic network troubleshooting and security monitoring.
+>
+> </details>
+
+> <details>
+> <summary>Wireshark</summary>
+>
+> - <a href="labs/network-analysis/wireshark/Lab01-wireshark-packet-analysis-and-filtering/Lab01-wireshark-packet-analysis-and-filtering.md">Lab01 – Wireshark Packet Analysis and Filtering</a><br/>
+>   <em>Level: Beginner</em> → Captured and analyzed network traffic using Wireshark to examine packet structures, apply filters, and identify key fields useful for basic network troubleshooting and security monitoring.
 >
 > </details>
 
