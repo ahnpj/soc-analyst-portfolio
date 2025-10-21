@@ -19,6 +19,11 @@ labs/
       Lab01-powershell-endpoint-triage-basics
     windows-cli
       Lab01-windows-cli-endpoint-triage-basics
+  network-analysis/
+    tcpdump/
+      Lab01-tcpdump-packet-capture-and-filtering
+    wireshark/
+      Lab01-wireshark-packet-analysis-and-filtering
   playbooks/
 ```
 </details>
