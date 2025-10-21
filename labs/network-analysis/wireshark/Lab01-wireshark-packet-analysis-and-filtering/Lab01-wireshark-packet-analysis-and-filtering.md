@@ -1,4 +1,4 @@
-# Lab01 – Wireshark: Packet Analysis and Filtering
+# Wireshark: Packet Analysis and Filtering
 
 ---
 
