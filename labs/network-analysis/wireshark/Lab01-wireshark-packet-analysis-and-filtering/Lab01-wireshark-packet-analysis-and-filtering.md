@@ -160,3 +160,5 @@ Through this lab, I learned how to:
 Overall, this lab strengthened my foundational understanding of network analysis and gave me the confidence to use Wireshark for real-world packet investigation scenarios.
 
 </details>
+
+---
