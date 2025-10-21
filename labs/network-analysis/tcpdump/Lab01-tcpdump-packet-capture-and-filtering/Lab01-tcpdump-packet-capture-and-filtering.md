@@ -23,7 +23,7 @@ I accessed a remote Ubuntu 20.04 LTS Linux environment via SSH to perform comman
 - **Kernel:** 5.15.0-1066-aws → indicates it’s hosted on AWS
 - **Access Type:** SSH (remote login)
 - **Environment Type:** Virtual Machine (VM)
-- **IP Address: 10.201.121.21, 10.11.81.126, 10-201.28-187** (ephemeral/dynamic)
+- **IP Address: 10.201.121.21, 10.11.81.126, 10-201.28-187, 10-201-55-119** (ephemeral/dynamic)
 
 <p align="left">
   <img src="images/tcpdump_packet_capture_and_filtering_01.png?raw=true&v=2" 
@@ -608,12 +608,85 @@ I learned how to perform deep-level packet analysis using binary logic and TCP f
 ### Objective
 This section focused on customizing Tcpdump’s output to better interpret packet data. I learned how to display packet headers and payloads in multiple formats, including ASCII and hexadecimal.
 
+<blockquote>
+For this part of the lab, I used the "traffic.pcap" file. This file was used to practice analyzing small packet captures and verifying capture integrity and content in a controlled, minimal dataset.
+</blockquote>
+
 ### Step-by-Step Walkthrough
-- I displayed basic packet information with `tcpdump -r TwoPackets.pcap` to review captured data.
-- To simplify the output, I used `-q` for “quick” mode, which only showed source/destination IPs and ports.
-- To include MAC addresses and Ethernet headers, I added the `-e` flag.
-- To view packet data in readable text, I used `-A`, which printed the ASCII representation of the packet contents.
-- For a raw hexadecimal view, I added `-xx`, which printed the bytes of each packet.
+
+---
+
+<h4>(Step 1) I displayed basic packet information without any arguments or specifications</h4>
+
+I displayed basic packet information without any arguments or specifications using `tcpdump -r traffic.pcap -c 2` to review captured data. This command reads and displays the first two packets from a previously captured packet file (`traffic.pcap`). It shows the following information:
+
+- **Timestamp** - when the packet was captured
+- **Source and destination IP addresses** - who sent and who received the packet
+- **Protocol type** - TCP, UDP, ICMP, ARP, etc
+- **Ports** - Source and destination ports for TCP traffic
+- **Flags** - TCP flags like SYN, ACK, FIN
+- **Packet Length** - Total number of bytes in the frame
+- **Additional Information** - Sometimes includes checksums or ICMP message types
+
+<blockquote>
+I added the `-c 2` option to limit the output to just two packets. This was because capture file (traffic.pcap) contained a large number of packets and I only needed to display a small sample for analysis.
+</blockquote>
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_33.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 33</em>
+</p>
+
+---
+
+<h4>(Step 2) I used "-q" to get brief packet information</h4>
+
+To simplify the output of the two packets I've captured and displayed in **Step 1** above, I used `-q` for “quick” mode, which only showed source/destination IPs and ports. To do so, I used: `tcpdump -r traffic.pcap -q -c 2`. `-q`, as it might suggest, stands for "quick". So "quick view".
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_34.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 34</em>
+</p>
+
+---
+
+<h4>(Step 3) I included MAC addresses and Ethernet headers to display link-level headers</h4>
+
+To include MAC addresses and Ethernet headers, I added the `-e` flag to the command from **step 1**: `tcpdump -r traffic.pcap -e -c 2`.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_35.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 35</em>
+</p>
+
+---
+
+<h4>(Step 4) Displayed packets as ASCII</h4>
+
+To view packet data in readable text, I added `-A`, which printed the ASCII representation of the packet contents. The command was `tcpdump -r traffic.pcap -A -c 2`. This one was interesting because it also displayed all the bytes mapped to English letters, numbers, and symbols. The output appeared mostly unreadable, filled with random letters, numbers, and symbols. This happened because the captured packets contained encrypted SSH traffic. When `-A` is used, tcpdump tries to show the raw payload data as ASCII text, but since encrypted or binary data can’t be represented as readable characters, it appears as gibberish. The readable parts, such as IP addresses, ports, and flags, still provide useful metadata for analysis.
+
+<p align="left">
+  <img src="images/tcpdump_packet_capture_and_filtering_36.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 36</em>
+</p>
+
+---
+
+<h4>(Step 5) Displayed packets in Hexadecimal Format </h4>
+
+To view packet data in hexidecimal format, I added `-xx`, which printed the the bytes of each packet. The command was `tcpdump -r traffic.pcap -xx -c 2`
+
+
+---
+
 - Finally, I combined both hex and ASCII output using `-X`, which showed packets in both formats simultaneously.
 
 ### Findings / Analysis
