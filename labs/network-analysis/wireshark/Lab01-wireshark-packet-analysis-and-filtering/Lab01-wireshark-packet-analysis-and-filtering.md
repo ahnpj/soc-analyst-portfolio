@@ -1,4 +1,4 @@
-# Lab05 – Wireshark: The Basics
+# Lab01 – Wireshark: Packet Analysis and Filtering
 
 ---
 
