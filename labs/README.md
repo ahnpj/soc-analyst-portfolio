@@ -13,6 +13,8 @@ labs/
       Lab01-suspicious-process-investigation/
     splunk/
       Lab01-splunk-vpn-log-analysis/
+      Lab02-splunk-data-manipulation/
+      Lab03-splunk-cyber-kill-chain-investigation/
   end-point-triage/
     powershell/
       Lab01-powershell-endpoint-triage-basics
