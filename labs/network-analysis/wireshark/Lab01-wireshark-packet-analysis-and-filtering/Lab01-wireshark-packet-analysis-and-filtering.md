@@ -4,6 +4,10 @@
 
 ## Introduction / Overview / Objective
 
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
 ### Objective
 The purpose of this lab was to explore Wireshark, one of the most widely used network protocol analyzers. My goal was to understand how to navigate its interface, capture and inspect network packets, and analyze data across different layers of the TCP/IP model. Wireshark provides a graphical approach to packet analysis that complements command-line tools like Tcpdump, making it easier to visualize network activity.
 
@@ -16,9 +20,15 @@ Before beginning, I reviewed the learning objectives:
 - Inspect packets and extract information from various layers of TCP/IP.
 - Apply and manage display filters for efficient packet analysis.
 
+</details>
+
 ---
 
 ## Task 1 – Tool Overview
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 This section focused on familiarizing myself with Wireshark’s graphical interface, core features, and basic functionalities. I learned how to load PCAP files, interpret different panes, and understand what each visual section of the interface represents.
@@ -40,9 +50,15 @@ This task helped me become comfortable with the Wireshark environment. I realize
 ### What I Learned
 I learned how to load packet captures, interpret Wireshark’s GUI components, and apply default coloring rules. I also understood how Wireshark structures packet data and how to access detailed information efficiently.
 
+</details>
+
 ---
 
 ## Task 2 – Packet Dissection
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 The objective of this section was to dissect packets at multiple OSI layers and examine detailed protocol information. I wanted to understand how Wireshark decodes network packets and organizes them into structured fields for analysis.
@@ -62,9 +78,15 @@ Packet dissection allowed me to see how data travels through network layers. By 
 ### What I Learned
 I learned to correlate protocol layers to understand end-to-end communication. This exercise gave me hands-on experience tracing traffic from Ethernet frames to TCP streams and application data.
 
+</details>
+
 ---
 
 ## Task 3 – Packet Navigation
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 This section focused on learning how to efficiently navigate within Wireshark captures, locate specific packets, and manage annotations for deeper analysis.
@@ -85,9 +107,15 @@ Wireshark’s navigation tools make packet inspection much more manageable. Bein
 ### What I Learned
 I learned how to move through large captures effectively, mark and comment on key packets, and export relevant data. These functions are essential for documenting and sharing findings in professional investigations.
 
+</details>
+
 ---
 
 ## Task 4 – Packet Filtering
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 This section was about understanding and applying packet filtering within Wireshark to isolate traffic of interest. I wanted to practice using display filters to view only relevant protocols or hosts.
@@ -106,9 +134,15 @@ Filtering drastically improves visibility in large datasets. The ability to high
 ### What I Learned
 I learned how to construct and apply Wireshark filters efficiently. Understanding display filters and stream following is essential for analyzing targeted communications and identifying potential issues or malicious behaviors in network traffic.
 
+</details>
+
 ---
 
 ## Conclusions
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Summary
 This lab demonstrated the core capabilities of Wireshark and how it simplifies packet analysis through its graphical interface. I learned to capture, dissect, and filter network traffic while becoming familiar with the structure of PCAP files. Each exercise provided deeper insight into how different layers of network communication interact.
@@ -124,3 +158,5 @@ Through this lab, I learned how to:
 - Follow conversations and export relevant data for documentation.
 
 Overall, this lab strengthened my foundational understanding of network analysis and gave me the confidence to use Wireshark for real-world packet investigation scenarios.
+
+</details>
