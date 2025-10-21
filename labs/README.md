@@ -10,7 +10,6 @@ Each lab is designed to **increase in complexity and depth as the lab number goe
 labs/
   siem/
     siem-basics/
-      Lab01-intro-to-siem/
       Lab01-suspicious-process-investigation/
     splunk/
       Lab01-splunk-vpn-log-analysis/
