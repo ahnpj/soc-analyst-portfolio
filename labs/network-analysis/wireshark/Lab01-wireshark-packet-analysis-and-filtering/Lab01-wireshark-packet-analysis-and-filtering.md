@@ -69,7 +69,7 @@ The packet details were displayed in three key panes:
 
 <h4>(Step 2) Exploring Packet Coloring</h4>
 
-I explored Wireshark’s default packet colouring system and learned how it helps quickly identify different protocols and spot anomalies at a glance. I did so by working with both **temporary** and **permanent** coloring rules going to **View → Coloring Rules** and using the options in the **Wireshark - Coloring Rules Default" modal that appeared, to create or manage them. 
+I explored Wireshark’s default packet colouring system and learned how it helps quickly identify different protocols and spot anomalies at a glance. I did so by working with both **temporary** and **permanent** coloring rules going to **View → Coloring Rules** and using the options in the **Wireshark - Coloring Rules Default** modal that appeared, to create or manage them. 
 
 <p align="left">
   <img src="images/wireshark-packet-analysis-and-filtering-03.png?raw=true&v=2" 
