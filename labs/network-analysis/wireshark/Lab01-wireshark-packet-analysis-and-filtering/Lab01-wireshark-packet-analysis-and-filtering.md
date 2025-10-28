@@ -44,22 +44,85 @@ I explored Wireshark’s layout, which is divided into sections such as the **To
   <em>Figure 1</em>
 </p>
 
+---
+
 <h4>(Step 1) Loading and opening PCAP files</h4>
 I practiced opening existing capture files like **http1.pcapng** to see packet details displayed in real time.
 
+<blockquote>
 You can load the PCAP file by either opening it from the "File" menu, dragging and dropping the file directly, or simply double-clicking the file itself. I personally did the drag and drop.
+</blockquote>
 
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-02.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 2</em>
+</p>
 
+The packet details were displayed in three key panes:
+  - **Packet List Pane** – shows a summary of each captured packet, including protocol, source, destination, and length. (top pane)
+  - **Packet Details Pane** – displays protocol details in a hierarchical structure, such as Ethernet, IP, TCP, and application layer data. (bottom-left pane)
+  - **Packet Bytes Pane** – presents hexadecimal and ASCII representations of the selected packet. (bottom-right pane)
 
-- The packet details were displayed in three key panes:
-  - **Packet List Pane** – shows a summary of each captured packet, including protocol, source, destination, and length.
-  - **Packet Details Pane** – displays protocol details in a hierarchical structure, such as Ethernet, IP, TCP, and application layer data.
-  - **Packet Bytes Pane** – presents hexadecimal and ASCII representations of the selected packet.
+---
 
+<h4>(Step 2) Exploring Packet Coloring</h4>
 
-- I experimented with **coloring rules**, which visually separate packets by protocol type or condition (e.g., TCP, ARP, ICMP). This made it easier to recognize anomalies or traffic types at a glance.
-- I also tested **traffic sniffing**, which captures live packets, and learned how to start and stop captures using the blue “shark fin” icon.
-- Finally, I explored Wireshark’s ability to **merge PCAP files**, combine multiple captures, and view detailed file statistics such as total packets, file hash, and SHA256 checksum.
+I explored Wireshark’s default packet colouring system and learned how it helps quickly identify different protocols and spot anomalies at a glance. I did so by working with both **temporary** and **permanent** coloring rules going to **View → Coloring Rules** and using the options in the **Wireshark - Coloring Rules Default" modal that appeared, to create or manage them. 
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-03.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 3</em>
+</p>
+
+At first, I was confused about why most of the TCP packets in my Wireshark capture were showing up green instead of purple, even though the default TCP colouring rule was clearly set to purple. After checking the **Coloring Rules** window, I realized that Wireshark applies colours based on the first matching rule from top to bottom. That means if a packet matches a rule higher in the list (like “Bad TCP” or another green rule), Wireshark uses that colour and doesn’t continue checking further rules. Once I understood this priority system, it made sense why most of my TCP packets appeared green. They were simply being matched by an earlier rule in the list before the default purple TCP rule.
+
+I experimented with toggling the “Colorize Packet List” feature and using conversation filters for temporary highlighting. Overall, I now understand how packet colours can make analysis more efficient and how to customize these rules for specific events of interest.
+
+---
+
+<h4>(Step 3) Traffic Sniffing</h4>
+
+I also tested **traffic sniffing**, which captures live packets, and learned how to start and stop captures using the blue “shark fin” icon.
+
+I wanted to try capturing live network traffic in Wireshark, so I went to **Capture → Options** and looked through the available interfaces. I selected “Cisco remote capture: ciscodump,” thinking it was my network interface, but I later learned it’s actually used for remote captures from Cisco devices, not local network traffic. The other interfaces listed were also virtual or system-based, not real network adapters. Because there were no active local interfaces, the **[Start Capture]** button stayed greyed out.
+
+---
+
+<h4>(Step 4) Merging PCAP Files and Viewing File Details</h4>
+
+I explored Wireshark’s ability to **merge PCAP files** (**File > Merge**), combine multiple captures, and view detailed file statistics such as total packets, file hash, and SHA256 checksum.
+
+I decided to try merging another .pcap file with my current capture to see how Wireshark handles multiple data sources in one timeline. Merging pcap files is useful when you want to analyze traffic captured from different interfaces or at different times together. For example, combining client and server captures to see the full conversation, or merging sequential captures to create one continuous session. It helps provide a more complete picture of network activity without having to switch between separate files.
+
+---
+
+<h4>(Step 4-a) I merged a separate PCAP file to the one that was already uploaded</h4>
+
+First, I went to **File > Merge**, then merged **Exercise.pcapng** to **http1.pcapng**.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-04.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 4</em>
+</p>
+
+---
+
+<h4>(Step 4-b) Viewed File Details</h4>
+
+I went to **Statistics → Capture File Properties** because I wanted to see more information about the capture file itself, such as when it was created, what interface it came from, the SHA256 hash value, and what format or capture options were used. Viewing file details is important because it helps verify the context of the capture. For example, confirming the capture duration, packet count, and source interface can all be crucial for accurate analysis. It ensures you understand where the data originated and whether anything might affect how you interpret the packets.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-05.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 5</em>
+</p>
 
 ### Findings / Analysis
 This task helped me become comfortable with the Wireshark environment. I realized that while it can look overwhelming at first, its layout is designed for efficiency. The ability to colorize, filter, and merge captures helps tremendously when analyzing complex datasets. Packet details across the three panes allowed me to trace communication flow between hosts from the link layer up to the application layer.
