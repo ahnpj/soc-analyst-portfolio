@@ -1,4 +1,4 @@
-# Wireshark: Packet Analysis and Filtering
+<img width="1366" height="849" alt="image" src="https://github.com/user-attachments/assets/3074b3f5-d02e-4f3e-830f-8fd3b56afc6d" /># Wireshark: Packet Analysis and Filtering
 
 ---
 
@@ -152,13 +152,55 @@ The objective of this section was to dissect packets at multiple OSI layers and 
 
 I examined captured HTTP traffic and learned to break packets down by OSI layers, starting from the physical layer up to the application layer. By clicking on a specific packet, Wireshark expanded its contents to reveal information such as Ethernet source/destination MAC addresses, IP headers, TCP flags, and payloads.
 
+For this task, I focused in on a specific packet, which was packet #27 which was using the HTTP protocol. 
+
+The **Packet Details Pane** pane at the bottom-left lists each decoded protocol layer, while the **Packet Bytes Pane** pane at the bottom-right displays the raw hexadecimal data that was actually captured on the wire.
+
+When I click any field in the **Packet Details Pane** pane at the bottom-left, Wireshark automatically highlights the exact bytes in the **Packet Bytes Pane** pane at the bottom-right hex view that correspond to that field.
+
+This color-linking helped me visualize how the human-readable protocol information is stored as raw binary data:
+- Each row in the hex view shows 16 bytes (the actual bits sent over the network).
+- Wireshark maps those bytes to their decoded meaning, so when you select, say, the “Source IP” line, the four bytes representing that IP address turn blue in the hex pane.
+- This makes it easy to trace any part of a packet back to its raw data representation and see how the packet is built layer-by-layer.
+
 ### Step-by-Step Walkthrough
 
 ---
 
 <h4>(Step 1): The Frame Layer (Layer 1 - Physical) </h4>
 
-The **Frame layer** (Layer 1 - Physical) showed metadata like arrival time, encapsulation type, and frame length.
+The **Frame layer** (Layer 1 - Physical) showed metadata like arrival time, encapsulation type, and frame length. 
+
+In this Wireshark capture, the **Frame** section represents information captured at Layer 1 (Physical layer) of the OSI model, which is the point where raw bits are transmitted across the physical medium (like an Ethernet cable or Wi-Fi).
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-06.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 6</em>
+</p>
+
+The details in the red box show what Wireshark records about that physical transmission rather than the data itself.
+
+Specifically:
+- Frame 27 identifies the specific packet captured out of all the traffic on the wire.
+- 214 bytes on wire, 214 bytes captured means the full frame was successfully captured from the physical medium.
+- Encapsulation type: Ethernet (1) tells us this capture was taken on an Ethernet network which is the physical and data-link technology used.
+- Arrival Time / Epoch Time / Time delta fields show when the signal reached the network interface and how much time elapsed between packets. This relates to the timing of bit transmission on the medium.
+- Protocols in frame: lists the protocol stack Wireshark detected inside the captured bits (Ethernet → IP → TCP → HTTP).
+
+In other words, this layer shows metadata about how the packet physically appeared on the wire — its total size in bits, when it was received, and how it was encapsulated.
+
+It corresponds to the Physical Layer (Layer 1) of the OSI model, where data exists only as electrical, optical, or radio signals being transmitted or received before higher-level headers (like MAC or IP) are interpreted.
+
+The highlighted blue section corresponds to the bytes that belong to the Ethernet, IP, and TCP headers (and possibly part of the HTTP payload). It visually connects the physical transmission (hexadecimal data) to the structured OSI layers shown in the details pane.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-07.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 7</em>
+</p>
 
 ---
 
@@ -166,11 +208,51 @@ The **Frame layer** (Layer 1 - Physical) showed metadata like arrival time, enca
 
 The **Source [MAC] Layer** (Layer 2 - Data Link) revealed IP header information, including source and destination IPv4 addresses, protocol version, and time-to-live (TTL) value.
 
+In this capture, Wireshark displayed the Ethernet II header, which represents Layer 2 (the Data Link layer) of the OSI model.
+
+This layer is responsible for framing, MAC addressing, and delivering packets between devices on the same local network. It doesn’t deal with IPs or ports yet, only the physical device identifiers (MAC addresses).
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-08.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 8</em>
+</p>
+
+Inside the red box, we can see:
+- Destination: Xerox_00:00:00 → The hardware address of the receiving device.
+- Source: fe:ff:20:00:01:00 → The MAC address of the sending device.
+- Type: IPv4 (0x0800) → Indicates that the payload inside this Ethernet frame is an IP packet (Layer 3).
+
+These details show how the **Data Link layer** wraps the network-layer data in an Ethernet frame to move it across a physical medium (like a switch or LAN). When this frame reaches the destination, the MAC address helps ensure it’s delivered to the correct network interface before being passed up to Layer 3 (IP).
+
 ---
 
 <h4>(Step 3): Source [IP] (Layer 3 - Network)</h4>
 
 The **Source [IP] Layer** (Layer 3 - Network) revealed IP header information, including source and destination IP addresses, protocol version, and time-to-live (TTL) value.
+
+In this capture, Wireshark is displaying details from the Internet Protocol (IP) header, which represents the Network layer (Layer 3) of the OSI model. This layer is responsible for logical addressing and routing as it determines how packets travel from one device to another across different networks.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-09.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 9</em>
+</p>
+
+Inside the red box, you can see several key Layer 3 fields:
+- Version 4: Indicates this packet uses IPv4.
+- Header Length (20 bytes): Shows how large the IP header is before the next layer (TCP).
+- Source IP: 216.239.59.99 — the sender’s logical network address.
+- Destination IP: 145.254.160.237 — the receiver’s logical address.
+- Protocol: TCP (6) — tells Layer 4 what transport protocol to use.
+- TTL (Time to Live): 55 — the number of network hops allowed before the packet is discarded.
+- Total Length: 200 bytes — the full size of this IP datagram.
+
+All of these values are used by routers and network devices to route the packet from its source to its final destination across networks, regardless of physical medium or local addressing (like MACs).
+
+When you click any of these IP fields in Wireshark, the corresponding bytes in the **Packet Bytes Pane** (bottom-right) are highlighted which showed the exact binary data representing these Layer 3 details.
 
 ---
 
@@ -178,24 +260,97 @@ The **Source [IP] Layer** (Layer 3 - Network) revealed IP header information, in
 
 The **Protocol Layer** (Layer 4 - Transport) revealed details of the protocol used (UDP/TCP), including sequence and acknowledgment numbers, flags (SYN, ACK, FIN), and window size and source/destination ports.
 
+In this capture, Wireshark is displaying details from the Transmission Control Protocol (TCP) header, which represents the Transport layer (Layer 4) of the OSI model.
+
+This layer is responsible for end-to-end communication, ensuring data is reliably delivered between the source and destination applications. It uses port numbers to identify which process or service is sending and receiving the data.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-10.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 10</em>
+</p>
+
+Inside the red box, we can see key fields that define this TCP segment:
+- Source Port: 80 – the sending application’s port (HTTP server).
+- Destination Port: 3371 – the receiving application’s port on the client.
+- Sequence Number: 1431 – tracks the order of bytes sent so they can be reassembled correctly.
+- Acknowledgment Number: 722 – confirms receipt of previous data from the other side.
+- Header Length: 20 bytes – the size of the TCP header.
+
+These details show how TCP provides reliability by numbering segments, confirming receipt, and keeping track of timing. In the **Packet Bytes Pane** on the bottom-right, the blue-highlighted bytes correspond to the exact section of the packet where the TCP header data resides. This visually connects the decoded TCP information to its raw binary form.
+
+Below this, the dropdown arrows expand into additional subsections that give deeper insights into TCP behavior:
+- Flags – shows control bits like PSH (push data to the app immediately) and ACK (acknowledges received data).
+    - Flags are critical for managing TCP’s connection-oriented behavior (SYN, ACK, FIN, etc.).
+- SEQ/ACK Analysis – Wireshark calculates and shows relative sequence/acknowledgment numbers to make it easier to follow streams of packets in order.
+- Timestamps – records the timing information used to measure round-trip delay and help with congestion control and retransmission.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-11.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 11</em>
+</p>
+
+Within the TCP header, I observed important fields such as **Sequence and Acknowledgment** numbers, which track data flow between the sender and receiver. The **Flags field (0x018 – PSH, ACK)** showed that the packet was actively acknowledging received data and instructing the receiver to push it immediately to the application.
+
+Additional dropdowns like **SEQ/ACK analysis** and **Timestamps** revealed how Wireshark tracks packet timing, delays, and flow control. These values help verify that TCP communication is synchronized and reliable. Overall, this section demonstrated how Layer 4 manages data delivery, acknowledgment, and timing—bridging the IP-based routing (Layer 3) below and application data (Layer 7) above.
+
 ---
 
 <h4>(Step 5): Protocol Errors (Layer 4 Details - Still Transport)</h4>
 
-The **Protocol Errors Layer** (Layer 4 - Transport) is a continuation of the 4th layer and showed specfic details about any TCP errors.
-- I explored **protocol reassembly**, where Wireshark automatically combined fragmented TCP streams to show complete data transfers.
+The **Protocol Errors Layer** (Layer 4 - Transport) is a continuation of the 4th layer and showed specfic details about any TCP errors. I explored **protocol reassembly**, where Wireshark automatically combined fragmented TCP streams to show complete data transfers.
+
+In this capture, Wireshark is displaying reassembled TCP Segments, which is part of the **Transport layer (Layer 4)** in the OSI model. TCP often splits large pieces of data into multiple smaller segments, and Wireshark automatically reassembles them to show the full data stream.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-12.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 12</em>
+</p>
+
+Inside the red box, Wireshark shows:
+- Frame 26 (payload 0–1429 bytes) and Frame 27 (payload 1430–1589 bytes) — two TCP segments that make up one complete message.
+- Segment count: 2 — confirms that the full data was divided between two packets.
+- Reassembled TCP length: 1590 bytes — total combined payload size after reassembly.
+- Reassembled TCP Data: shows the merged binary data stream before it’s handed off to the Application layer (in this case, HTTP).
+
+This step demonstrates how TCP ensures reliable, ordered data delivery. Even though packets may arrive separately, TCP reassembles them in the correct order before passing them upward to the application.
 
 ---
 
-<h4>(Step 6): Application Protocol (Layer 5,6,7 - Session, Presentation, Application)</h4>
+<h4>(Step 6): Application Protocol and Application Data (Layer 5,6,7 - Session, Presentation, Application)</h4>
 
-The **Application layer** (Layer 5,6,7 - Sessions, Presentation, Application) decoded protocols like HTTP, showing request methods, user agents, and URLs accessed.
+The **Application layer** (Layer 5,6,7 - Sessions, Presentation, Application) decoded protocols like HTTP, showing request methods, user agents, and URLs accessed. The **Application Data Layer** showed the actual content or payload (HTML, JSON, etc.)
 
----
+In this capture, Wireshark displays the Hypertext Transfer Protocol (HTTP) section, which represents the top layers of the OSI model (5–7) — the Session, Presentation, and Application layers.
 
-<h4>(Step 7): Application Data (Layer 7 - Application)</h4>
+This part of the packet shows the actual application data being exchanged between the client and server after all lower-layer transmissions (Ethernet, IP, TCP) have been completed.
 
-The **Application Data Layer** showed the actual content or payload (HTML, JSON, etc.)
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-13.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 13</em>
+</p>
+
+Inside the red box, we can see:
+- HTTP/1.1 200 OK → the server’s response indicating the client’s request was successful.
+- Status Code 200 and Response Phrase “OK” → confirm proper communication and content delivery.
+- Content-Type: text/html → tells the client the data being sent is an HTML web page.
+- Content-Length: 1272 bytes → specifies the size of the response body.
+- Date and Server fields → show when and by what system the response was generated.
+- The HTML text in the “Line-based text data” section shows part of the actual web content.
+
+This layer corresponds to the Application level of the OSI model, where user-facing protocols (like HTTP, FTP, SMTP, or DNS) operate.
+
+Here’s how the OSI model maps to what we see here:
+- Layer 5 (Session): manages and maintains the communication session between client and server.
+- Layer 6 (Presentation): translates and formats data for readability (e.g., text/html, encoding type).
+- Layer 7 (Application): handles the actual application protocol — in this case, HTTP for web communication.
 
 ---
 
