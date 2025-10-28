@@ -1,5 +1,3 @@
-<img width="1366" height="849" alt="image" src="https://github.com/user-attachments/assets/3074b3f5-d02e-4f3e-830f-8fd3b56afc6d" /># Wireshark: Packet Analysis and Filtering
-
 ---
 
 ## Introduction / Overview / Objective
