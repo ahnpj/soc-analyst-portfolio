@@ -78,9 +78,15 @@ I explored Wireshark’s default packet colouring system and learned how it help
   <em>Figure 3</em>
 </p>
 
-At first, I was confused about why most of the TCP packets in my Wireshark capture were showing up green instead of purple, even though the default TCP colouring rule was clearly set to purple. After checking the **Coloring Rules** window, I realized that Wireshark applies colours based on the first matching rule from top to bottom. That means if a packet matches a rule higher in the list (like “Bad TCP” or another green rule), Wireshark uses that colour and doesn’t continue checking further rules. Once I understood this priority system, it made sense why most of my TCP packets appeared green. They were simply being matched by an earlier rule in the list before the default purple TCP rule.
+At first, I was confused about why most of the TCP packets in my Wireshark capture were showing up green instead of purple, even though the default TCP colouring rule was clearly set to purple. 
 
-I experimented with toggling the “Colorize Packet List” feature and using conversation filters for temporary highlighting. Overall, I now understand how packet colours can make analysis more efficient and how to customize these rules for specific events of interest.
+After checking the **Coloring Rules** window, I realized that Wireshark applies colours based on the first matching rule from top to bottom. That means if a packet matches a rule higher in the list (like “Bad TCP” or another green rule), Wireshark uses that colour and doesn’t continue checking further rules. 
+
+Once I understood this priority system, it made sense why most of my TCP packets appeared green. They were simply being matched by an earlier rule in the list before the default purple TCP rule.
+
+<blockquote>
+I later experimented with toggling the “Colorize Packet List” feature and using conversation filters for temporary highlighting. Overall, I now understand how packet colours can make analysis more efficient and how to customize these rules for specific events of interest.
+</blockquote>
 
 ---
 
