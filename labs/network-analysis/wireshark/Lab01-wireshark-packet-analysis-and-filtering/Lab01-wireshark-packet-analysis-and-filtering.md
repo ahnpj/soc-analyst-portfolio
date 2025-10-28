@@ -147,16 +147,50 @@ I learned how to load packet captures, interpret Wireshark’s GUI components, a
 <summary><b>(Click to expand)</b></summary>
 
 ### Objective
+
 The objective of this section was to dissect packets at multiple OSI layers and examine detailed protocol information. I wanted to understand how Wireshark decodes network packets and organizes them into structured fields for analysis.
 
+I examined captured HTTP traffic and learned to break packets down by OSI layers, starting from the physical layer up to the application layer. By clicking on a specific packet, Wireshark expanded its contents to reveal information such as Ethernet source/destination MAC addresses, IP headers, TCP flags, and payloads.
+
 ### Step-by-Step Walkthrough
-- I examined captured HTTP traffic and learned to break packets down by OSI layers, starting from the physical layer up to the application layer.
-- By clicking on a specific packet, Wireshark expanded its contents to reveal information such as Ethernet source/destination MAC addresses, IP headers, TCP flags, and payloads.
-- The **Frame layer** showed metadata like arrival time, encapsulation type, and frame length.
-- The **Network layer** revealed IP header information, including source and destination IP addresses, protocol version, and time-to-live (TTL) value.
-- The **Transport layer** displayed TCP details, including sequence and acknowledgment numbers, flags (SYN, ACK, FIN), and window size.
-- The **Application layer** decoded protocols like HTTP, showing request methods, user agents, and URLs accessed.
+
+---
+
+<h4>(Step 1): The Frame Layer (Layer 1 - Physical) </h4>
+The **Frame layer** (Layer 1 - Physical) showed metadata like arrival time, encapsulation type, and frame length.
+
+---
+
+<h4>(Step 2): The Source [MAC] (Layer 2 - Data Link)</h4>
+The **Source [MAC] Layer** (Layer 2 - Data Link) revealed IP header information, including source and destination IPv4 addresses, protocol version, and time-to-live (TTL) value.
+
+---
+
+<h4>(Step 3): Source [IP] (Layer 3 - Network)</h4>
+The **Source [IP] Layer** (Layer 3 - Network) revealed IP header information, including source and destination IP addresses, protocol version, and time-to-live (TTL) value.
+
+---
+
+<h4>(Step 4): Protocol (Layer 4 - Transport)</h4>
+The **Protocol Layer** (Layer 4 - Transport) revealed details of the protocol used (UDP/TCP), including sequence and acknowledgment numbers, flags (SYN, ACK, FIN), and window size and source/destination ports.
+
+---
+
+<h4>(Step 5): Protocol Errors (Layer 4 Details - Still Transport)</h4>
+The **Protocol Errors Layer** (Layer 4 - Transport) is a continuation of the 4th layer and showed specfic details about any TCP errors.
 - I explored **protocol reassembly**, where Wireshark automatically combined fragmented TCP streams to show complete data transfers.
+
+---
+
+<h4>(Step 6): Application Protocol (Layer 5,6,7 - Session, Presentation, Application)</h4>
+The **Application layer** (Layer 5,6,7 - Sessions, Presentation, Application) decoded protocols like HTTP, showing request methods, user agents, and URLs accessed.
+
+---
+
+<h4>(Step 7): Application Data (Layer 7 - Application)</h4>
+The **Application Data Layer** showed the actual content or payload (HTML, JSON, etc.)
+
+---
 
 ### Findings / Analysis
 Packet dissection allowed me to see how data travels through network layers. By analyzing headers, I could identify the path, type, and purpose of packets. I also learned how Wireshark automatically interprets complex fields like checksums and TCP segments, saving time compared to manual decoding. Seeing the full HTTP request headers (like “GET /index.html”) helped connect the transport and application layers.
