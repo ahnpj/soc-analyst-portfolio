@@ -157,37 +157,44 @@ I examined captured HTTP traffic and learned to break packets down by OSI layers
 ---
 
 <h4>(Step 1): The Frame Layer (Layer 1 - Physical) </h4>
+
 The **Frame layer** (Layer 1 - Physical) showed metadata like arrival time, encapsulation type, and frame length.
 
 ---
 
 <h4>(Step 2): The Source [MAC] (Layer 2 - Data Link)</h4>
+
 The **Source [MAC] Layer** (Layer 2 - Data Link) revealed IP header information, including source and destination IPv4 addresses, protocol version, and time-to-live (TTL) value.
 
 ---
 
 <h4>(Step 3): Source [IP] (Layer 3 - Network)</h4>
+
 The **Source [IP] Layer** (Layer 3 - Network) revealed IP header information, including source and destination IP addresses, protocol version, and time-to-live (TTL) value.
 
 ---
 
 <h4>(Step 4): Protocol (Layer 4 - Transport)</h4>
+
 The **Protocol Layer** (Layer 4 - Transport) revealed details of the protocol used (UDP/TCP), including sequence and acknowledgment numbers, flags (SYN, ACK, FIN), and window size and source/destination ports.
 
 ---
 
 <h4>(Step 5): Protocol Errors (Layer 4 Details - Still Transport)</h4>
+
 The **Protocol Errors Layer** (Layer 4 - Transport) is a continuation of the 4th layer and showed specfic details about any TCP errors.
 - I explored **protocol reassembly**, where Wireshark automatically combined fragmented TCP streams to show complete data transfers.
 
 ---
 
 <h4>(Step 6): Application Protocol (Layer 5,6,7 - Session, Presentation, Application)</h4>
+
 The **Application layer** (Layer 5,6,7 - Sessions, Presentation, Application) decoded protocols like HTTP, showing request methods, user agents, and URLs accessed.
 
 ---
 
 <h4>(Step 7): Application Data (Layer 7 - Application)</h4>
+
 The **Application Data Layer** showed the actual content or payload (HTML, JSON, etc.)
 
 ---
