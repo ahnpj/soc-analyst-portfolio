@@ -9,10 +9,10 @@
 <summary><b>(Click to expand)</b></summary>
 
 ### Objective
-The purpose of this lab was to explore Wireshark, one of the most widely used network protocol analyzers. My goal was to understand how to navigate its interface, capture and inspect network packets, and analyze data across different layers of the TCP/IP model. Wireshark provides a graphical approach to packet analysis that complements command-line tools like Tcpdump, making it easier to visualize network activity.
+The purpose of this lab was to explore Wireshark, one of the most widely used network protocol analyzers. My goal was to understand how to navigate its interface, capture and inspect network packets, and analyze data across different layers of the TCP/IP model. Wireshark provides a graphical approach to packet analysis that complements command-line tools like Tcpdump which makes it easier to visualize network activity.
 
 ### Overview
-Wireshark is an open-source, cross-platform network analyzer capable of sniffing and investigating live network traffic or analyzing stored packet captures (PCAP files). It’s widely used by network engineers, system administrators, and security analysts for troubleshooting, performance tuning, and incident response.  
+Wireshark is an open-source, cross-platform network analyzer capable of sniffing and investigating live network traffic or analyzing stored packet captures (PCAP files). It’s widely used by network engineers, system administrators, and security analysts for troubleshooting and incident response.  
 In this lab, I used pre-captured files such as **http1.pcapng** and **Exercise.pcapng** to simulate and analyze network behavior. These files provided realistic packet data to inspect different network layers, display filters, and analyze conversations between hosts.
 
 Before beginning, I reviewed the learning objectives:
