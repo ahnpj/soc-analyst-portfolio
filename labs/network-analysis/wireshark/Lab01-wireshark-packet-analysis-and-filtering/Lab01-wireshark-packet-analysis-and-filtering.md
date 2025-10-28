@@ -34,12 +34,29 @@ Before beginning, I reviewed the learning objectives:
 This section focused on familiarizing myself with Wireshark’s graphical interface, core features, and basic functionalities. I learned how to load PCAP files, interpret different panes, and understand what each visual section of the interface represents.
 
 ### Step-by-Step Walkthrough
-- I explored Wireshark’s layout, which is divided into sections such as the **Toolbar**, **Display Filter Bar**, **Recent Files**, **Capture Interfaces**, and **Status Bar**.
-- I practiced opening existing capture files like **http1.pcapng** to see packet details displayed in real time.
+
+I explored Wireshark’s layout, which is divided into sections such as the **Toolbar**, **Display Filter Bar**, **Recent Files**, **Capture Interfaces**, and **Status Bar**.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-01.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 1</em>
+</p>
+
+<h4>(Step 1) Loading and opening PCAP files</h4>
+I practiced opening existing capture files like **http1.pcapng** to see packet details displayed in real time.
+
+You can load the PCAP file by either opening it from the "File" menu, dragging and dropping the file directly, or simply double-clicking the file itself. I personally did the drag and drop.
+
+
+
 - The packet details were displayed in three key panes:
   - **Packet List Pane** – shows a summary of each captured packet, including protocol, source, destination, and length.
   - **Packet Details Pane** – displays protocol details in a hierarchical structure, such as Ethernet, IP, TCP, and application layer data.
   - **Packet Bytes Pane** – presents hexadecimal and ASCII representations of the selected packet.
+
+
 - I experimented with **coloring rules**, which visually separate packets by protocol type or condition (e.g., TCP, ARP, ICMP). This made it easier to recognize anomalies or traffic types at a glance.
 - I also tested **traffic sniffing**, which captures live packets, and learned how to start and stop captures using the blue “shark fin” icon.
 - Finally, I explored Wireshark’s ability to **merge PCAP files**, combine multiple captures, and view detailed file statistics such as total packets, file hash, and SHA256 checksum.
