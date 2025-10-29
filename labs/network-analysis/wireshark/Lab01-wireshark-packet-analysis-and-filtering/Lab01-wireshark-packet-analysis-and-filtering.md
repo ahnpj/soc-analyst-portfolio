@@ -573,7 +573,7 @@ However, this isn’t always ideal for investigations that require exact timesta
 
 <h4>(Step 9) Expert Information feature</h4>
 
-Lastly, I learned about Wireshark’s **[Analyze → Expert Information]** feature, which automatically detects potential issues or anomalies in captured network traffic. This tool categorizes findings into different severity levels:
+Lastly, I learned about Wireshark’s **[Analyze → Expert Information]** feature, which automatically detects potential issues or anomalies in captured network traffic. This tool categorizes findings into different severity levels, indicates the protocols, and displays the number of occurrences:
 - Chat (Blue) for normal information
 - Note (Cyan) for notable events
 - Warn (Yellow) for warnings
@@ -594,7 +594,7 @@ There are around 8 – 10 major groups, but Wireshark dynamically shows only the
 
 ---
 
-<h4>(Step 10) Self Test: Finding the MD5 Hash of an Image</h4>
+<h4>(Step 10) Self Test 1: Finding the MD5 Hash of an Image</h4>
 
 In this self test, I observed packet number 39765, and saw an `HTTP 200 OK` response from a remote server returning a `JPEG` image to my host. The image was split across multiple TCP segments, so Wireshark reassembled those segments and decoded the file structure (you can see the Start of Image (0xFFD8), quantization tables, Start of Scan, etc.) in the **Packet Details** pane. In short: the client sent an `HTTP GET`, the server replied with the `JPEG` payload, Wireshark reassembled the TCP stream, and the packet (and reassembled bytes) show the full `JPEG` content ready for export.
 
@@ -651,6 +651,58 @@ You can also run "sha256sum peter_test" for alternate hashes). I recorded the re
 <blockquote>
 MD5 and SHA-256 are different hashing algorithms with key differences in their security and hash output size. SHA-256 is a more secure algorithm that produces a 256-bit hash, while MD5 is older, faster, and produces a 128-bit hash
 </blockquote>
+
+---
+
+<h4>(Step 11) Self Test 2: Finding TXT File and Reading it</h4>
+
+---
+
+(Step 11-a) I knew there was a txt file in the capture file, so I navigated to **[File > Export Objects > HTTP]** which allowed me to export all HTTP objects found in this file.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-31.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 31</em>
+</p>
+
+---
+
+(Step 11-b) In the "Text Filter" field, I entered `.txt` to filter the list of HTTP objects for just `.txt` files.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-32.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 32</em>
+</p>
+
+---
+
+(Step 11-c) I saved the `.txt` as `peter_note.txt`
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-33.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 33</em>
+</p>
+
+---
+
+(Step 11-d) Instead of simply previewing the .txt file directly in Wireshark or jumping to the packet number from Step 11-b to view it in the Packet Details Pane, I opened a Bash terminal in the folder containing the saved .txt file and ran the following command to read its contents:
+
+`cat peter_note.txt`
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-34.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 34</em>
+</p>
+
+---
 
 ### Findings / Analysis
 Wireshark’s navigation tools make packet inspection much more manageable. Being able to jump directly to relevant packets or mark them for comparison is extremely useful for forensic analysis. Exporting objects or filtered data creates a more efficient workflow for isolating specific traffic without cluttering the main capture file.
