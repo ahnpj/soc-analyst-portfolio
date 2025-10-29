@@ -372,14 +372,214 @@ I learned to correlate protocol layers to understand end-to-end communication. T
 This section focused on learning how to efficiently navigate within Wireshark captures, locate specific packets, and manage annotations for deeper analysis.
 
 ### Step-by-Step Walkthrough
-- I observed that every packet is assigned a **packet number**, which helps in referencing specific entries within a large capture.
-- I used the **“Go To Packet”** feature to quickly jump to specific packets by number or relative position.
-- I practiced using **Find Packet** to search based on criteria like IP address, protocol, or specific text patterns.
-- I learned how to **mark packets** for later reference, which was especially useful when analyzing lengthy captures.
-- I explored how to **add comments** to packets for documentation purposes, then viewed and edited them through the Packet Comments panel.
-- I tested the **Export Packets** feature, which allowed saving filtered or selected packets into a new capture file.
-- I also explored **Export Objects**, a feature that extracts downloadable content (e.g., HTTP files) embedded within packets.
-- Lastly, I experimented with adjusting the **Time Display Format**, switching between default and UTC timestamps for better temporal analysis.
+
+--- 
+
+<h4>(Step 1) Learning about Packet Numbers</h4>
+
+While exploring Wireshark, I learned that each packet is assigned a unique number in the **Packet List Pane**, which helps identify and analyze individual transmissions. When I click on a specific packet number, Wireshark displays its detailed breakdown in the **Packet Details Pane** at the bottom-left, showing protocol layers and fields. At the same time, the **Packet Bytes Pane** at the bottom-right reveals the raw hexadecimal and ASCII data, allowing me to see exactly what the packet looks like at the byte level.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-14.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 14</em>
+</p>
+
+---
+
+<h4>(Step 2) Going to specific packets</h4>
+
+In this step, I explored how packet numbering works in Wireshark and how it helps with both navigation and analysis. I learned that each packet has a unique number in the **Packet List Pane**, and then clicking one opens its protocol details in the **Packet Details Pane** and its raw data in the **Packet Bytes Pane**. 
+
+I also practiced using the **[Go]** menu and toolbar options, including **[Go to Packet]** to jump to a specific number by number or relative position, **[Next/Previous Packet]** to move up or down, **[Next/Previous Packet in Conversation]** to follow related packets within the same stream, and **[First/Last Packet]** to reach the start or end of the capture. 
+
+These tools made it easier to track communication between hosts and understand how packets relate to each other. Overall, this part helped me see how packet numbering and navigation features improve the efficiency of analyzing network traffic in Wireshark.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-15.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 15</em>
+</p>
+
+---
+
+<h4>(Step 3) Finding packets</h4>
+
+In this step, I learned how to find packets in Wireshark using the **[Edit → Find Packet]** feature. Unlike packet numbers, this tool allows searching by packet content, which is useful for locating specific events such as intrusion patterns or network errors.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-16.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 16</em>
+</p>
+
+I explored the four input types
+- Display filter
+- Hex
+- String
+- Regex
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-17.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 17</em>
+</p>
+
+<blockquote>
+I learned that **String** and **Regex** are the most commonly used, with an option to enable/disable case sensitivity. 
+</blockquote>
+
+I also practiced selecting the correct search field across depending on where the data appears:
+- Packet List pane (top half)
+- Packet Details pane (bottom-left) 
+- Packet Bytes pane (bottom-right)
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-18.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 18</em>
+</p>
+
+<blockquote>
+This showed me how important it is to choose the right input type and pane when performing searches to efficiently pinpoint the packets of interest.
+</blockquote>
+
+---
+
+<h4>(Step 4) Marking packets</h4>
+
+I learned how to mark one or more packets in Wireshark to highlight specific event(s) or packet(s) for further analysis. By using the **[Edit] → Mark/UnMark Packet(s)]** or right-clicking a packet or group of packets, I could easily mark or unmark one or more packets of interest. This makes them stand out for later review or export. 
+
+<blockquote>
+"Ctrl + M" is the hotkey shortcut.
+</blockquote>
+
+I noticed that once marked, packets appear in black, regardless of their original color, which helps quickly identify them during analysis. For practice, I marked packets 20 - 26. 
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-19.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 19</em>
+</p>
+
+<blockquote>
+I also learned that marking is temporary. Marked packets are cleared once the capture file is closed. This feature is especially useful for keeping track of important findings during live or large-scale packet investigations.
+</blockquote>
+
+---
+
+<h4>(Step 5) Commenting on packets</h4>
+
+I explored how to **add comments** to packets for documentation purposes, then viewed and edited them through the **Packet Comments** panel.
+
+I learned how to add comments to packets in Wireshark to document important findings or suspicious activity during analysis. Similar to marking, commenting helps highlight specific packets for further investigation or for other analysts reviewing the same capture.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-20.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 20</em>
+</p>
+
+However, unlike marking, comments are saved within the capture file and remain there until manually removed. This makes it a valuable feature for collaboration and long-term investigations, as analysts can leave detailed notes directly tied to specific packets.
+
+<blockquote>
+I used the [right-click → Packet Comment] option (as shown in my screenshot), but I also learned that you can comment on packets through the [Edit → Packet Comment] menu or by using the [Ctrl + Alt + C] shortcut
+</blockquote>
+
+I then viewed and edited a test comment through the **Packet Comments** panel for packet number 23.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-21.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 21</em>
+</p>
+
+---
+
+<h4>(Step 5) Exporting objects</h4>
+
+I tested the **Export Objects** feature (**[File > Export Objects]**), a feature that extracts downloadable content (e.g., HTTP files) embedded within packets.
+
+I learned how Wireshark can extract and export files that were transferred over the network. This feature is especially valuable for security analysts, as it allows them to recover and examine shared or potentially malicious files for further investigation. 
+
+I discovered that exporting objects is only available for certain protocol streams, including DICOM, HTTP, IMF, SMB, and TFTP. By accessing these streams, analysts can save transferred files locally to analyze their contents, verify suspicious activity, or gather evidence of data exfiltration. This capability makes Wireshark a powerful tool for both troubleshooting and digital forensics.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-22.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 22</em>
+</p>
+
+---
+
+<h4>(Step 5) Exporting packets</h4>
+
+I also explored **Export Packets**, which allowed saving filtered or selected packets into a new capture file.
+
+I learned how to export specific packets from a capture file in Wireshark for focused analysis. Since capture files can contain thousands of packets, it’s often necessary to isolate only the suspicious or relevant packets to investigate an incident more efficiently. 
+
+I used the **[File → Export Specified Packets]** option to save a smaller, filtered capture that contained just the packets within my chosen scope. This process helps analysts share only the essential data while excluding redundant information. It’s especially useful when collaborating with others or conducting deeper analysis on targeted network activity.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-23.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 23</em>
+</p>
+
+The export window allows choosing between **Captured** and **Displayed** packets. 
+- **Captured** includes all packets in the file
+- **Displayed** only includes those visible after applying filters
+
+This makes it easier to save and share only the relevant data needed for investigation while excluding unnecessary traffic. I also learned that Wireshark provides additional options to export:
+- **Selected packets only** - Exports only the packets I’ve manually selected in the **Packet List Pane** (highlighted in blue - packets 3 - 13). This is useful when you want to save just a few specific packets for closer analysis.
+- **Marked packets only** - Exports only the packets I’ve previously marked using the **[Edit]** menu or right-click option. This helps isolate packets I flagged as important or suspicious during the investigation.
+- **Range** - Lets me manually define a range of packet numbers (for example, 50–150) to export only those packets within that sequence. This is helpful when you want to capture a continuous portion of traffic without exporting the entire file.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-24.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 24</em>
+</p>
+
+This gives analysts flexibility when isolating specific parts of network activity. Overall, this feature helps streamline the analysis process and focus on packets tied directly to an incident or event of interest.
+
+---
+
+<h4>(Step 5) Changing Time Display Format</h4>
+
+Lastly, I experimented with adjusting the **Time Display Format**, switching between default and UTC timestamps for better temporal analysis.
+
+I learned how to change the time display format in Wireshark to make packet analysis easier and more accurate. By default, Wireshark shows time as **Seconds Since Beginning of Capture**, which reflects when each packet was captured relative to the start of the recording. 
+
+However, this isn’t always ideal for investigations that require exact timestamps or time correlation with other systems. Using the **[View → Time Display Format]** menu, I switched to the **UTC Date and Time of Day**, which provided clearer, standardized timestamps. This feature helps analysts better align packet activity with external logs or events during incident analysis.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-25.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 25</em>
+</p>
+
+<h4>(Step 6) Expert Information feature</h4>
+
+Lastly, I learned about Wireshark’s **[Analyze → Expert Information]** feature, which automatically detects potential issues or anomalies in captured network traffic. This tool categorizes findings into different severity levels:
+- Chat (Blue) for normal information
+- Note (Cyan) for notable events
+- Warn (Yellow) for warnings
+- Error (Red) for serious problems like malformed packets.
+
+I also learned that Wireshark groups these detections under categories such as Checksum, Comment, Deprecated, and Malformed, helping analysts quickly identify specific types of issues. The expert info can be viewed through the Analyze → Expert Information menu or in the lower-left status bar, where a summary window lists the packet number, protocol group, and total occurrences. This feature is especially helpful for spotting irregular behavior and prioritizing which packets need deeper investigation.
 
 ### Findings / Analysis
 Wireshark’s navigation tools make packet inspection much more manageable. Being able to jump directly to relevant packets or mark them for comparison is extremely useful for forensic analysis. Exporting objects or filtered data creates a more efficient workflow for isolating specific traffic without cluttering the main capture file.
