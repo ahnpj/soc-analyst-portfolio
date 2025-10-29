@@ -592,6 +592,8 @@ I also learned that Wireshark groups these detections under categories such as C
 There are around 8 – 10 major groups, but Wireshark dynamically shows only the ones relevant to the traffic you’re analyzing. In the screenshot above, for example, I was only seeing Malformed, Protocol, Sequence, and Comment, which are the most common ones in typical TCP/HTTP captures.
 </blockquote>
 
+---
+
 ### Findings / Analysis
 Wireshark’s navigation tools make packet inspection much more manageable. Being able to jump directly to relevant packets or mark them for comparison is extremely useful for forensic analysis. Exporting objects or filtered data creates a more efficient workflow for isolating specific traffic without cluttering the main capture file.
 
