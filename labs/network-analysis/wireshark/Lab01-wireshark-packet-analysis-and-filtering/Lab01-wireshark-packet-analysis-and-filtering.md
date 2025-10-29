@@ -579,7 +579,9 @@ Lastly, I learned about Wireshark’s **[Analyze → Expert Information]** featu
 - Warn (Yellow) for warnings
 - Error (Red) for serious problems like malformed packets.
 
-I also learned that Wireshark groups these detections under categories such as Checksum, Comment, Deprecated, Malformed, Protocol, and Sequence. This helps analysts quickly identify specific types of issues. The expert info can be viewed through the Analyze → Expert Information menu or in the lower-left status bar, where a summary window lists the packet number, protocol group, and total occurrences. This feature is especially helpful for spotting irregular behavior and prioritizing which packets need deeper investigation.
+I also learned that Wireshark groups these detections under categories such as **Checksum**, **Comment**, **Deprecated**, **Malformed**, **Protocol**, and **Sequence**. This helps analysts quickly identify specific types of issues. 
+
+The expert info can be viewed through the **[Analyze → Expert Information]** menu or in the lower-left status bar, where a summary window lists the packet number, protocol group, and total occurrences. This feature is especially helpful for spotting irregular behavior and prioritizing which packets need deeper investigation.
 
 <p align="left">
   <img src="images/wireshark-packet-analysis-and-filtering-26.png?raw=true&v=2" 
