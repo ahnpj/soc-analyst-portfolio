@@ -594,6 +594,64 @@ There are around 8 – 10 major groups, but Wireshark dynamically shows only the
 
 ---
 
+<h4>(Step 10) Self Test: Finding the MD5 Hash of an Image</h4>
+
+In this self test, I observed packet number 39765, and saw an `HTTP 200 OK` response from a remote server returning a `JPEG` image to my host. The image was split across multiple TCP segments, so Wireshark reassembled those segments and decoded the file structure (you can see the Start of Image (0xFFD8), quantization tables, Start of Scan, etc.) in the **Packet Details** pane. In short: the client sent an `HTTP GET`, the server replied with the `JPEG` payload, Wireshark reassembled the TCP stream, and the packet (and reassembled bytes) show the full `JPEG` content ready for export.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-27.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 27</em>
+</p>
+
+---
+
+(Step 10-a) To extract the image from the capture, I right-clicked on **[JPEG File Interchange Format]** under the **Packet Details Pane** and selected **[Export Packet Bytes]**.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-28.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 28</em>
+</p>
+
+---
+
+(Step 10-b) I then saved the raw image data as `peter_test.jpg` to my desktop. 
+
+<blockquote>
+This method exports only the bytes from that specific protocol layer, effectively reconstructing the image as it was transmitted over the network. Once saved, I could open the image locally to verify that it was successfully captured and properly reconstructed.
+</blockquote>
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-29.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 29</em>
+</p>
+
+---
+
+(Step 10-c) After saving the file I opened a bash terminal in the folder containing the saved image and ran the following command to retrieve the MD5 hash of the image:
+
+`md5sum peter_test`
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-30.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 30</em>
+</p>
+
+<blockquote>
+You can also run "sha256sum peter_test" for alternate hashes). I recorded the resulting hash in my lab notes and used it to verify the integrity of the saved file by re-running the same command later which produced the same hash to verify the file was unchanged.
+</blockquote>
+
+<blockquote>
+MD5 and SHA-256 are different hashing algorithms with key differences in their security and hash output size. SHA-256 is a more secure algorithm that produces a 256-bit hash, while MD5 is older, faster, and produces a 128-bit hash
+</blockquote>
+
 ### Findings / Analysis
 Wireshark’s navigation tools make packet inspection much more manageable. Being able to jump directly to relevant packets or mark them for comparison is extremely useful for forensic analysis. Exporting objects or filtered data creates a more efficient workflow for isolating specific traffic without cluttering the main capture file.
 
