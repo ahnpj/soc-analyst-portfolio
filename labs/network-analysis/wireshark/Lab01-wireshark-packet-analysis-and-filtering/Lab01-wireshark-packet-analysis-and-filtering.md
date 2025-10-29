@@ -504,7 +504,7 @@ I then viewed and edited a test comment through the **Packet Comments** panel fo
 
 ---
 
-<h4>(Step 5) Exporting objects</h4>
+<h4>(Step 6) Exporting objects</h4>
 
 I tested the **Export Objects** feature (**[File > Export Objects]**), a feature that extracts downloadable content (e.g., HTTP files) embedded within packets.
 
@@ -521,7 +521,7 @@ I discovered that exporting objects is only available for certain protocol strea
 
 ---
 
-<h4>(Step 5) Exporting packets</h4>
+<h4>(Step 7) Exporting packets</h4>
 
 I also explored **Export Packets**, which allowed saving filtered or selected packets into a new capture file.
 
@@ -556,7 +556,7 @@ This gives analysts flexibility when isolating specific parts of network activit
 
 ---
 
-<h4>(Step 5) Changing Time Display Format</h4>
+<h4>(Step 8) Changing Time Display Format</h4>
 
 Lastly, I experimented with adjusting the **Time Display Format**, switching between default and UTC timestamps for better temporal analysis.
 
@@ -571,7 +571,7 @@ However, this isn’t always ideal for investigations that require exact timesta
   <em>Figure 25</em>
 </p>
 
-<h4>(Step 6) Expert Information feature</h4>
+<h4>(Step 9) Expert Information feature</h4>
 
 Lastly, I learned about Wireshark’s **[Analyze → Expert Information]** feature, which automatically detects potential issues or anomalies in captured network traffic. This tool categorizes findings into different severity levels:
 - Chat (Blue) for normal information
@@ -579,7 +579,18 @@ Lastly, I learned about Wireshark’s **[Analyze → Expert Information]** featu
 - Warn (Yellow) for warnings
 - Error (Red) for serious problems like malformed packets.
 
-I also learned that Wireshark groups these detections under categories such as Checksum, Comment, Deprecated, and Malformed, helping analysts quickly identify specific types of issues. The expert info can be viewed through the Analyze → Expert Information menu or in the lower-left status bar, where a summary window lists the packet number, protocol group, and total occurrences. This feature is especially helpful for spotting irregular behavior and prioritizing which packets need deeper investigation.
+I also learned that Wireshark groups these detections under categories such as Checksum, Comment, Deprecated, Malformed, Protocol, and Sequence. This helps analysts quickly identify specific types of issues. The expert info can be viewed through the Analyze → Expert Information menu or in the lower-left status bar, where a summary window lists the packet number, protocol group, and total occurrences. This feature is especially helpful for spotting irregular behavior and prioritizing which packets need deeper investigation.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-26.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 26</em>
+</p>
+
+<blockquote>
+There are around 8 – 10 major groups, but Wireshark dynamically shows only the ones relevant to the traffic you’re analyzing. In the screenshot above, for example, I was only seeing Malformed, Protocol, Sequence, and Comment, which are the most common ones in typical TCP/HTTP captures.
+</blockquote>
 
 ### Findings / Analysis
 Wireshark’s navigation tools make packet inspection much more manageable. Being able to jump directly to relevant packets or mark them for comparison is extremely useful for forensic analysis. Exporting objects or filtered data creates a more efficient workflow for isolating specific traffic without cluttering the main capture file.
