@@ -919,7 +919,42 @@ Overall, this feature is extremely useful for customizing the view to focus on s
 
 ---
 
-- I practiced **Follow TCP Stream**, which reconstructs an entire conversation (e.g., HTTP request/response). This view displayed both client and server data in plain text, color-coded by direction.
+<h4>(Step 6): "Follow Stream" feature</h4>
+
+I practiced **[Follow TCP Stream]**, which reconstructs an entire conversation (e.g., HTTP request/response). This view displayed both client and server data in plain text, color-coded by direction.
+
+I used Wireshark’s **[Follow Stream]** feature to reconstruct and analyze data exchanged at the application level. While Wireshark normally displays traffic in packet form, following a stream allowed me to view the full conversation between client and server as it appeared in raw form. This helps visualize the data in a continuous sequence rather than as individual packets, making it easier to understand the overall context of the communication.
+
+To test this, I right-clicked on packet #7 and selected **[Follow → TCP Stream]** (also available via **[Analyze → Follow → TCP/UDP/HTTP Stream]**).
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-48.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 48</em>
+</p>
+
+Wireshark opened a separate dialogue window showing the entire conversation, with client-originated packets highlighted in red and server-originated packets in blue. This color distinction clearly identified which side each message came from.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-49.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 49</em>
+</p>
+
+Once the stream was followed, Wireshark automatically applied a display filter to show only the packets belonging to that specific session. I noticed that the packet count in the status bar changed to reflect only the packets from that stream. To return to the full capture view, I clicked the “X” button on the right side of the Display Filter bar, which cleared the filter and restored all packets.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-50.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 50</em>
+</p>
+
+The **[Follow Stream]** feature is especially useful for examining unencrypted protocol data, such as HTTP traffic, where sensitive information like usernames, passwords, or session tokens can sometimes be visible in plain text. Overall, this tool is essential for reconstructing and understanding the content and sequence of communications at the application layer.
+
+---
 
 ### Findings / Analysis
 Filtering drastically improves visibility in large datasets. The ability to highlight or isolate specific streams helped me identify communication patterns, such as repeated requests between hosts. The Follow Stream feature was especially powerful because it reassembled conversations at the application level, allowing me to read HTTP requests and responses like chat logs.
