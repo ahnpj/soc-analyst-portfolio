@@ -927,6 +927,7 @@ I used Wireshark’s **[Follow Stream]** feature to reconstruct and analyze data
 
 To test this, I right-clicked on packet #7 and selected **[Follow → TCP Stream]** (also available via **[Analyze → Follow → TCP/UDP/HTTP Stream]**).
 
+
 <p align="left">
   <img src="images/wireshark-packet-analysis-and-filtering-48.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -936,6 +937,10 @@ To test this, I right-clicked on packet #7 and selected **[Follow → TCP Stream
 
 Wireshark opened a separate dialogue window showing the entire conversation, with client-originated packets highlighted in red and server-originated packets in blue. This color distinction clearly identified which side each message came from.
 
+<blockquote>
+I learned I could also search for key terms from the **Find** text bar.  
+</blockquote>
+
 <p align="left">
   <img src="images/wireshark-packet-analysis-and-filtering-49.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -943,7 +948,7 @@ Wireshark opened a separate dialogue window showing the entire conversation, wit
   <em>Figure 49</em>
 </p>
 
-Once the stream was followed, Wireshark automatically applied a display filter to show only the packets belonging to that specific session. I noticed that the packet count in the status bar changed to reflect only the packets from that stream. To return to the full capture view, I clicked the “X” button on the right side of the Display Filter bar, which cleared the filter and restored all packets.
+Once the stream was followed, Wireshark automatically applied a display filter to show only the packets belonging to that specific session. I noticed that the packet count in the status bar changed to reflect only the packets from that stream. To return to the full capture view, I clicked the “X” button on the right side of the **Display Filter** bar, which cleared the filter and restored all packets.
 
 <p align="left">
   <img src="images/wireshark-packet-analysis-and-filtering-50.png?raw=true&v=2" 
