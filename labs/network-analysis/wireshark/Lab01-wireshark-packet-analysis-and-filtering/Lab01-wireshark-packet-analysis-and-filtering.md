@@ -887,8 +887,39 @@ This method gave me greater control over how filters were built and applied, mak
 
 ---
 
+<h4>(Step 5): "Apply as Column" feature</h4>
+
+I also learned to **[Apply as Column]**, which added custom fields (like IP address or protocol) directly into the packet list for easier comparison.
+
+I explored Wireshark’s **[Apply as Column]** feature, which allowed me to add custom fields as columns in the **Packet List Pane** for easier comparison and visibility. By default, the packet list shows basic information such as **No.**, **Time**, **Source**, **Destination**, **Protocol**, **Length**, and **Info**, but adding custom columns helps highlight specific values of interest.
+
+To test this, I right-clicked on a field (**Source Port**) for packet #6 within the **Packet Details Pane** and selected **[Apply as Column]** (also accessible from **[Analyze → Apply as Column]**). 
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-46.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 46</em>
+</p>
+
+Wireshark then created a new column at the end of the packet list, showing the selected field’s (**Source Port**) value for every packet in the capture. This made it much easier to track how that value changed or appeared across different packets.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-47.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 47</em>
+</p>
+
+<blockquote>
+I could apply other fields such as TTL (Time To Live) or HTTP hostnames as columns to monitor patterns in traffic behavior. Columns can also be rearranged, hidden, or disabled by clicking the column headers and adjusting the visibility settings.
+</blockquote>
+
+Overall, this feature is extremely useful for customizing the view to focus on specific protocol details or identifiers—especially during traffic correlation, anomaly detection, or performance analysis.
+
+---
+
 - I practiced **Follow TCP Stream**, which reconstructs an entire conversation (e.g., HTTP request/response). This view displayed both client and server data in plain text, color-coded by direction.
-- I also learned to **Apply as Column**, which adds custom fields (like IP address or protocol) directly into the packet list for easier comparison.
 
 ### Findings / Analysis
 Filtering drastically improves visibility in large datasets. The ability to highlight or isolate specific streams helped me identify communication patterns, such as repeated requests between hosts. The Follow Stream feature was especially powerful because it reassembled conversations at the application level, allowing me to read HTTP requests and responses like chat logs.
