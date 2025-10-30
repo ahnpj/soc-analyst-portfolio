@@ -857,11 +857,17 @@ Next, I wanted to narrow the capture down further by including packets associate
 </p>
 
 <blockquote>
+
 [Selected] -> Displays filter for the field I clicked
+
 [Not Selected] -> Creates excludes field, meaning packets that don't match the selected value
+  
 [...and Selected] -> Appends the new field to the existing one using the AND operator, so Wireshark displays packets that meet both criteria
+
 [...or Selected] -> Appends the new field with an OR operator, showing packets that match one of the filter fields
+
 [...and Not Selected] -> Appends the condition to exclude certain traffic while keeping others, using the AND NOT operator
+
 [...or Not Selected] -> Appends the condition that includes packets that match either the original field or anything that does not match the new one
 </blockquote>
 
