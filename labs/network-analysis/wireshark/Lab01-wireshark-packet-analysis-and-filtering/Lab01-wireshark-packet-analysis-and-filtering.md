@@ -757,7 +757,40 @@ Overall, this exercise demonstrated how “Apply as Filter” provides a fast an
 
 ---
 
-- I learned how to create **Conversation Filters** to follow specific TCP or UDP streams, showing all packets related to one session.
+<h4>(Step 2): "Conversation Filter" feature</h4>
+
+I learned how to create **Conversation Filters** to follow specific TCP or UDP streams, showing all packets related to one session.
+
+While the **[Apply as Filter]** option is useful for isolating a single field—such as a specific IP address, timestamp, or destination value, the **[Conversation Filter]** goes a step further by capturing the entire flow of related packets.
+
+To test this, I selected a packet and applied the **[Conversation Filter]** through the right-click menu (alternatively available from the **[Analyze]** menu). I right-clicked a TCP packet (packet # 2) and opened the **[Conversation Filter]** menu, where I saw multiple protocol options such as **[Ethernet]**, **[IPv4]**, **[TCP]**, and others. 
+
+<blockquote>
+Since the selected packet was a TCP segment over IPv4, only the relevant filters (IPv4 and TCP) were active, while unsupported protocols like IPv6 and UDP were greyed out. 
+</blockquote>
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-37.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 37</em>
+</p>
+
+After selecting **[TCP]**, Wireshark automatically applied a filter showing only packets belonging to that specific TCP conversation between the two endpoints.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-38.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 38</em>
+</p>
+
+This automatically displayed only the packets that shared the same IP addresses and port numbers, effectively showing the complete conversation between the two endpoints.
+
+This method made it much easier to follow the communication stream, identify request–response patterns, and analyze the overall interaction between hosts without the distraction of unrelated traffic.
+
+---
+
 - I experimented with **Colorise Conversation**, which highlights related packets visually for easier tracking.
 - I used **Prepare as Filter** to build a filter expression before activating it, giving me more flexibility.
 - I practiced **Follow TCP Stream**, which reconstructs an entire conversation (e.g., HTTP request/response). This view displayed both client and server data in plain text, color-coded by direction.
