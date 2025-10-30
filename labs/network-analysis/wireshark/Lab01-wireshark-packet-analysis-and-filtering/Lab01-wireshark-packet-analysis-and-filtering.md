@@ -693,7 +693,7 @@ MD5 and SHA-256 are different hashing algorithms with key differences in their s
 
 ---
 
-(Step 11-d) Instead of simply previewing the .txt file directly in Wireshark or jumping to the packet number from Step 11-b to view it in the Packet Details Pane, I opened a Bash terminal in the folder containing the saved .txt file and ran the following command to read its contents:
+(Step 11-d) Instead of simply previewing the `.txt` file directly in Wireshark or jumping to the packet number from **Step 11-b** to view it in the **Packet Details Pane**, I opened a Bash terminal in the folder containing the saved `.txt` file and ran the following command to read its contents:
 
 `cat peter_note.txt`
 
