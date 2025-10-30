@@ -647,7 +647,7 @@ This method exports only the bytes from that specific protocol layer, effectivel
 </p>
 
 <blockquote>
-You can also run "sha256sum peter_test" for alternate hashes). I recorded the resulting hash in my lab notes and used it to verify the integrity of the saved file by re-running the same command later which produced the same hash to verify the file was unchanged.
+I could also run "sha256sum peter_test" to retrieve the SHA256 hash. I recorded the resulting hash in my lab notes and used it to verify the integrity of the saved file by re-running the same command later which produced the same hash to verify the file was unchanged.
 </blockquote>
 
 <blockquote>
