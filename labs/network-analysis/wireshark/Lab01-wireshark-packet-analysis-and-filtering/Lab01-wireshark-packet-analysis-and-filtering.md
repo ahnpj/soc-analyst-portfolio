@@ -506,7 +506,7 @@ I then viewed and edited a test comment through the **Packet Comments** panel fo
 
 <h4>(Step 6) Exporting objects</h4>
 
-I tested the **Export Objects** feature (**[File > Export Objects]**), a feature that extracts downloadable content (e.g., HTTP files) embedded within packets.
+I tested the **[Export Objects]** feature (**[File > Export Objects]**), a feature that extracts downloadable content (e.g., HTTP files) embedded within packets.
 
 I learned how Wireshark can extract and export files that were transferred over the network. This feature is especially valuable for security analysts, as it allows them to recover and examine shared or potentially malicious files for further investigation. 
 
@@ -523,7 +523,7 @@ I discovered that exporting objects is only available for certain protocol strea
 
 <h4>(Step 7) Exporting packets</h4>
 
-I also explored **Export Packets**, which allowed saving filtered or selected packets into a new capture file.
+I also explored **[Export Packets]**, which allowed saving filtered or selected packets into a new capture file.
 
 I learned how to export specific packets from a capture file in Wireshark for focused analysis. Since capture files can contain thousands of packets, it’s often necessary to isolate only the suspicious or relevant packets to investigate an incident more efficiently. 
 
@@ -731,7 +731,7 @@ This section was about understanding and applying packet filtering within Wiresh
 
 <h4>(Step 1): "Apply as Filter" feature</h4>
 
-I applied filters using **Apply as Filter**, which allowed me to right-click a field and instantly generate a filter expression.
+I applied filters using **[Apply as Filter]**, which allowed me to right-click a field and instantly generate a filter expression.
 
 I practiced using Wireshark’s **[Analyze] > [Apply as Filter]** feature to isolate specific network traffic from a capture file. While analyzing packets, I selected the **Source** field (source IP) of Packet #1 within the **Packet List Pane** and right-clicked to choose **[Apply as Filter → Selected]** (alternatively available from the **[Analyze]** menu). 
 
@@ -759,7 +759,7 @@ Overall, this exercise demonstrated how “Apply as Filter” provides a fast an
 
 <h4>(Step 2): "Conversation Filter" feature</h4>
 
-I learned how to create **Conversation Filters** to follow specific TCP or UDP streams, showing all packets related to one session.
+I learned how to create **[Conversation Filters]** to follow specific TCP or UDP streams, showing all packets related to one session.
 
 While the **[Apply as Filter]** option is useful for isolating a single field—such as a specific IP address, timestamp, or destination value, the **[Conversation Filter]** goes a step further by capturing the entire flow of related packets.
 
@@ -791,7 +791,36 @@ This method made it much easier to follow the communication stream, identify req
 
 ---
 
-- I experimented with **Colorise Conversation**, which highlights related packets visually for easier tracking.
+<h4>(Step 3): "Colourize Conversation" feature</h4>
+
+I experimented with **[Colorise Conversation]**, which highlights related packets visually for easier tracking.
+
+I learned how to visually highlight related packets in Wireshark using the **[Colorize Conversation]** feature. Instead of applying a display filter that hides unrelated traffic, this feature assigns a unique color to all packets belonging to the same communication flow, allowing me to easily follow the conversation while keeping the rest of the capture visible.
+
+As shown in the screenshot, I right-clicked on a TCP packet (packet #3) and navigated to **[Colorize Conversation → TCP → Color 4]**. 
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-39.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 39</em>
+</p>
+
+Wireshark then highlighted every packet within the same **[TCP]** stream (in this case, between `source 145.254.160.237` and `destination 65.208.228.223`) using the selected color. This made it much easier to visually trace the flow of the session within the Packet List Pane, even when mixed with other protocols or conversations.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-40.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 40</em>
+</p>
+
+This feature works alongside Wireshark’s Coloring Rules, but it overrides them temporarily to display the manually applied color. If I wanted to revert to the default view, I could simply use **[View → Colorize Conversation → Reset Colorization]**.
+
+Overall, the Colorize Conversation option is a quick and non-intrusive way to highlight all packets within a conversation without filtering or hiding others—useful when analyzing multiple simultaneous connections in a busy network capture.
+
+---
+
 - I used **Prepare as Filter** to build a filter expression before activating it, giving me more flexibility.
 - I practiced **Follow TCP Stream**, which reconstructs an entire conversation (e.g., HTTP request/response). This view displayed both client and server data in plain text, color-coded by direction.
 - I also learned to **Apply as Column**, which adds custom fields (like IP address or protocol) directly into the packet list for easier comparison.
