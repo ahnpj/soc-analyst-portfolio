@@ -821,7 +821,72 @@ Overall, the Colorize Conversation option is a quick and non-intrusive way to hi
 
 ---
 
-- I used **Prepare as Filter** to build a filter expression before activating it, giving me more flexibility.
+<h4>(Step 4): "Prepare as Filter" feature</h4>
+
+I used **[Prepare as Filter]** to build a filter expression before activating it, giving me more flexibility. I practiced using Wireshark’s **[Prepare as Filter]** feature to build custom display filters step by step.
+
+As a test, I right-clicked on a field (the source IP address) of packet #5 and selected **[Prepare as Filter → Selected]**
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-41.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 41</em>
+</p>
+
+This automatically generated the corresponding filter expression and displayed it in the **Display Filter** toolbar without applying it immediately. As shown in the screenshot, I right-clicked on a packet and selected **[Prepare as Filter → Selected]**. Wireshark automatically generated the filter expression `ip.src == 65.208.228.223` and displayed it in the filter bar without executing it. This allowed me to adjust or expand the expression before applying it.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-42.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 42</em>
+</p>
+
+<blockquote>
+Unlike **[Apply as Filter]**, this option lets me modify or expand the expression before executing it. 
+</blockquote>
+
+Next, I wanted to narrow the capture down further by including packets associated with the destination address. To do this, I right-clicked on another field (destination IP) and selected **[Prepare as Filter → …and Selected]**.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-43.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 43</em>
+</p>
+
+<blockquote>
+Selected - Displays filter for the field I clicked
+Not Selected - Creates excludes field, meaning packets that don't match the selected value
+...and Selected - Appends the new field to the existing one using the AND operator, so Wireshark displays packets that meet both criteria
+...or Selected - Appends the new field with an OR operator, showing packets that match one of the filter fields
+...and Not Selected - Appends the condition to exclude certain traffic while keeping others, using the AND NOT operator
+...or Not Selected - Appends the condition that includes packets that match either the original field or anything that does not match the new one
+</blockquote>
+
+This appended the destination IP (`ip.dst == 145.254.160.237`) to the existing expression. The final filter became: `(ip.src == 65.208.228.223) && (ip.dst == 145.254.160.237)`, which could have also been entered manually.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-44.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 44</em>
+</p>
+
+After finalizing the expression, I pressed [Enter] to apply the filter and view only the matching packets in the **Packet List Pane**.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-45.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 45</em>
+</p>
+
+This method gave me greater control over how filters were built and applied, making it ideal for constructing precise and complex filtering logic without immediately altering the current packet view.
+
+---
+
 - I practiced **Follow TCP Stream**, which reconstructs an entire conversation (e.g., HTTP request/response). This view displayed both client and server data in plain text, color-coded by direction.
 - I also learned to **Apply as Column**, which adds custom fields (like IP address or protocol) directly into the packet list for easier comparison.
 
