@@ -844,7 +844,7 @@ This automatically generated the corresponding filter expression and displayed i
 </p>
 
 <blockquote>
-Unlike **[Apply as Filter]**, this option lets me modify or expand the expression before executing it. 
+Unlike [Apply as Filter], this option lets me modify or expand the expression before executing it. 
 </blockquote>
 
 Next, I wanted to narrow the capture down further by including packets associated with the destination address. To do this, I right-clicked on another field (destination IP) and selected **[Prepare as Filter → …and Selected]**.
@@ -857,12 +857,12 @@ Next, I wanted to narrow the capture down further by including packets associate
 </p>
 
 <blockquote>
-Selected - Displays filter for the field I clicked
-Not Selected - Creates excludes field, meaning packets that don't match the selected value
-...and Selected - Appends the new field to the existing one using the AND operator, so Wireshark displays packets that meet both criteria
-...or Selected - Appends the new field with an OR operator, showing packets that match one of the filter fields
-...and Not Selected - Appends the condition to exclude certain traffic while keeping others, using the AND NOT operator
-...or Not Selected - Appends the condition that includes packets that match either the original field or anything that does not match the new one
+[Selected] -> Displays filter for the field I clicked
+[Not Selected] -> Creates excludes field, meaning packets that don't match the selected value
+[...and Selected] -> Appends the new field to the existing one using the AND operator, so Wireshark displays packets that meet both criteria
+[...or Selected] -> Appends the new field with an OR operator, showing packets that match one of the filter fields
+[...and Not Selected] -> Appends the condition to exclude certain traffic while keeping others, using the AND NOT operator
+[...or Not Selected] -> Appends the condition that includes packets that match either the original field or anything that does not match the new one
 </blockquote>
 
 This appended the destination IP (`ip.dst == 145.254.160.237`) to the existing expression. The final filter became: `(ip.src == 65.208.228.223) && (ip.dst == 145.254.160.237)`, which could have also been entered manually.
