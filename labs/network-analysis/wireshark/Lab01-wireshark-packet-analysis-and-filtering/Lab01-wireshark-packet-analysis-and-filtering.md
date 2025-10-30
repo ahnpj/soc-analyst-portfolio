@@ -963,6 +963,8 @@ Once the stream was followed, Wireshark automatically applied a display filter t
   <em>Figure 50</em>
 </p>
 
+---
+
 The **[Follow Stream]** feature is especially useful for examining unencrypted protocol data, such as HTTP traffic, where sensitive information like usernames, passwords, or session tokens can sometimes be visible in plain text. Overall, this tool is essential for reconstructing and understanding the content and sequence of communications at the application layer.
 
 ---
