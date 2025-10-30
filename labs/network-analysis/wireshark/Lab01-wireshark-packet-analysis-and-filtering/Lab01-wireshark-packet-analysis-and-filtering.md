@@ -726,7 +726,37 @@ I learned how to move through large captures effectively, mark and comment on ke
 This section was about understanding and applying packet filtering within Wireshark to isolate traffic of interest. I wanted to practice using display filters to view only relevant protocols or hosts.
 
 ### Step-by-Step Walkthrough
-- I applied filters using **Apply as Filter**, which allowed me to right-click a field and instantly generate a filter expression.
+
+---
+
+<h4>(Step 1): "Apply as Filter" feature</h4>
+
+I applied filters using **Apply as Filter**, which allowed me to right-click a field and instantly generate a filter expression.
+
+I practiced using Wireshark’s **[Analyze] > [Apply as Filter]** feature to isolate specific network traffic from a capture file. While analyzing packets, I selected the **Source** field (source IP) of Packet #1 within the **Packet List Pane** and right-clicked to choose **[Apply as Filter → Selected]** (alternatively available from the **[Analyze]** menu). 
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-35.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 35</em>
+</p>
+
+Wireshark automatically generated the appropriate display filter based on the selected field and applied it to the capture. For this example, the generated filter expression was `ip.src == 145.254.160.237`, which I could have also typed manually into the display filter bar tp achieve the same result. Similarly, I could apply filters to other fields such as destination IP addresses, timestamps, or any other protocol-specific values to narrow down the traffic even further.
+
+<p align="left">
+  <img src="images/wireshark-packet-analysis-and-filtering-36.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 36</em>
+</p>
+
+After applying the filter, only the packets matching the chosen criteria were displayed, while all other packets were hidden from the **Packet List Pane**. This made it easier to focus on relevant traffic for deeper analysis. I also noted that Wireshark’s status bar shows both the total number of packets in the capture and the number currently displayed after filtering—helpful for quickly gauging how much traffic the filter excluded.
+
+Overall, this exercise demonstrated how “Apply as Filter” provides a fast and intuitive way to narrow down traffic without manually typing display filters, streamlining the investigation process.
+
+---
+
 - I learned how to create **Conversation Filters** to follow specific TCP or UDP streams, showing all packets related to one session.
 - I experimented with **Colorise Conversation**, which highlights related packets visually for easier tracking.
 - I used **Prepare as Filter** to build a filter expression before activating it, giving me more flexibility.
