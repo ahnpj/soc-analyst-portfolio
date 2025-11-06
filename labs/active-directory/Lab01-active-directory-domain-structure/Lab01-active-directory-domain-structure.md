@@ -1,1 +1,216 @@
+# Active Directory Domain Structure and Administration
 
+## 1. Introduction / Overview / Objective
+
+### Objective
+The objective of this lab was to gain hands-on experience working in an Active Directory (AD) environment. While studying for the CompTIA Security+ exam, I learned the foundational ideas behind identity, authentication, and permission management. This lab helped me connect those concepts to actual system administration tasks by interacting with a live Windows domain environment.
+
+The purpose of this lab was to build a practical understanding of Active Directory (AD) and how organizations manage users, computers, authentication, and security at scale. While I was already familiar with identity and authentication concepts from studying for the CompTIA Security+ exam, this lab allowed me to see how those concepts are applied in a real Windows domain environment.
+
+I worked inside a virtualized Windows Server environment that functioned as the Domain Controller (DC). From here, I explored how AD stores objects such as users and computers, how Organizational Units (OUs) create structure, how permission delegation works, and how Group Policy Objects (GPOs) enforce consistent security configuration. This experience helped bridge the gap between theoretical knowledge and practical usage.
+
+### Step-by-Step Walkthrough
+- I logged into a Windows Server virtual machine configured as the Domain Controller (DC).
+- I reviewed the main role of a DC, which is to authenticate users, apply Group Policy, and maintain the AD database.
+- I confirmed the presence of Active Directory Users and Computers, DNS, and Group Policy Management tools.
+- I prepared the environment to explore how AD organizes users, computers, groups, policies, and authentication workflows.
+
+### Findings / Analysis
+Active Directory centralizes identity and access control. Instead of configuring users and permissions separately on each workstation, everything is managed from a single point of control. This creates consistency, reduces administrative effort, and supports enterprise‑level security models.
+
+### What I Learned
+I learned how AD acts as the backbone of identity services in Windows-based networks. This reinforced Security+ concepts like AAA (Authentication, Authorization, and Accounting) and the importance of centralized directory infrastructure.
+
+---
+
+## 2. Understanding Windows Domains and Domain Controllers
+
+### Objective
+To understand the relationship between domain-joined systems and the Domain Controller, and how authentication requests are processed in a domain environment.
+
+### Step-by-Step Walkthrough
+
+I logged into the Domain Controller and reviewed the domain configuration. I noticed that the DC also hosted DNS, which matched what I learned during Security+—Kerberos authentication relies on DNS to resolve service names. I also reviewed how logging into a domain-connected machine contacts the DC to verify credentials.
+
+---
+
+- I examined the domain namespace and the server configuration.
+- I confirmed that DNS was running on the DC, which is necessary for locating domain resources.
+- I logged into a domain-joined workstation and observed that the login depended on contact with the DC.
+- I reviewed how the DC stores user account information, verifies credentials, and processes access control.
+
+---
+
+### Findings / Analysis
+Domains link all systems under one centralized identity platform. The DC is critical because it validates user access and enforces policy. Without a functioning DC, domain services and logins cannot occur. 
+
+A domain centralizes identity and allows administrators to manage users and permissions from a single location. If the DC goes down, authentication fails—so the DC is critical infrastructure.
+
+### What I Learned
+I learned how authentication traffic flows in a domain and how DNS and Kerberos rely on the DC. This directly connected to Security+ topics around secure authentication systems.
+
+I learned how domains unify authentication and how DNS and Kerberos rely on the DC. This connected directly to identity and AAA concepts from my Sec+ study.
+
+
+---
+
+## 3. Users, Groups, Computers, and Organizational Units (OUs)
+
+### Objective
+To understand how Active Directory organizes and manages objects such as users and computers, and how OUs help structure the domain for easier administration.
+
+### Step-by-Step Walkthrough
+
+I explored Active Directory Users and Computers (ADUC). I examined built‑in groups, the default Computers container, and the Domain Users group. I created new Organizational Units (OUs) to logically group users and machines, which makes policy assignment easier. I also reviewed the difference between:
+
+- **Security Groups** (used for assigning permissions)
+- **Organizational Units (OUs)** (used for structure and policy scoping)
+
+---
+
+- I opened **Active Directory Users and Computers (ADUC)**.
+- I explored the default containers: Users, Computers, and Built‑in security groups.
+- I created new Organizational Units (OUs) to group users and systems for easier management.
+- I created example user accounts and placed them inside appropriate OUs.
+- I reviewed group membership and access inheritance.
+
+---
+
+### Findings / Analysis
+Security Groups handle permission assignment, while OUs provide structure and allow Group Policy to be applied at a targeted level. Organizing objects logically makes the domain easier to secure and maintain.
+
+AD becomes much easier to manage when users and machines are organized clearly. Instead of assigning permissions individually, group‑based authorization saves time and reduces mistakes.
+
+### What I Learned
+I learned the key difference between Groups and OUs. Groups define *what someone can do*, while OUs define *where and how users and computers are organized for administration and policy purposes*.
+
+I learned how OUs form the structure of AD while groups handle access control. This supported the principle of least privilege and role-based access management from Security+.
+
+---
+
+## 4. Delegation and Privilege Management
+
+### Objective
+To delegate administrative responsibility while maintaining the principle of least privilege.
+
+### Step-by-Step Walkthrough
+
+I removed an outdated OU by disabling “Protect object from accidental deletion.” Then, using the Delegation of Control Wizard, I assigned a user (Phillip) permission to manage only the Sales OU. I reset a user password and confirmed that Phillip could manage Sales accounts but not the rest of the domain.
+
+- I removed an outdated OU after disabling “Protect object from accidental deletion.”
+- I used the **Delegation of Control Wizard** to give a user (Phillip) permission to manage only the Sales OU.
+- I tested this by resetting passwords and verifying that Phillip could only manage objects inside his assigned OU.
+
+### Findings / Analysis
+Delegation allows organizations to split responsibility without granting full domain admin access. This reduces risk and supports scalable administration.
+
+### What I Learned
+
+I learned how role-based control and least privilege are implemented in real environments, matching what I studied in Security+ regarding privilege separation and insider threat mitigation.
+
+---
+
+## 5. Managing Workstations and Servers in AD
+
+### Objective
+To correctly organize computer objects in the domain so the right policies are applied to the right systems.
+
+### Step-by-Step Walkthrough
+
+I noticed that new systems appear in the default **Computers** container, which is not ideal for management. I created two new OUs: **Workstations** and **Servers**, then moved devices accordingly.
+
+- I reviewed how new computers default into the **Computers** container.
+- I created two new OUs: **Workstations** and **Servers**.
+- I moved machines into their corresponding OUs based on role.
+
+### Findings / Analysis
+Grouping devices makes policy management predictable and easier to maintain. Servers require stricter controls than regular user workstations.
+
+Separating servers from workstations allows different GPOs to apply depending on security requirements. Servers need stricter controls than user machines.
+
+### What I Learned
+I learned how system organization impacts security and manageability.
+
+---
+
+## 6. Group Policy (GPO) Configuration and Enforcement
+
+### Objective
+To understand how Group Policy enforces settings and security standards across the domain.
+
+### Step-by-Step Walkthrough
+
+I opened Group Policy Management and reviewed existing GPOs. I created a new GPO, linked it to an OU, and modified settings. I ran `gpupdate /force` on a workstation and verified the changes. I also used the Resultant Set of Policy tool to confirm which policies applied.
+
+- I opened **Group Policy Management Console**.
+- I created and linked a new Group Policy Object to a specific OU.
+- I edited policy settings for that OU.
+- I forced policy updates using `gpupdate /force`.
+- I used Resultant Set of Policy (RSoP) to verify that the policy applied.
+
+### Findings / Analysis
+Group Policy ensures consistency, compliance, and baseline security across large numbers of systems. It is one of the strongest administrative tools in AD environments.
+
+Group Policy allows configuration enforcement at scale. It ensures users and machines follow consistent security rules, which is something I repeatedly saw emphasized in Security+ for enterprise hardening.
+
+
+### What I Learned
+I learned how GPOs connect high‑level security policy to real system configuration.
+
+---
+
+## 7. Kerberos vs NTLM Authentication
+
+### Objective
+To understand how Active Directory handles authentication using Kerberos and how NTLM remains for legacy support.
+
+### Findings / Analysis
+- Kerberos uses encrypted tickets and is the default, secure authentication method.
+- NTLM uses challenge‑response and is less secure, but still supported.
+- Kerberos requires synchronized system time and functional DNS.
+
+### What I Learned
+This section reinforced Security+ topics about authentication, encryption, and replay attack prevention.
+
+- Kerberos is the default domain authentication protocol and uses encrypted tickets.
+- NTLM is older and less secure but remains for compatibility.
+- Time synchronization is required for Kerberos to function.
+
+This matched what I learned during Security+ when studying authentication, encryption, and replay attack prevention.
+
+---
+
+## 8. Trees, Forests, and Trust Relationships
+
+### Objective
+To understand how AD scales to large and multi-organization environments.
+
+### Findings / Analysis
+- A **Tree** is a grouping of domains in a shared namespace.
+- A **Forest** is one or more trees connected through trust relationships.
+- Trusts allow shared authentication across domains.
+
+This explained how AD scales across large organizations.
+
+### What I Learned
+I learned how organizations expand AD across regions or subsidiaries without redesigning identity structures.
+
+---
+
+## 9. Conclusion and Final Reflection
+
+### Summary
+This lab allowed me to practice real administrative tasks in Active Directory while reinforcing Security+ identity management concepts. I learned how to organize users and devices, delegate privileges, apply Group Policy, and understand authentication protocols.
+
+This lab has also helped me move from theoretical understanding to hands‑on use of Active Directory. I managed users, devices, OUs, delegated privileges, and configured GPOs. I also reinforced key identity and authentication concepts from my CompTIA Security+ studies.
+
+### What I Learned
+I gained practical experience working with AD infrastructure and now understand how identity, access control, and system configuration are enforced in enterprise environments.
+
+- Active Directory centralizes authentication and identity management.
+- OUs provide structure, groups provide permission control.
+- Delegation supports least privilege.
+- GPOs enforce consistent configuration and security.
+- Kerberos provides secure authentication in modern Windows environments.
+
+This lab strengthened my practical understanding of enterprise identity infrastructure and system administration workflows.
