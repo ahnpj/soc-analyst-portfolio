@@ -2,6 +2,10 @@
 
 ## 1. Introduction / Overview / Objective
 
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
 ### Objective
 The objective of this lab was to gain hands-on experience working in an Active Directory (AD) environment. While studying for the CompTIA Security+ exam, I learned the foundational ideas behind identity, authentication, and permission management. This lab helped me connect those concepts to actual system administration tasks by interacting with a live Windows domain environment.
 
@@ -21,9 +25,15 @@ Active Directory centralizes identity and access control. Instead of configuring
 ### What I Learned
 I learned how AD acts as the backbone of identity services in Windows-based networks. This reinforced Security+ concepts like AAA (Authentication, Authorization, and Accounting) and the importance of centralized directory infrastructure.
 
+</details>
+
 ---
 
 ## 2. Understanding Windows Domains and Domain Controllers
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To understand the relationship between domain-joined systems and the Domain Controller, and how authentication requests are processed in a domain environment.
@@ -32,14 +42,11 @@ To understand the relationship between domain-joined systems and the Domain Cont
 
 I logged into the Domain Controller and reviewed the domain configuration. I noticed that the DC also hosted DNS, which matched what I learned during Security+—Kerberos authentication relies on DNS to resolve service names. I also reviewed how logging into a domain-connected machine contacts the DC to verify credentials.
 
----
-
 - I examined the domain namespace and the server configuration.
 - I confirmed that DNS was running on the DC, which is necessary for locating domain resources.
 - I logged into a domain-joined workstation and observed that the login depended on contact with the DC.
 - I reviewed how the DC stores user account information, verifies credentials, and processes access control.
 
----
 
 ### Findings / Analysis
 Domains link all systems under one centralized identity platform. The DC is critical because it validates user access and enforces policy. Without a functioning DC, domain services and logins cannot occur. 
@@ -51,10 +58,15 @@ I learned how authentication traffic flows in a domain and how DNS and Kerberos 
 
 I learned how domains unify authentication and how DNS and Kerberos rely on the DC. This connected directly to identity and AAA concepts from my Sec+ study.
 
+</details>
 
 ---
 
 ## 3. Users, Groups, Computers, and Organizational Units (OUs)
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To understand how Active Directory organizes and manages objects such as users and computers, and how OUs help structure the domain for easier administration.
@@ -74,7 +86,6 @@ I explored Active Directory Users and Computers (ADUC). I examined built‑in gr
 - I created example user accounts and placed them inside appropriate OUs.
 - I reviewed group membership and access inheritance.
 
----
 
 ### Findings / Analysis
 Security Groups handle permission assignment, while OUs provide structure and allow Group Policy to be applied at a targeted level. Organizing objects logically makes the domain easier to secure and maintain.
@@ -86,9 +97,15 @@ I learned the key difference between Groups and OUs. Groups define *what someone
 
 I learned how OUs form the structure of AD while groups handle access control. This supported the principle of least privilege and role-based access management from Security+.
 
+</details>
+
 ---
 
 ## 4. Delegation and Privilege Management
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To delegate administrative responsibility while maintaining the principle of least privilege.
@@ -108,9 +125,15 @@ Delegation allows organizations to split responsibility without granting full do
 
 I learned how role-based control and least privilege are implemented in real environments, matching what I studied in Security+ regarding privilege separation and insider threat mitigation.
 
+</details>
+
 ---
 
 ## 5. Managing Workstations and Servers in AD
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To correctly organize computer objects in the domain so the right policies are applied to the right systems.
@@ -131,9 +154,15 @@ Separating servers from workstations allows different GPOs to apply depending on
 ### What I Learned
 I learned how system organization impacts security and manageability.
 
+</details>
+
 ---
 
 ## 6. Group Policy (GPO) Configuration and Enforcement
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To understand how Group Policy enforces settings and security standards across the domain.
@@ -153,13 +182,18 @@ Group Policy ensures consistency, compliance, and baseline security across large
 
 Group Policy allows configuration enforcement at scale. It ensures users and machines follow consistent security rules, which is something I repeatedly saw emphasized in Security+ for enterprise hardening.
 
-
 ### What I Learned
 I learned how GPOs connect high‑level security policy to real system configuration.
+
+</details>
 
 ---
 
 ## 7. Kerberos vs NTLM Authentication
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To understand how Active Directory handles authentication using Kerberos and how NTLM remains for legacy support.
@@ -178,9 +212,15 @@ This section reinforced Security+ topics about authentication, encryption, and r
 
 This matched what I learned during Security+ when studying authentication, encryption, and replay attack prevention.
 
+</details>
+
 ---
 
 ## 8. Trees, Forests, and Trust Relationships
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To understand how AD scales to large and multi-organization environments.
@@ -195,9 +235,15 @@ This explained how AD scales across large organizations.
 ### What I Learned
 I learned how organizations expand AD across regions or subsidiaries without redesigning identity structures.
 
+</details>
+
 ---
 
 ## 9. Conclusion and Final Reflection
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Summary
 This lab allowed me to practice real administrative tasks in Active Directory while reinforcing Security+ identity management concepts. I learned how to organize users and devices, delegate privileges, apply Group Policy, and understand authentication protocols.
@@ -214,3 +260,5 @@ I gained practical experience working with AD infrastructure and now understand 
 - Kerberos provides secure authentication in modern Windows environments.
 
 This lab strengthened my practical understanding of enterprise identity infrastructure and system administration workflows.
+
+</details>
