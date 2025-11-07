@@ -255,9 +255,20 @@ I was successfully able to access Phillip’s session on the machine, confirming
 
 <h4>(Step 3) Testing Phillip's Credentials</h4>
 
+---
+
+**(Step 3-a)** Setting a new password for Sophie, as Phillip
+
 Since Phillip does not have permission to open the ADUC GUI, I used PowerShell to perform the password reset. Using the `Set-ADAccountPassword cmdlet`, I reset Sophie’s password from the Sales department OU:
 
 `Set-ADAccountPassword sophie -Reset -NewPassword (Read-Host -AsSecureString -Prompt 'New Password') -Verbose`
+
+- `Set-ADAccountPassword` - Change or reset a user’s password in Active Directory.
+- `sophie` - The user account we are resetting the password for.
+- `-Reset` - Force a password reset (instead of the user changing it themselves).
+- `-NewPassword` - The new password we want to assign to the account.
+- `(Read-Host -AsSecureString -Prompt 'New Password')` - Pops up a secure password prompt so we can type the new password without showing it.
+- `-Verbose` - Shows a confirmation message so we know the command worked.
 
 <p align="left">
   <img src="images/active-directory-domain-structure-11.png?raw=true&v=2" 
@@ -266,22 +277,28 @@ Since Phillip does not have permission to open the ADUC GUI, I used PowerShell t
   <em>Figure 11</em>
 </p>
 
+The output confirmed the operation was made on the correct user of the Sales department OU:
 
+`VERBOSE: Performing the operation "Set-ADAccountPassword" on target "CN=Sophie,OU=Sales,OU=THM,DC=thm,DC=local"`
 
-Output confirmed the operation on the correct object:
+---
 
-VERBOSE: Performing the operation "Set-ADAccountPassword" on target "CN=Sophie,OU=Sales,OU=THM,DC=thm,DC=local".
+**(Step 3-b)** Forcing a password reset at next logon for Sophie
 
+After completing the reset, I enforced a password change upon Sophie’s next logon to ensure secure credential practices: 
 
-After resetting the password, I forced Sophie to create a new password at next logon to maintain security best practices:
+`Set-ADUser -ChangePasswordAtLogon -Identity sophie -Verbose`
 
-Set-ADUser sophie -ChangePasswordAtLogon $true
-
+<p align="left">
+  <img src="images/active-directory-domain-structure-12.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 12</em>
+</p>
 
 At this point, Phillip had successfully been delegated password reset capabilities for users inside the Sales OU, demonstrating how targeted privilege delegation supports operational efficiency while preserving security boundaries.
 
-
-- I tested this by resetting passwords and verifying that Phillip could only manage objects inside his assigned OU.
+---
 
 ### Findings / Analysis
 Delegation allows organizations to split responsibility without granting full domain admin access. This reduces risk and supports scalable administration.
