@@ -151,7 +151,7 @@ If the issue was simply a lack of permissions, there wouldn’t be anything I co
 I went back into the THM OU folder, right-clicked the "Research and Development" child OU, and selected [Delete].
 
 <blockquote>
-A new modal appeared asking me to confirm deletion. I clicked [Yes].
+A new modal appeared asking me to confirm deletion nothing that the OU had other objects in it. I clicked [Yes].
 </blockquote>
 
 <p align="left">
@@ -161,13 +161,83 @@ A new modal appeared asking me to confirm deletion. I clicked [Yes].
   <em>Figure 4</em>
 </p>
 
+It was successfully deleted.
 
+<p align="left">
+  <img src="images/active-directory-domain-structure-05.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 5</em>
+</p>
 
 ---
 
+<h4>(Step 2) Using the Delegation of Control Wizard feature</h4>
+
+In this step of the lab, I configured delegated permissions in Active Directory so that the IT support lead, Phillip, could reset passwords for users within the Sales OU without requiring full domain administrator privileges.
+
+<blockquote>
+I learned that Active Directory allows OU-level delegation, which lets specific users or groups manage only the objects they are responsible for. This is typically used in organizations to allow Helpdesk or Support personnel to perform tasks such as password resets or user unlocks while maintaining the principle of least privilege.
+</blockquote>
+
+---
+
+**(Step 2-a)**
+
+I opened **Active Directory Users and Computers**, enabled **Advanced Features**, then right-clicked the "Sales" OU and selected [Delegate Control]. I selected the user Phillip (THM\phillip).
+
+<blockquote>
+I typed his first name ("Phillip"), then clicked [Check Names] which automatically entered his information
+</blockquote>
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-06.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 6</em>
+</p>
+
+---
+
+**(Step 2-b)**
+
+After selecting [OK], I proceeded through the Delegation of Control Wizard by clicking [Next] a few times. I then delegated the [Reset user passwords and force password change at next logon] permission.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-07.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 7</em>
+</p>
+
+---
+
+**(Step 2-c)**
+
+Once the delegation was completed, I logged into the Windows host using Phillip’s credentials:
+
+Username: THM\phillip
+Password: Claire2008
 
 
-- I used the **Delegation of Control Wizard** to give a user (Phillip) permission to manage only the Sales OU.
+Since Phillip does not have permission to open the ADUC GUI, I used PowerShell to perform the password reset. Using the Set-ADAccountPassword cmdlet, I reset Sophie’s password from the Sales department OU:
+
+Set-ADAccountPassword sophie -Reset -NewPassword (Read-Host -AsSecureString -Prompt 'New Password') -Verbose
+
+
+Output confirmed the operation on the correct object:
+
+VERBOSE: Performing the operation "Set-ADAccountPassword" on target "CN=Sophie,OU=Sales,OU=THM,DC=thm,DC=local".
+
+
+After resetting the password, I forced Sophie to create a new password at next logon to maintain security best practices:
+
+Set-ADUser sophie -ChangePasswordAtLogon $true
+
+
+At this point, Phillip had successfully been delegated password reset capabilities for users inside the Sales OU, demonstrating how targeted privilege delegation supports operational efficiency while preserving security boundaries.
+
+
 - I tested this by resetting passwords and verifying that Phillip could only manage objects inside his assigned OU.
 
 ### Findings / Analysis
