@@ -174,7 +174,7 @@ It was successfully deleted.
 
 <h4>(Step 2) Using the Delegation of Control Wizard feature</h4>
 
-In this lab, I worked with Active Directory Organizational Units (OUs) to delegate limited administrative privileges to a support user. The goal was to allow the user Phillip, who is responsible for IT support, to reset passwords for users in the Sales OU without giving him full domain administrator rights.
+At this point in the process, I worked with Active Directory Organizational Units (OUs) to delegate limited administrative privileges to a support user. The goal was to allow the user Phillip, who is responsible for IT support, to reset passwords for users in the Sales OU without giving him full domain administrator rights.
 
 <blockquote>
 I learned that Active Directory allows OU-level delegation, which lets specific users or groups manage only the objects they are responsible for. This is typically used in organizations to allow Helpdesk or Support personnel to perform tasks such as password resets or user unlocks while maintaining the principle of least privilege.
