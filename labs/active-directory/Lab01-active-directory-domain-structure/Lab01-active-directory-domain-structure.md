@@ -289,6 +289,11 @@ After completing the reset, I enforced a password change upon Sophie’s next lo
 
 `Set-ADUser -ChangePasswordAtLogon -Identity sophie -Verbose`
 
+- `Set-ADUser` - Used to modify settings for an Active Directory user.
+- `-ChangePasswordAtLogon` - Forces the user to create a new password the next time they sign in.
+- `-Identity sophie` - Specifies the user account we’re applying the change to (Sophie).
+- `-Verbose` - Shows a confirmation message so we know the change was applied.
+
 <p align="left">
   <img src="images/active-directory-domain-structure-12.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
