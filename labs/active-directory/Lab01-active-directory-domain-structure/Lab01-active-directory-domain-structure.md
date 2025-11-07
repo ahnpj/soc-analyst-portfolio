@@ -40,7 +40,7 @@ To understand the relationship between domain-joined systems and the Domain Cont
 
 ### Step-by-Step Walkthrough
 
-I logged into the Domain Controller and reviewed the domain configuration. I noticed that the DC also hosted DNS, which matched what I learned during Security+—Kerberos authentication relies on DNS to resolve service names. I also reviewed how logging into a domain-connected machine contacts the DC to verify credentials.
+I logged into the Domain Controller and reviewed the domain configuration. I noticed that the DC also hosted DNS, which matched what I learned during Security+. Kerberos authentication relies on DNS to resolve service names. I also reviewed how logging into a domain-connected machine contacts the DC to verify credentials.
 
 - I examined the domain namespace and the server configuration.
 - I confirmed that DNS was running on the DC, which is necessary for locating domain resources.
@@ -80,11 +80,16 @@ I explored Active Directory Users and Computers (ADUC). I examined built‑in gr
 
 ---
 
-- I opened **Active Directory Users and Computers (ADUC)**.
-- I explored the default containers: Users, Computers, and Built‑in security groups.
-- I created new Organizational Units (OUs) to group users and systems for easier management.
-- I created example user accounts and placed them inside appropriate OUs.
-- I reviewed group membership and access inheritance.
+<h4>(Step 1) I opened Active Directory Users and Computers (ADUC)</h4>
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-01.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 1</em>
+</p>
+
+I explored the default OUs: Users, Computers, and Built‑in security groups. Then, I reviewed how to create new Organizational Units (OUs) to group users and systems for easier management. I created example user accounts and placed them inside appropriate OUs. Finally, I reviewed group membership and access inheritance.
 
 
 ### Findings / Analysis
