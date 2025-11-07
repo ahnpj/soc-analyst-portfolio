@@ -174,7 +174,7 @@ It was successfully deleted.
 
 <h4>(Step 2) Using the Delegation of Control Wizard feature</h4>
 
-In this step of the lab, I configured delegated permissions in Active Directory so that the IT support lead, Phillip, could reset passwords for users within the Sales OU without requiring full domain administrator privileges.
+In this lab, I worked with Active Directory Organizational Units (OUs) to delegate limited administrative privileges to a support user. The goal was to allow the user Phillip, who is responsible for IT support, to reset passwords for users in the Sales OU without giving him full domain administrator rights.
 
 <blockquote>
 I learned that Active Directory allows OU-level delegation, which lets specific users or groups manage only the objects they are responsible for. This is typically used in organizations to allow Helpdesk or Support personnel to perform tasks such as password resets or user unlocks while maintaining the principle of least privilege.
@@ -201,7 +201,7 @@ I typed his first name ("Phillip"), then clicked [Check Names] which automatical
 
 **(Step 2-b)**
 
-After selecting [OK], I proceeded through the Delegation of Control Wizard by clicking [Next] a few times. I then delegated the [Reset user passwords and force password change at next logon] permission.
+After selecting [OK], I selected Phillip’s account and delegated the “Reset user passwords and force password change at next logon” permission. This follows the principle of least privilege by only granting him the rights he needs to perform his role.
 
 <p align="left">
   <img src="images/active-directory-domain-structure-07.png?raw=true&v=2" 
@@ -214,15 +214,58 @@ After selecting [OK], I proceeded through the Delegation of Control Wizard by cl
 
 **(Step 2-c)**
 
-Once the delegation was completed, I logged into the Windows host using Phillip’s credentials:
+To test the delegation, I logged into the domain using Phillip’s account. During the RDP login, I specified the domain "thm.local"
 
-Username: THM\phillip
-Password: Claire2008
+<blockquote>
+Every Active Directory domain has a domain name. In your lab environment, the AD domain is named: thm.local. This is the internal domain namespace used by all users and computers in that AD environment. When I log in using RDP, Windows needs to know which domain the username belongs to. There are two accepted formats: "THM\phillip" or "phillip@thm.local".
 
+Alternatively, you could enter "thm.local" and manually enter Phillips login credentials, which is what I did.
+</blockquote>
 
-Since Phillip does not have permission to open the ADUC GUI, I used PowerShell to perform the password reset. Using the Set-ADAccountPassword cmdlet, I reset Sophie’s password from the Sales department OU:
+<p align="left">
+  <img src="images/active-directory-domain-structure-08.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 8</em>
+</p>
 
-Set-ADAccountPassword sophie -Reset -NewPassword (Read-Host -AsSecureString -Prompt 'New Password') -Verbose
+In this lab environment, the Active Directory domain name "thm.local" is configured to resolve directly to the domain controller. This means that when I entered "thm.local" in the **Computer** field in Remote Desktop Connection, RDP was able to locate and connect to the domain controller successfully.
+
+This is different from typical production environments where you usually RDP to a specific hostname or IP address. In many real-world setups, the domain name itself does not automatically resolve to a server for RDP.
+
+This resolved correctly to the domain controller and brought me to the Windows login screen with the default blue background. From there, I logged in using Phillip’s domain credentials.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-09.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 9</em>
+</p>
+
+I was successfully able to access Phillip’s session on the machine, confirming that the credentials and domain login were working as expected. Once logged in, I had full access to his desktop environment and could proceed with testing the delegated permissions.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-10.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 10</em>
+</p>
+
+---
+
+<h4>(Step 3) Testing Phillip's Credentials</h4>
+
+Since Phillip does not have permission to open the ADUC GUI, I used PowerShell to perform the password reset. Using the `Set-ADAccountPassword cmdlet`, I reset Sophie’s password from the Sales department OU:
+
+`Set-ADAccountPassword sophie -Reset -NewPassword (Read-Host -AsSecureString -Prompt 'New Password') -Verbose`
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-11.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 11</em>
+</p>
+
 
 
 Output confirmed the operation on the correct object:
