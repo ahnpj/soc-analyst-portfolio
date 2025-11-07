@@ -47,7 +47,6 @@ I logged into the Domain Controller and reviewed the domain configuration. I not
 - I logged into a domain-joined workstation and observed that the login depended on contact with the DC.
 - I reviewed how the DC stores user account information, verifies credentials, and processes access control.
 
-
 ### Findings / Analysis
 Domains link all systems under one centralized identity platform. The DC is critical because it validates user access and enforces policy. Without a functioning DC, domain services and logins cannot occur. 
 
@@ -72,6 +71,8 @@ I learned how domains unify authentication and how DNS and Kerberos rely on the 
 To understand how Active Directory organizes and manages objects such as users and computers, and how OUs help structure the domain for easier administration.
 
 ### Step-by-Step Walkthrough
+
+---
 
 I explored Active Directory Users and Computers (ADUC). I examined built‑in groups, the default Computers container, and the Domain Users group. I created new Organizational Units (OUs) to logically group users and machines, which makes policy assignment easier. I also reviewed the difference between:
 
@@ -117,9 +118,55 @@ To delegate administrative responsibility while maintaining the principle of lea
 
 ### Step-by-Step Walkthrough
 
-I removed an outdated OU by disabling “Protect object from accidental deletion.” Then, using the Delegation of Control Wizard, I assigned a user (Phillip) permission to manage only the Sales OU. I reset a user password and confirmed that Phillip could manage Sales accounts but not the rest of the domain.
+**What I did in a nutshell:** I removed an outdated OU by disabling “Protect object from accidental deletion.” Then, using the Delegation of Control Wizard, I assigned a user (Phillip) permission to manage only the Sales OU. I reset a user password and confirmed that Phillip could manage Sales accounts but not the rest of the domain.
 
-- I removed an outdated OU after disabling “Protect object from accidental deletion.”
+---
+
+<h4>(Step 1) Deleting an OU</h4>
+
+---
+
+**(Step 1-a):** For testing, I attempted to delete the "Research and Development" OU, but I wasn’t able to because Active Directory indicated that I either didn’t have the necessary permissions or the OU was protected from accidental deletion.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-02.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 2</em>
+</p>
+
+---
+
+**(Step 1-b)** Disabling accidental deletion protection feature
+
+If the issue was simply a lack of permissions, there wouldn’t be anything I could do. However, assuming the OU was protected from accidental deletion, I disabled that protection. I went to the [View] tab and clicked [Advanced Features], which revealed additional containers. I then navigated to the THM OU (where the "Research and Development" child OU is located), right-clicked the "Research and Development" OU, selected [Properties], went to the [Object] tab, and unchecked "Protect object from accidental deletion".
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-03.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 3</em>
+</p>
+
+I went back into the THM OU folder, right-clicked the "Research and Development" child OU, and selected [Delete].
+
+<blockquote>
+A new modal appeared asking me to confirm deletion. I clicked [Yes].
+</blockquote>
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-04.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 4</em>
+</p>
+
+
+
+---
+
+
+
 - I used the **Delegation of Control Wizard** to give a user (Phillip) permission to manage only the Sales OU.
 - I tested this by resetting passwords and verifying that Phillip could only manage objects inside his assigned OU.
 
