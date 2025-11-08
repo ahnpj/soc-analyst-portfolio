@@ -253,7 +253,7 @@ I was successfully able to access Phillip’s session on the machine, confirming
 
 ---
 
-<h4>(Step 3) Testing Phillip's Credentials</h4>
+<h4>(Step 3) Testing Phillip's Credentials and Permissions</h4>
 
 ---
 
