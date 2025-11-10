@@ -388,19 +388,19 @@ Move-ADObject -TargetPath "OU=Workstations,DC=thm,DC=local"
 - `-TargetPath "OU=Workstations,DC=thm,DC=local"` - Specifies that the matching workstation systems should be moved into the Workstations OU.
 
 <p align="left">
-  <img src="images/active-directory-domain-structure-14.png?raw=true&v=2" 
+  <img src="images/active-directory-domain-structure-15.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
-  <em>Figure 14</em>
+  <em>Figure 15</em>
 </p>
 
 It took a few tries to get the syntax exactly right, but once I confirmed the command was functioning, I reopened PowerShell and captured a clean screenshot of the final working version.
 
 <p align="left">
-  <img src="images/active-directory-domain-structure-15.png?raw=true&v=2" 
+  <img src="images/active-directory-domain-structure-16.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
-  <em>Figure 15</em>
+  <em>Figure 16</em>
 </p>
 
 ---
@@ -422,23 +422,20 @@ Move-ADObject -TargetPath "OU=Servers,DC=thm,DC=local"
 - `-TargetPath "OU=Servers,DC=thm,DC=local"` - Specifies that the matching server systems should be moved into the Servers OU.
 
 <p align="left">
-  <img src="images/active-directory-domain-structure-14.png?raw=true&v=2" 
+  <img src="images/active-directory-domain-structure-17.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
-  <em>Figure 14</em>
+  <em>Figure 17</em>
 </p>
 
-It took a few tries to get the syntax exactly right, but once I confirmed the command was functioning, I reopened PowerShell and captured a clean screenshot of the final working version.
+Same thing here, it took a few tries to get the syntax exactly right, but once I confirmed the command was functioning, I reopened PowerShell and captured a clean screenshot of the final working version.
 
 <p align="left">
-  <img src="images/active-directory-domain-structure-15.png?raw=true&v=2" 
+  <img src="images/active-directory-domain-structure-18.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
-  <em>Figure 15</em>
+  <em>Figure 18</em>
 </p>
-
-
-
 
 ---
 
