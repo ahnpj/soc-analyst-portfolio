@@ -86,6 +86,22 @@ Currently includes:
 
 </details>
 
+
+<details>
+<summary><b>Active Directory</b></summary>
+
+> <details>
+> <summary>Tcpdump</summary>
+>
+> - <a href="labs/active-directory/Lab01-active-directory-domain-structure/Lab01-active-directory-domain.structure.md">Lab01 – Active Directory Domain Structure and Administration</a><br/>
+>   <em>Level: Beginner</em> → Practicing managing users, computers, and permissions through OUs and Group Policy, and I got hands-on experience with how Kerberos and NTLM authentication actually work behind the scenes. I also learned how larger networks use trees, forests, and trust relationships to stay organized and secure. Overall, it helped connect what I studied for Security+ to real Active Directory implementation.
+> </details>
+
+</details>
+
+
+
+
 <h3>Playbooks → (playbooks/)</h3> Step-by-step response guides I’ve written for common security events. These are structured like SOC playbooks to help with incident triage, investigation, and response.
 Currently includes:
 <br/><br/>
@@ -158,6 +174,7 @@ Currently includes:
 >Investigate alerts triggered by unknown USB devices connecting to endpoints.
 
 </details>
+
 
 ---
 
