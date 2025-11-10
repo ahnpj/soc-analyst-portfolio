@@ -91,7 +91,7 @@ Currently includes:
 <summary><b>Active Directory</b></summary>
 
 > <details>
-> <summary>Tcpdump</summary>
+> <summary>Active Directory Labs</summary>
 >
 > - <a href="labs/active-directory/Lab01-active-directory-domain-structure/Lab01-active-directory-domain.structure.md">Lab01 – Active Directory Domain Structure and Administration</a><br/>
 >   <em>Level: Beginner</em> → Practicing managing users, computers, and permissions through OUs and Group Policy, and I got hands-on experience with how Kerberos and NTLM authentication actually work behind the scenes. I also learned how larger networks use trees, forests, and trust relationships to stay organized and secure. Overall, it helped connect what I studied for Security+ to real Active Directory implementation.
