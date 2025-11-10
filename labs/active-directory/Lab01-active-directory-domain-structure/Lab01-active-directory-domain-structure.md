@@ -451,7 +451,7 @@ I learned how system organization impacts security and manageability.
 
 ---
 
-## 6. Group Policy (GPO) Configuration and Enforcement
+## 6. Group Policy Object (GPO) Configuration and Enforcement
 
 <details>
 
@@ -462,12 +462,126 @@ To understand how Group Policy enforces settings and security standards across t
 
 ### Step-by-Step Walkthrough
 
-I opened Group Policy Management and reviewed existing GPOs. I created a new GPO, linked it to an OU, and modified settings. I ran `gpupdate /force` on a workstation and verified the changes. I also used the Resultant Set of Policy tool to confirm which policies applied.
+After verifying that my domain was set up correctly, I opened Active Directory Users and Computers (ADUC) and navigated to the thm.local domain. I first confirmed that users and computers were currently stored under default containers such as Users and Computers, which is not ideal for long-term management, especially when implementing Group Policy later.
 
-- I opened **Group Policy Management Console**.
-- I created and linked a new Group Policy Object to a specific OU.
-- I edited policy settings for that OU.
-- I forced policy updates using `gpupdate /force`.
+---
+
+<h4>(Step 1) Reviewing Existing GPOs</h4>
+
+---
+
+First, I opened **Group Policy Management** console and reviewed existing GPOs. I saw there were three GPOs:
+
+- Default Domain Controllers Policy
+- Default Domain Policy
+- RDP policy
+
+I saw that both "Default Domain Policy" and "RDP" policy were linked to the domain as a whole, and the "Default Domain Controllers Policy" GPO was linked to the "Domain Controllers" OU.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-19.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 19</em>
+</p>
+
+---
+
+<h4>(Step 2) Examining the Default Domain Policy GPO</h4>
+
+I examined the **Default Domain Policy** GPO to check its scope. I confirmed that this policy is linked at the domain level, which means it affects the entire domain by default. While reviewing it, I learned how **Security Filtering** controls who a GPO actually applies to. By default, a GPO is set to apply to Authenticated Users, which includes all users and all computers in the domain.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-20.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 20</em>
+</p>
+
+However, Security Filtering allows us to narrow down the policy so that it only applies to specific users, computers, or groups. This is helpful when we want to target a policy to only certain systems, such as a particular OU or a selected group of machines, without affecting the entire domain.
+
+In simpler terms:
+
+- Without Security Filtering: The policy applies to everyone.
+- With Security Filtering: The policy applies only to the users or computers that I choose to include.
+
+This helped me understand how administrators control the reach of a GPO, making sure policies are only applied where they are intended, which prevents configuration mistakes and keeps the environment organized.
+
+After creating and organizing the OUs, I opened Group Policy Management to review the existing policies applied at the domain level. I selected the Default Domain Policy and navigated to **[Computer Configuration → Policies → Windows Settings → Security Settings]**. This section controls many of the core security behaviors for all domain-joined systems.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-21.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 21</em>
+</p>
+
+---
+
+<h4>(Step 3) Editing the Default Domain Policy GPO</h4>
+
+Since the Default Domain Policy is linked at the domain level, any changes made to it would affect every user and every computer in the domain. To see how policy changes are applied, I edited this GPO and updated the password requirements.
+
+---
+
+**(Step 3-a)**
+
+I right-clicked the **Default Domain Policy** and selected **Edit**. This opened the **Group Policy Management Editor**, where all the policy settings are organized.
+
+To change the minimum password length, I navigated to: **[Computer Configuration > Policies > Windows Settings > Security Settings > Account Policies > Password Policy]**
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-22.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 22</em>
+</p>
+
+---
+
+**(3-b)**
+
+From here, I located the Minimum password length policy and set it to 10 characters.
+
+This change means that any user account in the domain must now use a password with at least 10 characters, helping enforce stronger password security across the environment.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-23.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 23</em>
+</p>
+
+---
+
+<h4>(Step 4) Editing the Default Domain Policy GPO</h4>
+
+I learned how Group Policy Objects (GPOs) are distributed across the network. When a GPO is created or modified, it is stored in a shared folder on the Domain Controller called `SYSVOL`. This share is automatically available to all domain-joined computers so they can regularly pull down any new or updated Group Policy settings.
+
+The SYSVOL share is located at:
+
+`C:\Windows\SYSVOL\sysvol`
+
+This means that computers in the domain will automatically receive updated policies over time. However, the update is not instant. It can take up to about 2 hours for Group Policy changes to fully sync and apply across the network. To apply the changes immediately (instead of waiting), I ran this command in PowerShell I wanted to update:
+
+`gpupdate /force`
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-24.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 24</em>
+</p>
+
+This forced the system to re-check and apply the latest GPO settings right away.
+
+---
+
+<h4>(Step 5) Creating New GPOs/h4>
+
+
+---
+
 - I used Resultant Set of Policy (RSoP) to verify that the policy applied.
 
 ### Findings / Analysis
