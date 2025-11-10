@@ -860,15 +860,70 @@ This matched what I learned during Security+ when studying authentication, encry
 ### Objective
 To understand how AD scales to large and multi-organization environments.
 
-### Findings / Analysis
-- A **Tree** is a grouping of domains in a shared namespace.
-- A **Forest** is one or more trees connected through trust relationships.
-- Trusts allow shared authentication across domains.
+### Review / Analysis
+
+In this lab, I reviewed the concepts of Trees, Forests, and Trust Relationships within Active Directory. I had learned these concepts at a high level while studying for the CompTIA Security+ exam, but documenting them here helped clarify how these structures apply in real enterprise environments.
+
+A single domain (such as thm.local) is enough for smaller organizations. However, as a company grows, especially across regions or business units, managing everything under one domain can become difficult and inefficient. Different teams may require separate administrative control, unique Group Policies, or different compliance requirements.
+
+---
+
+**Trees**
+
+I learned (and reviewed) that a **Tree** is formed when multiple domains share the same root namespace. For example:
+- thm.local (root domain)
+- uk.thm.local
+- us.thm.local
+
+<blockquote>
+These are separate domains but share the same namespace ("thm.local") and are connected hierarchically. Each location or administrative unit can manage its own domain resources without interfering with others. Domain Admins in each domain only control their part of the network.
+</blockquote>
+
+However, an Enterprise Admin (a different security group) has full control across the entire Tree.
+
+---
+
+**Forests**
+
+I learned (and reviewed) that a **Forest** is created when there are multiple Trees that do NOT share the same namespace. For example, if company THM merges with another company MHT Inc., each may already have its own established domain structure:
+- thm.local Tree
+- mht.local Tree
+
+Combining them creates a Forest. This allows the organizations to connect their networks while still keeping their internal structures separate. Each Tree maintains its own domain namespace and domain admins.
+
+The Forest acts as the security boundary for the network. Enterprise Admins can manage objects across all domains in the Forest.
+
+---
+
+**Trust Relationships**
+
+**Trusts** allow users in one domain to access resources located in another domain. Without a trust, domains are isolated from each other.
+
+There are two main types of Trusts:
+
+1. One-Way Trust:
+   - Domain A trusts Domain B
+   - Users in Domain B can access resources in Domain A
+   - But users in Domain A cannot access resources in Domain B unless another trust is configured in the opposite direction.
+
+2. Two-Way Trust:
+   - Both domains mutually trust each other
+   - Users from either domain can be granted access to resources in the other
+
+By default, domains in the same Tree or Forest automatically establish Two-Way Transitive Trusts, meaning permissions can be granted across domains as needed.
+
+It is important to note that a trust relationship only allows the opportunity for access. Permissions must still be configured at the group, file, or service level before access is actually granted.
+
 
 This explained how AD scales across large organizations.
 
-### What I Learned
-I learned how organizations expand AD across regions or subsidiaries without redesigning identity structures.
+### Reflection and What I Learned
+
+Understanding how Trees and Forests are structured makes it clear why large enterprise environments rarely use only one domain. Delegation of control, geographic separation, compliance rules, and operational boundaries all require structured domain hierarchy.
+
+Trusts are also key in real-world networks, especially during mergers, acquisitions, or environments with multiple business units.
+
+This ties directly back to the Security+ objectives around AAA (authentication, authorization, accounting) and enterprise identity management. Seeing the visual breakdown and practical examples made these architectural concepts much clearer and easier to remember.
 
 </details>
 
