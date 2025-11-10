@@ -3,7 +3,12 @@
 
 ## Section 1: Introduction to Linux Shells
 
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
 ### Objective
+
 The objective of this section was to understand what a Linux shell is and why interacting with a system through the command line can be more efficient than relying solely on a graphical interface. I wanted to build a foundational understanding of how the shell acts as the intermediary between the user and the operating system.
 
 ### Step-by-Step Walkthrough
@@ -23,9 +28,15 @@ The shell provides precision, speed, and flexibility. Many tasks that would requ
 ### What I Learned
 I learned that the shell is essential for interacting with Linux on a deeper level. This set the stage for the scripting and automation tasks later in the lab.
 
+</details>
+
 ---
 
 ## Section 2: Interacting With the Shell
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To learn how to perform basic navigation, view files, and execute commands within the Linux terminal.
@@ -49,9 +60,15 @@ Navigating Linux via the CLI provides fast access to system information. The abi
 ### What I Learned
 I reinforced core navigation and file interaction commands in Linux. These are essential commands that I will use frequently as I continue building administrative and security skills.
 
+</details>
+
 ---
 
 ## Section 3: Types of Linux Shells
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To learn about different shell types and how they influence command behavior and scripting style.
@@ -71,9 +88,15 @@ Bash is widely used and is a stable, script-friendly option. Shells like Zsh and
 ### What I Learned
 I learned that different shells can improve workflow depending on preference and environment. This helped me understand why administrators may choose one shell over another.
 
+</details>
+
 ---
 
 ## Section 4: Shell Scripting and Components
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To begin writing shell scripts and understand how variables, loops, and conditional statements support automation.
@@ -100,9 +123,15 @@ Scripting allows repetitive tasks to be automated reliably. Conditional logic al
 ### What I Learned
 Understanding how to write scripts opens the door to automation. This is essential in system administration and incident response.
 
+</details>
+
 ---
 
 ## Section 5: The Locker Script
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To build a script that validates user input using conditionals.
@@ -117,9 +146,15 @@ This script simulated simple authentication logic. It highlighted the importance
 ### What I Learned
 This exercise strengthened my understanding of how simple security checks can be automated.
 
+</details>
+
 ---
 
 ## Section 6: Practical Exercise
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### Objective
 To use scripting to search system logs for specific keywords.
@@ -134,9 +169,18 @@ This exercise reinforced how scripts can automate system monitoring tasks.
 ### What I Learned
 I learned how shell scripts apply directly to real-world administration and security workflows.
 
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
 ---
 
 ## Section 7: Conclusion
 
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
 I built confidence navigating the Linux shell and writing scripts to automate system tasks. These skills align directly with system administration and security operations tasks, especially those covered in Security+.
 
+</details>
