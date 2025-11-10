@@ -792,9 +792,7 @@ The Domain Controller acts as the Key Distribution Center (KDC), which provides 
 - The Authentication Service (AS)
 - The Ticket Granting Service (TGS)
 
-Kerberos Authentication Steps:
-
-Here is the full logical workflow:
+**Kerberos Authentication Steps:**
 
 1. **Initial User Login** - When a user logs into Windows, they enter their username and password. The workstation does not send the password to the Domain Controller. Instead, it creates an encrypted timestamp using the user's password hash (which is stored locally after the login attempt) and sends that to the KDC. This is known as the AS-REQ.
 2. **Ticket Granting Ticket (TGT) Issued** - The KDC verifies the timestamp by decrypting it with the stored copy of the user’s password hash. If it matches, the KDC sends two things back to the client:
@@ -828,7 +826,7 @@ With Kerberos, the important detail is that credentials are never re-sent once a
 
 NTLM is the older authentication protocol and still shows up in environments for backward compatibility. NTLM does not use tickets. Instead, it relies heavily on the user’s password hash, which can be vulnerable to Pass-the-Hash attacks.
 
-Here is the full NTLM workflow:
+**NTLM Authentication Steps:**
 
 1. The client requests authentication from a server.
 2. The server sends a randomly generated challenge back to the client.
