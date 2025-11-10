@@ -914,8 +914,9 @@ By default, domains in the same Tree or Forest automatically establish Two-Way T
 
 It is important to note that a trust relationship only allows the opportunity for access. Permissions must still be configured at the group, file, or service level before access is actually granted.
 
-
 This explained how AD scales across large organizations.
+
+---
 
 ### Reflection and What I Learned
 
