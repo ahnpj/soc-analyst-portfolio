@@ -640,9 +640,45 @@ This ensured that only users within those specific OUs would be restricted, whil
 
 ---
 
+**(Step 5-c)** Automatically lock workstations and servers after 5 minutes of inactivity
+
+Next, I created a GPO to automatically lock workstations and servers after 5 minutes of inactivity. I named this policy "Auto Lock Screen". Since I wanted this policy to apply to all computers in the domain, I linked the GPO at the root domain level (thm.local). Because the Workstations, Servers, and Domain Controllers OUs are all child OUs of the domain, they automatically inherited this policy.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-29.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 29</em>
+</p>
+
+I opened the GPO Editor for the "Auto Lock Screen" GPO, and navigated to **[Computer Configuration > Windows Settings > Security Settings > Security Options]**. Then, I located the "Interactive logon: Machine inactivity limit".
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-30.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 30</em>
+</p>
+
+I checked the "Define this policy setting" checkbox to allow for editing, then set the inactivity limit to 5 minutes (which is 300 seconds).
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-31.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 31</em>
+</p>
+
+After closing the GPO editor, I linked the GPO to the root domain by dragging the GPO into it.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-32.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 32</em>
+</p>
 
 
-- I used Resultant Set of Policy (RSoP) to verify that the policy applied.
 
 ### Findings / Analysis
 Group Policy ensures consistency, compliance, and baseline security across large numbers of systems. It is one of the strongest administrative tools in AD environments.
