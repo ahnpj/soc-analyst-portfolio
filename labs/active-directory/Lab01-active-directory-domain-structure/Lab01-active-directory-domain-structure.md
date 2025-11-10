@@ -772,17 +772,80 @@ I learned how GPOs connect high‑level security policy to real system configura
 ### Objective
 To understand how Active Directory handles authentication using Kerberos and how NTLM remains for legacy support.
 
-### Findings / Analysis
-- Kerberos uses encrypted tickets and is the default, secure authentication method.
-- NTLM uses challenge‑response and is less secure, but still supported.
-- Kerberos requires synchronized system time and functional DNS.
+### Analysis / Review
 
-### What I Learned
-This section reinforced Security+ topics about authentication, encryption, and replay attack prevention.
+In this portion of the lab, I reviewed how authentication works in a Windows Active Directory domain, focusing on Kerberos and NTLM. I remembered learning the high-level concepts when studying for the CompTIA Security+ exam, but seeing the actual authentication flows laid out step-by-step helped solidify how they function in a real enterprise environment.
 
-- Kerberos is the default domain authentication protocol and uses encrypted tickets.
-- NTLM is older and less secure but remains for compatibility.
-- Time synchronization is required for Kerberos to function.
+---
+
+<h4>Kerberos</h4>
+
+Kerberos is the default authentication protocol used in modern AD domains. Instead of sending passwords or password hashes across the network repeatedly, Kerberos uses encrypted tickets and temporary session keys to verify identity. This greatly reduces credential exposure and makes it harder for attackers to reuse stolen hashes.
+
+The Kerberos authentication workflow involves three main components:
+- Client: The user or device attempting to authenticate.
+- Key Distribution Center (KDC): Located on the Domain Controller; responsible for issuing tickets.
+- Service / Server: The resource being accessed (e.g., file server, SQL server, internal web app).
+
+The Domain Controller acts as the Key Distribution Center (KDC), which provides two important services:
+
+- The Authentication Service (AS)
+- The Ticket Granting Service (TGS)
+
+Kerberos Authentication Steps:
+
+Here is the full logical workflow:
+
+1. **Initial User Login** - When a user logs into Windows, they enter their username and password. The workstation does not send the password to the Domain Controller. Instead, it creates an encrypted timestamp using the user's password hash (which is stored locally after the login attempt) and sends that to the KDC. This is known as the AS-REQ.
+2. **Ticket Granting Ticket (TGT) Issued** - The KDC verifies the timestamp by decrypting it with the stored copy of the user’s password hash. If it matches, the KDC sends two things back to the client:
+
+- A Ticket Granting Ticket (TGT), which is encrypted using the krbtgt account hash.
+- A Session Key, which is shared between the client and the KDC for further communication.
+
+The user cannot open the TGT, since it is encrypted using the domain’s internal krbtgt secret key.
+
+3. **Requesting Access to a Service** - When the user tries to access something like a network file share or database, the client sends the following to the KDC:
+
+- The TGT
+- A new encrypted timestamp using the session key
+- The Service Principal Name (SPN) of the service being requested
+- This is the TGS-REQ.
+
+4. **Ticket Granting Service Response** - The KDC verifies the request and creates:
+
+- A Service Ticket (TGS ticket), encrypted with the service account’s password hash
+- A new Service Session Key for encrypted communication between the client and the service
+  
+The client still cannot read the ticket; only the target service can decrypt it.
+
+5. **Authenticating to the Service** - The client presents the Service Ticket to the service. The service decrypts it using its own stored account hash. If the decrypted ticket is valid and the timestamps match, the service allows the user to connect.
+
+With Kerberos, the important detail is that credentials are never re-sent once authentication begins. Access relies on time-limited tickets and session keys, which is why Kerberos is considered secure and efficient.
+
+---
+
+<h4>NTLM Authentication (Challenge-Response Model)</h4>
+
+NTLM is the older authentication protocol and still shows up in environments for backward compatibility. NTLM does not use tickets. Instead, it relies heavily on the user’s password hash, which can be vulnerable to Pass-the-Hash attacks.
+
+Here is the full NTLM workflow:
+
+1. The client requests authentication from a server.
+2. The server sends a randomly generated challenge back to the client.
+3. The client encrypts (hashes) the challenge using its NTLM password hash and sends the result back.
+4. The server forwards the challenge and the response to the Domain Controller.
+5. The Domain Controller performs the same hashing operation using its stored copy of the user’s password hash.
+6. If the results match, access is granted; if not, the request is denied.
+
+One major drawback is that if an attacker steals the NTLM hash, they can authenticate without needing to know the actual password.
+
+---
+
+### Reflection and What I Learned
+
+Seeing the actual authentication flows helped reinforce the Security+ concepts I studied. Kerberos makes sense now in a more practical way: it reduces credential exposure by using tickets and session keys instead of password hashes. NTLM, on the other hand, now feels clearly outdated and risky, especially because of how frequently Pass-the-Hash attacks are seen in real incident response cases.
+
+Understanding these authentication flows is extremely important for Blue Team and SOC Analyst work, especially when reviewing Windows Event Logs, investigating failed logon attempts, or analyzing lateral movement across a network.
 
 This matched what I learned during Security+ when studying authentication, encryption, and replay attack prevention.
 
