@@ -577,10 +577,70 @@ This forced the system to re-check and apply the latest GPO settings right away.
 
 ---
 
-<h4>(Step 5) Creating New GPOs/h4>
+<h4>(Step 5) Creating and Applying Custom GPOs/h4>
 
+For testing, I created two new Group Policy Objects (GPOs) to enforce security and access control settings across the domain:
+
+- Restrict access to the Windows Control Panel for non-IT users
+- Automatically lock workstations and servers after 5 minutes of inactivity
 
 ---
+
+**(Step 5-a)** Restricting Access to the Control Panel
+
+The goal of this policy was to make sure that only members of the IT department could access the Control Panel. Other departments (Sales, Marketing, Management, etc.) should not be able to modify system settings on their machines.
+
+I created a new GPO named "Restrict Control Panel Access" and opened it for editing.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-25.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 25</em>
+</p>
+
+After creating the GPO, I opened it for editing. Inside the Group Policy Management Editor, I navigated to **[User Configuration → Policies → Administrative Templates → Control Panel]**. I found the "Prohibit access to Control Panel and PC Settings policy", opened it, changed the setting to **[Enabled]**, and saved the configuration.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-26.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 26</em>
+</p>
+
+The filter in the new GPO was successfully enabled:
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-27.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 27</em>
+</p>
+
+---
+
+**(Step 5-b)** Applying New GPO to OUs
+
+Once the GPO was configured, I needed to link it to all of the OUs corresponding to users who shouldn't have access to the Control Panel of their PCs. In this case, I applied the GPO to the following child OUs:
+
+- Marketing
+- Management
+- Sales OUs
+
+I achieved this with a simple drag-and-drop:
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-28.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 28</em>
+</p>
+
+This ensured that only users within those specific OUs would be restricted, while IT staff retained full access.
+
+---
+
+
 
 - I used Resultant Set of Policy (RSoP) to verify that the policy applied.
 
