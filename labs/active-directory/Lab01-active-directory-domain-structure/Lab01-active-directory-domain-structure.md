@@ -678,7 +678,78 @@ After closing the GPO editor, I linked the GPO to the root domain by dragging th
   <em>Figure 32</em>
 </p>
 
+---
 
+<h4>(Step 6) Verifying GPOs have been applied to the correct OUs</h4>
+
+To verify, I logged into the domain using Mark’s account, who is in the "Marketing" OU. The Marketing OU should now have the following GPOs applied to it:
+
+- Restrict access to the Windows Control Panel
+- Automatically lock workstations and servers after 5 minutes of inactivity
+
+During the RDP login, I specified the domain "thm.local"
+
+In this lab environment, the Active Directory domain name "thm.local" is configured to resolve directly to the domain controller. This means that when I entered "thm.local" in the **Computer** field in Remote Desktop Connection, RDP was able to locate and connect to the domain controller successfully.
+
+<blockquote>
+This is different from typical production environments where you usually RDP to a specific hostname or IP address. In many real-world setups, the domain name itself does not automatically resolve to a server for RDP.
+</blockquote>
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-33.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 33</em>
+</p>
+
+This resolved correctly to the domain controller and brought me to the Windows login screen with the default blue background. From there, I logged in using Mark’s domain credentials.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-34.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 34</em>
+</p>
+
+I was successfully able to access Mark’s session on the machine, confirming that the credentials and domain login were working as expected. Once logged in, I had full access to his desktop environment and could proceed with testing the delegated permissions.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-35.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 35</em>
+</p>
+
+---
+
+**(Step 6-a)** Testing Control Panel Access
+
+I then attempted to open the Control Panel, but access was blocked. This confirmed that the GPO restricting Control Panel access was successfully applied to the intended OUs:
+
+- Marketing
+- Management
+- Sales OUs
+
+Mark being in the "Marketing" OU should not have access to the Control Panel, which worked successfully.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-36.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 36</em>
+</p>
+
+---
+
+**(Step 6-b)** Testing inactivity GPO
+
+I then left the workstation idle for five minutes to verify the Auto Lock Screen GPO from step 5-c. After the idle period, the screen automatically locked and required credentials to log back in, confirming the policy was successfully applied.
+
+<blockquote>
+Had the policies not taken effect right away, I would have opened PowerShell and used the gpupdate /force command to immediately refresh and apply the updated GPOs.
+</blockquote>
+
+---
 
 ### Findings / Analysis
 Group Policy ensures consistency, compliance, and baseline security across large numbers of systems. It is one of the strongest administrative tools in AD environments.
