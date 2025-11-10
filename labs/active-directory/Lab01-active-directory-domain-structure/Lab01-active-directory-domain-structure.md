@@ -327,11 +327,120 @@ To correctly organize computer objects in the domain so the right policies are a
 
 ### Step-by-Step Walkthrough
 
-I noticed that new systems appear in the default **Computers** container, which is not ideal for management. I created two new OUs: **Workstations** and **Servers**, then moved devices accordingly.
+By default, any machine that joins a domain (except Domain Controllers) is automatically placed in the built-in Computers container. After reviewing the **Computers** container in **Active Directory Users and Computers**, I noticed that a mix of devices were stored there, including servers, laptops, and desktops. Keeping all devices together like this is not ideal because different device types often require different policies. For example, servers typically need stricter configurations and monitoring than the workstations that regular users log into every day.
 
-- I reviewed how new computers default into the **Computers** container.
-- I created two new OUs: **Workstations** and **Servers**.
-- I moved machines into their corresponding OUs based on role.
+To better organize the environment, I decided to separate devices based on the device types. Following common AD best practices, I grouped machines into three main categories:
+
+- Workstations – Devices that regular domain users log into for daily tasks and browsing. These should not have privileged accounts signed in.
+- Servers – Systems that provide services to users or to other servers on the network.
+- Domain Controllers – Already stored in their own OU by default, as they are considered the most sensitive systems in the domain.
+
+---
+
+<h4>(Step 1) Creating new OUs to better organize the environment</h4>
+
+I created two new OUs: **Workstations** and **Servers** under the the domain container. To achieve this, in **ADUC**, I right-clicked the domain, selected **[New > Organizational Unit]**.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-13.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 13</em>
+</p>
+
+I repeated this process twice: once to create an OU named "Workstations" and once to create an OU named "Servers". For both, I enabled the "Protect from accidental deletion" option.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-14.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 14</em>
+</p>
+
+---
+
+<h4>(Step 2) Moving Devices into the Appropriate Organizational Units</h4>
+
+After creating the Workstations and Servers OUs, I needed to move the existing computer objects out of the default **Computers** container and into their appropriate OUs. I could have done this manually through the **Active Directory Users and Computers** (ADUC) GUI by simply dragging and dropping each device into the correct OU. This works fine for one or two devices, but since I was organizing multiple systems at once, I used PowerShell instead for efficiency and consistency.
+
+I decided to move:
+
+- All devices with names starting with LPT- or PC- to the Workstations OU.
+- All devices with names starting with SRV- to the Servers OU.
+
+---
+
+**(Step 2-a)** Moving Personal Computers and Laptops to the "Workstations" OU
+
+In PowerShell, I ran the following command to move all personal computers (starting with PC) and laptops (starting with LPT):
+
+```
+Get-ADComputer -Filter 'Name -like "LPT-*" -or Name -like "PC-*"' -SearchBase "CN=Computputers,DC=thm,DC=local" |
+Move-ADObject -TargetPath "OU=Workstations,DC=thm,DC=local"
+```
+
+- `Get-ADComputer` - Retrieves computer objects from Active Directory.
+- `-Filter 'Name -like "LPT-*"'` - Selects laptops whose names begin with "LPT-"
+- `-or Name -like "PC-*"'` - Includes computers whose names begin with PC-.
+- `-SearchBase "CN=Computers,DC=thm,DC=local"` - Tells the command to look inside the default Computers container.
+- `|` (pipeline) - Sends the list of computer objects to the next command.
+- `Move-ADObject` - Moves each computer object to a different location in AD.
+- `-TargetPath "OU=Workstations,DC=thm,DC=local"` - Specifies that the matching workstation systems should be moved into the Workstations OU.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-14.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 14</em>
+</p>
+
+It took a few tries to get the syntax exactly right, but once I confirmed the command was functioning, I reopened PowerShell and captured a clean screenshot of the final working version.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-15.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 15</em>
+</p>
+
+---
+
+**(Step 2-b)** Moving Servers to the "Servers" OU
+
+In PowerShell, I ran the following command to move all personal computers (starting with PC) and laptops (starting with LPT):
+
+```
+Get-ADComputer -Filter 'Name -like "SRV-*"' -SearchBase "CN=Computers,DC=thm,DC=local" |
+Move-ADObject -TargetPath "OU=Servers,DC=thm,DC=local"
+```
+
+- `Get-ADComputer` - Retrieves computer objects from Active Directory.
+- `-Filter 'Name -like "SRV-*"'` - Selects devices whose names begin with "SRV-"
+- `-SearchBase "CN=Computers,DC=thm,DC=local"` - Tells the command to look inside the default Computers container.
+- `|` (pipeline) - Sends the list of computer objects to the next command.
+- `Move-ADObject` - Moves each computer object to a different location in AD.
+- `-TargetPath "OU=Servers,DC=thm,DC=local"` - Specifies that the matching server systems should be moved into the Servers OU.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-14.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 14</em>
+</p>
+
+It took a few tries to get the syntax exactly right, but once I confirmed the command was functioning, I reopened PowerShell and captured a clean screenshot of the final working version.
+
+<p align="left">
+  <img src="images/active-directory-domain-structure-15.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 15</em>
+</p>
+
+
+
+
+---
 
 ### Findings / Analysis
 Grouping devices makes policy management predictable and easier to maintain. Servers require stricter controls than regular user workstations.
