@@ -34,10 +34,17 @@ This connected well with what I learned while studying for the CompTIA Security+
 
 - Environment: Ubuntu 20.04.6 LTS (x86_64), Linux kernel 5.15.0-1068-aws on a remote virtual machine.
 - User: user (shell prompt shown).
-- Network: VM had a private IPv4 address on ens5 (10.201.72.1).
+- Network: VM had a private IPv4 address on ens5 (10.201.72.1, 10.201.6.0, 10.201.19.118).
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-01.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 1</em>
+</p>
 
 <blockquote>
-This VM was ephemeral / non-persistent. Each time the session was closed and relaunched, the environment reset and a new instance of the machine was provisioned. As a result, the internal/private IP address changed between sessions (e.g., addresses in the 10.x.x.x range), any files or configurations created during previous sessions were not retained unless manually exported or saved externally, and the system state (updates, installed packages, running processes, logs) returned to its baseline default image on every new launch.
+This VM was ephemeral / non-persistent. Each time the session was closed and relaunched, the environment reset and a new instance of the machine was provisioned. As a result, the internal/private IP address changed between sessions (addresses in the 10.201.x.x range), any files or configurations created during previous sessions were not retained unless manually exported or saved externally, and the system state (updates, installed packages, running processes, logs) returned to its baseline default image on every new launch.
 </blockquote>
 
 **System Concepts Review**
@@ -68,14 +75,14 @@ This review helped clarify how the pieces fit together:
     - `sudo apt update && apt list --upgradable` — checked package update status (banner indicated many updates).
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-01.png?raw=true&v=2" 
+  <img src="images/linux-bash-usage-and-scripting-02.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
+  <em>Figure 2</em>
 </p>
 
 > **📌 Personal Learning Note:**  
 > I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
-
 
 ### Findings / Analysis
 The shell provides precision, speed, and flexibility. Many tasks that would require multiple actions in a GUI can be done in one or two commands in the CLI. This reduces time, improves control, and allows customization through scripting.
@@ -111,7 +118,55 @@ This approach reminded me how analysts rely heavily on log searching and file pa
 
 ---
 
-<h4>(Step 1)</h4>
+<h4>(Step 1) SSH into the Virtual Machine</h4> 
+
+I first connected to the remote machine via SSH using the IP address assigned to the lab instance. After successfully authenticating, I was placed into the terminal session where I could begin interacting with the system. I ran the following command to do so:
+
+`ssh 10.201.19.118`
+
+---
+
+<h4>(Step 2) I began by identifying my location in the system</h4>
+
+I began by running `pwd` (print working directory) to verify my location within the filesystem and confirmed that I was currently in the `/home/user` directory.
+
+---
+
+<h4>(Step 3) Reviewed directory context and refreshed directory traversal concepts</h4>
+
+I revisited directory navigation to refresh my memory on the filesystem context. I used `cd` to move between folders and `cd ..` to step one directory up. The `..` operator reminded me of directory traversal concepts attackers abuse when manipulating relative paths. While performing these checks I captured the outputs and noted the paths I visited for evidence.
+
+---
+
+<h4>(Step 3) Reviewed the grep command</h4>
+
+I revisited the `grep` command, which allows searching for specific keywords or patterns within files. This is especially helpful when dealing with large files, such as logs, where I only need lines that match a certain term. Running `grep` with the desired pattern returned only the lines in the file that contained that keyword.
+
+For example, I could run: `grep "hello" examplefile.txt`, which would return only the lines in `examplefile.txt` that contain the word `"hello"`. This allowed me to quickly locate relevant data.
+
+---
+
+<h4>(Step 4) Reviewed the ls command </h4>
+
+I reviewed the `ls` command to refresh how to list the contents of a directory. This included recalling how ls displays files, subdirectories, and sometimes hidden items depending on the options used. I also revisited several common flags that provide additional detail or change the output format (such as showing file permissions, sizes, and timestamps).
+
+- For example, I could run `ls -la`, which would list all files (including hidden ones) in long format, which displays file permissions, owner, group, size, and modification dates in a structured way. This is especially helpful when determining file visibility and understanding permission settings within a directory.
+
+I also reviewed how to use `ls -l` to display file and directory permissions in long format. The output includes several fields, such as the file type, permission bits, owner, group, file size, and the last modification date. This helped reinforce how Linux controls access to files and directories through permission settings.
+
+- For example, running `ls -l` returned entries such as `drwxr-xr-x` for directories or `-rw-r--r--` for files.
+
+I took time to refamiliarize myself with how to interpret these permission strings, noting that the first character indicates the file type (for example, `d` for directory), followed by three sets of read (`r`), write (`w`), and execute (`e`) permissions for the owner, group, and others. Reviewing this helped reinforce how Linux controls access to files and directories and reminded me that understanding permissions is useful both for routine system interaction and when identifying misconfigurations that could be leveraged in an attack or privilege escalation scenario.
+
+---
+
+<h4> (Step 5) Reviewed other basic commands</h4>
+
+During this session, I also revisited several additional Linux commands that I commonly use for basic enumeration and situational awareness. These included commands such as `whoami` to confirm my current user context, uname `-a` to review kernel and system information, hostname to identify the system name, and `ip a` to inspect network interfaces and assigned IP addresses. I also used `df -h` and `free -h` to check disk and memory usage respectively, along with `ps aux` to view active running processes. 
+
+I additionally tested directory navigation and file interaction commands such as `touch`, `cat`, `less`, `head`, and `tail` to ensure I remained familiar with reading, creating, and examining files directly from the command line. Since these were primarily refreshers and foundational operations that I am already familiar with, I did not document each command output in detail here. The purpose of this review was to re-establish confidence in these core commands so that my focus can remain on analysis and interpretation rather than recalling syntax.
+
+---
 
 ### Findings / Analysis
 Navigating Linux via the CLI provides fast access to system information. The ability to search text efficiently with commands like `grep` is particularly useful for log and forensic work.
