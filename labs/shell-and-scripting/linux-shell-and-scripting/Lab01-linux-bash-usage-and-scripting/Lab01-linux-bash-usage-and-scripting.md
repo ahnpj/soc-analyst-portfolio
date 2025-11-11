@@ -74,6 +74,10 @@ This review helped clarify how the pieces fit together:
        width="1000"><br>
 </p>
 
+<blockquote>
+I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
+</blockquote>
+
 ### Findings / Analysis
 The shell provides precision, speed, and flexibility. Many tasks that would require multiple actions in a GUI can be done in one or two commands in the CLI. This reduces time, improves control, and allows customization through scripting.
 
