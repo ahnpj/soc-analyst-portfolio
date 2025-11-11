@@ -60,12 +60,19 @@ This review helped clarify how the pieces fit together:
 2. Ran basic reconnaissance commands to confirm the banner values and gather more detail:
     - `uname -a` — confirmed kernel and architecture.
     - `lsb_release -a` — confirmed Ubuntu 20.04.6 LTS.
-    - `ip -4 addr show ens5 or ip a` — verified the VM’s private IPv4 on ens5.
+    - `ip -4 addr show ens5` — verified the VM’s private IPv4 on ens5.
     - `free -h` — checked memory usage and swap status.
     - `df -h /` — checked root filesystem size and usage.
-    - `whoami and id` — confirmed current user and groups.
+    - `whoami` — confirmed current user and groups.
     - `last -a | head` — reviewed last logins (banner also showed last login).
     - `sudo apt update && apt list --upgradable` — checked package update status (banner indicated many updates).
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-01.png?raw=true&v=2" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+</p>
 
 ### Findings / Analysis
 The shell provides precision, speed, and flexibility. Many tasks that would require multiple actions in a GUI can be done in one or two commands in the CLI. This reduces time, improves control, and allows customization through scripting.
