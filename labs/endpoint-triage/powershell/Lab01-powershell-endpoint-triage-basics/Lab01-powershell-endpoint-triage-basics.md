@@ -153,6 +153,10 @@ This skill translates to **log analysis, evidence collection, and forensic tasks
 
 ## Objective 3: Piping, Filtering, and Sorting Data
 
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
 ### Step-by-Step Walkthrough
 I practiced chaining commands together with pipes, sorting files by size, filtering by extension, and even searching text within files. This is where PowerShell’s object-oriented design really showed its strength.
 
@@ -166,7 +170,7 @@ I practiced chaining commands together with pipes, sorting files by size, filter
 
 I used `Get-ChildItem | Sort-Object Length` to sort files by size, identifying unusually large items that might be interesting during analysis.
 
-### Commands I Used
+**Commands I Used**
 - `Sort-Object` to sort the current working directory by size (`Length`). I figured thid could be good to quickly identify unusually large files.
 - For example, `Get-ChildItem | Sort-Object Length` gave me a list of file names in order of size. (Figure 2)
 
@@ -184,7 +188,7 @@ The first command `Get-ChildItem -Path C:\Users` lists all directories under `C:
 
 Using `Where-Object -Property Extension -eq ".txt"`, I filtered only `.txt` files. Practicing with `-Property` and `-eq` helped me recall how object filtering works.
 
-### Commands I Used
+**Commands I Used**
 - `Where-Object` let me narrow down results to specific file types or names.
 - For example, `Get-ChildItem | Where-Object -Property Name -like "ship*"` helped me filter for files with names containing "ship".
 
@@ -202,7 +206,7 @@ Using `Where-Object -Property Extension -eq ".txt"`, I filtered only `.txt` file
 
 I applied `Select-Object Name, Length` to output a simpler view of file details, focusing on the essential attributes.
 
-### Commands I Used
+**Commands I Used**
 - `Select-Object` was useful when I only needed a subset of properties, reducing noise.
 - For example, `Get-ChildItem | Select-Object Name, Length` gave me a clean list of just file names (`Name`) and sizes (`Length`).
 
@@ -220,7 +224,7 @@ I applied `Select-Object Name, Length` to output a simpler view of file details,
 
 I reviewed how `Select-String` scans files for keywords, similar to grep. For instance: `Select-String -Path .\example.txt -Pattern "keyword"` returned matching lines along with their line numbers. I used `Select-String` to also look for text patterns inside files, similar to how `grep` works in Unix/Linux or `findstr` works in Windows CMD was chosen to replicate log searches. I figured this could be good in helping me locate strings of interest (like suspicious indicators).
 
-### Commands I Used
+**Commands I Used**
 - `Select-String -Path .\captain-hat.txt -Pattern "hat"` which searched the file `captain-hat.txt` for the text "hat". It returned the line in the file that contain the word "hat". By default, it seemed to have also showed the line number and highlighted the matched text.
 
  <p align="left">
@@ -237,7 +241,7 @@ I reviewed how `Select-String` scans files for keywords, similar to grep. For in
 
 To challenge myself, I built a command to return only files over 50 bytes: `Get-ChildItem | Where-Object -Property Length -gt 50`. I also learned about comparison operators (`-ne`, `-gt`, `-ge`, `-lt`, and `-le`) which let me filter objects based on numeric or conditional criteria, such as finding files greater than a certain size.
 
-### Commands I Used
+**Commands I Used**
 - `Get-Children | Where-Object -Property Length -gt 50` to return only files over 50 bytes.
   - `Get-ChildItem` → lists all files and directories in the current location (similar to dir in CMD or ls in Linux).
   - `|` (pipe) → takes the output of Get-ChildItem and sends it into the next command for filtering.
@@ -247,7 +251,7 @@ To challenge myself, I built a command to return only files over 50 bytes: `Get-
 
 At the end of this section, there was a hands-on challenge that asked me to retrieve only the items in the current directory with a size greater than 100. I solved it using the following command: `Get-Children | Where-Object -Property Length -gt 100`
 
- <p align="center">
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.06.edited.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -261,13 +265,15 @@ At the end of this section, there was a hands-on challenge that asked me to retr
 - `-Property Length` → specifies the property to evaluate, in this case the file size (in bytes).
 - `-gt 100` → comparison operator meaning “greater than 100.” This ensures only items larger than 100 bytes are returned.
 
- <p align="center">
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.07.edited.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
   <em>Figure 7: Woohoo!</em>
 </p>
+
+---
 
 ### Why This Matters
 Instead of manually checking each file, I automated the process:  
@@ -278,36 +284,47 @@ Instead of manually checking each file, I automated the process:
 ### Real-World Value
 In a SOC environment, I could use this same method to **parse event logs, filter by criteria, and search for suspicious strings** without needing third-party tools.
 
+</details>
+
 ---
 
 ## Objective 4: System and Network Information
 
-### What I Did
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
+### Step-by-Step Walkthrough
 I retrieved system information, checked for local users, and pulled detailed network configuration and IP assignments.
 
-### Commands I Used
+**Commands I Used**
 - `Get-ComputerInfo`
 - `Get-LocalUser`
 - `Get-NetIPConfiguration`
 - `Get-NetIPAddress`
 
-### Why I Used These Commands
-- `Get-ComputerInfo` gave me a comprehensive baseline snapshot of the OS and hardware.  
-- `Get-LocalUser` let me identify which accounts exist and which accounts are enabled on the target machine (indicated by `True` or `False` under the `Enabled` column) — key for spotting suspicious or hidden users.  
-- `Get-NetIPConfiguration` provided networking info at a glance, such as IP addresses, DNS servers, and configurations.
-- `Get-NetIPAddress` gave me specific IP assignment details configured on the system, useful when investigating anomalies.
+---
 
-### Why This Matters
-These commands provided me with:  
-- A complete system snapshot (`Get-ComputerInfo`).  
-- A list of all local accounts, which is critical for detecting hidden or unauthorized users.  
-- Networking details including DNS and gateway configuration — the same data often checked during incident response.  
+**(Step 1) Collecting System Info**
+I ran `Get-ComputerInfo` to capture a detailed snapshot of the machine’s hardware and OS version, which gave me a comprehensive baseline snapshot of the OS and hardware.
 
-#### Hidden Treasure Challenge
+---
+
+**(Step 2) Enumerating Local Users**
+Using `Get-LocalUser`, I reviewed which accounts existed and whether they were enabled or disabled, which let me identify which accounts exist and which accounts are enabled on the target machine (indicated by `True` or `False` under the `Enabled` column) — key for spotting suspicious or hidden users.  
+
+---
+
+**(Step 3) Checking Network Configuration**
+I used `Get-NetIPConfiguration` and` Get-NetIPAddress` to confirm the network setup and active IPs. `Get-NetIPConfiguration` provided networking info at a glance, such as IP addresses, DNS servers, and configurations. `Get-NetIPAddress` gave me specific IP assignment details configured on the system, useful when investigating anomalies.
+
+---
+
+**(Step 4) Investigating Hidden Files**
 
 At the end of this section there was a hands-on challenge to find a “secret” file in the user `p1r4t3`’s home folder.
 
- <p align="center">
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.11.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -315,9 +332,11 @@ At the end of this section there was a hands-on challenge to find a “secret”
   <em>Figure 8</em>
 </p>
 
-I started by changing directories to `C:\Users` with `Set-Location` to locate the user `p1r4te`.  
+---
 
- <p align="center">
+**(Step 4-a)** I started by changing directories to `C:\Users` with `Set-Location` to locate the user `p1r4te`.  
+
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.08.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -325,9 +344,11 @@ I started by changing directories to `C:\Users` with `Set-Location` to locate th
   <em>Figure 9</em>
 </p>
 
-I listed the contents with `Get-ChildItem` and discovered a directory called `hidden-treasure-chest`. Then, I changed into that directory using `Set-Location`, ran `Get-ChildItem` again, and saw a `.txt` file named `big-treasure.txt`.
+---
 
- <p align="center">
+**(Step 4-b)** I listed the contents with `Get-ChildItem` and discovered a directory called `hidden-treasure-chest`. Then, I changed into that directory using `Set-Location`, ran `Get-ChildItem` again, and saw a `.txt` file named `big-treasure.txt`.
+
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.09.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -335,9 +356,11 @@ I listed the contents with `Get-ChildItem` and discovered a directory called `hi
   <em>Figure 10</em>
 </p>
 
-Finally, I opened the file with `Get-Content big-treasure.txt` and retrieved the answer to the lab challenge.
+---
 
- <p align="center">
+**(Step 4-c)** Finally, I opened the file with `Get-Content big-treasure.txt` and retrieved the answer to the lab challenge.
+
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.10.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -345,9 +368,11 @@ Finally, I opened the file with `Get-Content big-treasure.txt` and retrieved the
   <em>Figure 11</em>
 </p>
 
-Woohoo!
+---
 
- <p align="center">
+**(Step 4-d)** Woohoo!
+
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.12.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -355,12 +380,25 @@ Woohoo!
   <em>Figure 12</em>
 </p>
 
+
+### Why This Matters
+These commands provided me with:  
+- A complete system snapshot (`Get-ComputerInfo`).  
+- A list of all local accounts, which is critical for detecting hidden or unauthorized users.  
+- Networking details including DNS and gateway configuration — the same data often checked during incident response.  
+
 ### Real-World Value
 This aligns with **host auditing and reconnaissance**. For example, if I suspect persistence mechanisms or hidden accounts, I can use these commands to validate the system baseline.
+
+</details>
 
 ---
 
 ## Objective 5: Real-Time System Analysis
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### What I Did
 I moved into monitoring mode — checking processes, services, open connections, and verifying file integrity with hashes.
@@ -483,6 +521,8 @@ This confirmed that the service had been tampered with, and the correct service 
 ### Real-World Value
 
 This mirrors what I’d do as an analyst during **threat hunting or incident response**, where checking processes, services, and connections is often step one.
+
+</details>
 
 ---
 
