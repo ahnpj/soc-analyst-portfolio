@@ -380,6 +380,7 @@ At the end of this section there was a hands-on challenge to find a “secret”
   <em>Figure 12</em>
 </p>
 
+---
 
 ### Why This Matters
 These commands provided me with:  
@@ -400,8 +401,8 @@ This aligns with **host auditing and reconnaissance**. For example, if I suspect
 
 <summary><b>(Click to expand)</b></summary>
 
-### What I Did
-I moved into monitoring mode — checking processes, services, open connections, and verifying file integrity with hashes.
+### Summary
+I moved into monitoring mode — checking processes, services, open connections, and verifying file integrity with hashes. I revisited commands for monitoring active processes, network connections, and verifying file integrity through hashing. I also worked through several applied challenges.
 
 ### Commands I Used
 - `Get-Process`
@@ -415,6 +416,117 @@ I moved into monitoring mode — checking processes, services, open connections,
 - `Get-NetTCPConnection` displayed all current TCP connections at the time, which essentially gives insights into both local and remote endpoints. Would be essential for identifying unauthorized or suspicious outbound network connections.  
 - `Get-FileHash` allowed me to verify the integrity of key files, confirming whether they had been altered.
 
+### Step-by-Step Walkthrough
+
+---
+
+In this part of the lab, I was presented with the following questions:
+
+**Question 1** In the previous task, you found a marvellous treasure carefully hidden in the target machine. What is the hash of the file that contains it?**
+
+<p align="left">
+  <img src="images/powershell-endpoint-triage-basics.13.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 13</em>
+
+**Question 2** What property retrieved by default by `Get-NetTCPConnection` contains information about the process that has started the connection?
+
+ <p align="left">
+  <img src="images/powershell-endpoint-triage-basics.15.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 14</em>
+
+**Question 3** It's time for another small challenge. Some vital service has been installed on this pirate ship to guarantee that the captain can always navigate safely. But something isn't working as expected, and the captain wonders why. Investigating, they find out the truth, at last: the service has been tampered with! The shady lad from before has modified the service DisplayName to reflect his very own motto, the same that he put in his user description. With this information and the PowerShell knowledge built so far, the task was to find the service name.
+
+ <p align="left">
+  <img src="images/powershell-endpoint-triage-basics.16.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 15</em>
+  
+---
+
+**(Step 1) Question 1 Answer Walkthrough**
+
+I ran the follow commands in order:
+  - `Set-Location C:\Users\p1r4t3` to navigate to the target machine directory (from previous challenge).
+  - `Get-ChildItem` to list files and directories.
+  - `SetLocation hidden-treasure-chest` to open the directory that contained the file I required for this question
+  - `Get-FileHash big-treasure.txt` to obtain the hash value of the file `big-treasure.txt`
+
+<p align="left">
+  <img src="images/powershell-endpoint-triage-basics.14.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 16</em>
+
+<p align="left">
+  <img src="images/powershell-endpoint-triage-basics.13.answer.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 17 (Answer)</em>
+
+---
+
+**(Step 2) Question 2 Answer Walkthrough**
+
+The question asked which property retrieved by default by `Get-NetTCPConnection` contains information about the process that has started the connection.  
+
+ <p align="left">
+  <img src="images/powershell-endpoint-triage-basics.15.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 18</em>
+
+From my reading and review of the cmdlet documentation, I learned that the property is **`OwningProcess`**. This property provides the Process ID (PID) of the process that owns the network connection. While the `Get-NetTCPConnection` output shows the PID, this can then be mapped back to an actual process name using the `Get-Process` cmdlet if needed.  
+
+I did not need to discover this by running the command in the lab; instead, I was able to answer it directly from the reading material that explained how the cmdlet works and which properties it returns by default.
+ 
+ <p align="left">
+  <img src="images/powershell-endpoint-triage-basics.15.answer.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 19 (Answer)</em>
+
+---
+
+**(Step 3) Question 3 Answer Walkthrough**
+
+For this challenge, I ran the `Get-Service` cmdlet to list all services on the system. While reviewing the output, I noticed an unusual `DisplayName` that stood out from the rest:  
+
+**"A merry life and a short one"**  
+
+This matched the shady user’s motto from his account description. The service associated with this altered `DisplayName` was:  
+
+**`p1r4t3-s-compass`**  
+
+ <p align="left">
+  <img src="images/powershell-endpoint-triage-basics.17.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 20</em>
+
+This confirmed that the service had been tampered with, and the correct service name was `p1r4t3-s-compass`.
+
+ <p align="left">
+  <img src="images/powershell-endpoint-triage-basics.16.answer.png" 
+       alt="SIEM alert" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="600"><br>
+  <em>Figure 21 (Answer)</em>
+
+---
+
 ### Why This Matters
 - `Get-Process` shows CPU/memory usage — key for spotting rogue processes.  
 - `Get-Service` reveals which services are running or disabled. Attackers often tamper with these.  
@@ -427,97 +539,6 @@ I moved into monitoring mode — checking processes, services, open connections,
   - Since the lab required verifying the integrity of the `ship-flag.txt` file, I ran `Get-FileHash -Path .\ship-flag.txt` to generate its SHA256 hash. The command returned a unique hash value (`54D2EC3C12BF3DBA25B95EB0BEB376052295AF53A22BA8E60D444880073D48F2`) that can be used to confirm the authenticity of the file.
   - Using file hashing like this is especially valuable for real-time monitoring and analysis in security operations. By continuously checking file hashes against known-good values (or comparing them to threat intelligence databases), analysts can quickly detect tampering, malware infection, or unauthorized file changes. This makes it a practical tool for ensuring integrity and spotting potential compromise during live investigations.
 
-#### Challenge Questions
-
-In this part of the lab, I was presented with the following questions:
-
-1. **In the previous task, you found a marvellous treasure carefully hidden in the target machine. What is the hash of the file that contains it?**
-
- <p align="center">
-  <img src="images/powershell-endpoint-triage-basics.13.png" 
-       alt="SIEM alert" 
-       style="border: 2px solid #444; border-radius: 6px;" 
-       width="600"><br>
-  <em>Figure 13</em>
-
-  I ran the follow commands in order:
-  - `Set-Location C:\Users\p1r4t3` to navigate to the target machine directory (from previous challenge).
-  - `Get-ChildItem` to list files and directories.
-  - `SetLocation hidden-treasure-chest` to open the directory that contained the file I required for this question
-  - `Get-FileHash big-treasure.txt` to obtain the hash value of the file `big-treasure.txt`
-
- <p align="center">
-  <img src="images/powershell-endpoint-triage-basics.14.png" 
-       alt="SIEM alert" 
-       style="border: 2px solid #444; border-radius: 6px;" 
-       width="600"><br>
-  <em>Figure 14</em>
-
-  First try? Woo!
-   <p align="center">
-  <img src="images/powershell-endpoint-triage-basics.13.answer.png" 
-       alt="SIEM alert" 
-       style="border: 2px solid #444; border-radius: 6px;" 
-       width="600"><br>
-  <em>Figure 13 (Answer)</em>
-
-2. **What property retrieved by default by `Get-NetTCPConnection` contains information about the process that has started the connection?**
-
- <p align="center">
-  <img src="images/powershell-endpoint-triage-basics.15.png" 
-       alt="SIEM alert" 
-       style="border: 2px solid #444; border-radius: 6px;" 
-       width="600"><br>
-  <em>Figure 15</em>
-
-
-The question asked which property retrieved by default by `Get-NetTCPConnection` contains information about the process that has started the connection.  
-
-From my reading and review of the cmdlet documentation, I learned that the property is **`OwningProcess`**. This property provides the Process ID (PID) of the process that owns the network connection. While the `Get-NetTCPConnection` output shows the PID, this can then be mapped back to an actual process name using the `Get-Process` cmdlet if needed.  
-
-I did not need to discover this by running the command in the lab; instead, I was able to answer it directly from the reading material that explained how the cmdlet works and which properties it returns by default.
- 
- <p align="center">
-  <img src="images/powershell-endpoint-triage-basics.15.answer.png" 
-       alt="SIEM alert" 
-       style="border: 2px solid #444; border-radius: 6px;" 
-       width="600"><br>
-  <em>Figure 15 (Answer)</em>
-
-3. **It's time for another small challenge. Some vital service has been installed on this pirate ship to guarantee that the captain can always navigate safely. But something isn't working as expected, and the captain wonders why. Investigating, they find out the truth, at last: the service has been tampered with! The shady lad from before has modified the service `DisplayName` to reflect his very own motto, the same that he put in his user description.** With this information and the PowerShell knowledge built so far, the task was to **find the service name**.
-
- <p align="center">
-  <img src="images/powershell-endpoint-triage-basics.16.png" 
-       alt="SIEM alert" 
-       style="border: 2px solid #444; border-radius: 6px;" 
-       width="600"><br>
-  <em>Figure 16</em>
-
-
-For this challenge, I ran the `Get-Service` cmdlet to list all services on the system. While reviewing the output, I noticed an unusual `DisplayName` that stood out from the rest:  
-
-**"A merry life and a short one"**  
-
-This matched the shady user’s motto from his account description. The service associated with this altered `DisplayName` was:  
-
-**`p1r4t3-s-compass`**  
-
- <p align="center">
-  <img src="images/powershell-endpoint-triage-basics.17.png" 
-       alt="SIEM alert" 
-       style="border: 2px solid #444; border-radius: 6px;" 
-       width="600"><br>
-  <em>Figure 17</em>
-
-This confirmed that the service had been tampered with, and the correct service name was `p1r4t3-s-compass`.
-
- <p align="center">
-  <img src="images/powershell-endpoint-triage-basics.16.answer.png" 
-       alt="SIEM alert" 
-       style="border: 2px solid #444; border-radius: 6px;" 
-       width="600"><br>
-  <em>Figure 16 (Answer)</em>
-
 ### Real-World Value
 
 This mirrors what I’d do as an analyst during **threat hunting or incident response**, where checking processes, services, and connections is often step one.
@@ -527,6 +548,10 @@ This mirrors what I’d do as an analyst during **threat hunting or incident res
 ---
 
 ## Objective 6: Scripting
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### What I Did
 I wrapped up by practicing PowerShell scripting, focusing on how to automate repetitive tasks and even execute commands remotely with `Invoke-Command`.
@@ -546,30 +571,39 @@ I wrapped up by practicing PowerShell scripting, focusing on how to automate rep
 - Remote execution is especially important: with `Invoke-Command`, I could push commands to multiple systems at once.  
 - This is applicable in both defensive tasks (running IOC scans across a network) and offensive testing (enumerating systems).
 
-#### Challenge
+### Challenge
 At the end of this section, there was a hands-on challenge that asked me to execute the **Get-Service** command on a remote computer named *RoyalFortune*.
 
- <p align="center">
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.18.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
-  <em>Figure 18</em>
+  <em>Figure 22</em>
 
 In this exercise, I used the **Invoke-Command** cmdlet to execute the **Get-Service** command on a remote computer named *RoyalFortune*. The full command I ran was: `Invoke-Command -ComputerName RoyalFortune -ScriptBlock { Get-Service }`
 
- <p align="center">
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.18.answer.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
-  <em>Figure 18 (Answer)</em>
+  <em>Figure 23 (Answer)</em>
 
 ### Real-World Value
 This demonstrates I can **scale operations across environments**. Recruiters should see this as a practical skill: I’m not only comfortable with individual commands, but also capable of designing and running scripts to automate security workflows.
 
+</details>
+
 ---
 
 # Closing Notes
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
 Across Objectives 1–6, I moved from learning the basics of PowerShell to applying it for **file management, data filtering, system analysis, and scripting automation**. These exercises show that I can use PowerShell not just as a command-line tool, but as a versatile platform for **system administration, security monitoring, and incident response**.
+
+</details>
 
