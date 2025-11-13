@@ -6,6 +6,10 @@ This lab report documents my hands-on work with PowerShell. Each section demonst
 
 ## Objective 1: PowerShell Basics
 
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
 ### What I Did
 I started by connecting to the target lab machine via SSH and launching PowerShell. Once inside, I explored how PowerShell structures its commands with the `Verb-Noun` format. I then practiced discovering available commands and getting help on their usage.
 
@@ -16,7 +20,6 @@ I started by connecting to the target lab machine via SSH and launching PowerShe
        width="600"><br>
   <em>Figure 1</em>
 </p>
-
 
 ### Commands I Used
 - `powershell`
@@ -29,17 +32,41 @@ I started by connecting to the target lab machine via SSH and launching PowerShe
 
 ### Why I Used These Commands
 - `Get-Command` and `Get-Help` gave me immediate ways to discover and understand commands without external documentation.
-  - I used `Get-Command` both by itself to see everything available, and by appending options like `-CommandType Cmdlet` or `-CommandType Function` to focus on specific types of commands. This helped me quickly learn what was native to PowerShell versus what was defined as functions.
+  - `Get-Command` both by itself to see everything available, and by appending options like `-CommandType Cmdlet` or `-CommandType Function` to focus on specific types of commands. This helped me quickly learn what was native to PowerShell versus what was defined as functions.
   - `Get-Help` gave me syntax, parameters, and examples I could try out directly. I also used `Get-Alias` to connect familiar commands like `dir` to their actual PowerShell equivalents (`Get-ChildItem`), which made it easier to transition from CMD to PowerShell.
   - `Get-Command -CommandType Function` to display only the available commands of type “function”.
-  - I also practiced with filters such as `Get-Command -Name "Remove*"`which showed me all commands starting with `Remove`, helping me understand syntax patterns and the consistent `Verb-Noun` structure in PowerShell. This made it easier to see how related commands are grouped together. `Get-Help` gave me syntax, parameters, and examples I could try out directly.
-  - I also used `Get-Alias` to connect familiar commands like `dir` to their actual PowerShell equivalents (`Get-ChildItem`), which made the transition from CMD to PowerShell more natural.
-- `Find-Module` and `Install-Module` let me explore how PowerShell can be extended for tasks like **Active Directory management or cloud automation** by downloading cmdlets from online repositories. Although the virtual machine I was working on didn't have internet access, I still learned that if I don’t know the exact name of a module, I can still search for it using partial names and wildcards. For example: `Find-Module -Name "PowerShell*"`.This filters the `Name` property and returns all modules that begin with PowerShell. Using the wildcard (*) is especially useful when I only remember part of the module’s name, since it helps me discover related or similarly named modules without needing the exact string.
+  - `Get-Command -Name "Remove*"` to practice and show which showed me all commands starting with `Remove`, helping me understand syntax patterns and the consistent `Verb-Noun` structure in PowerShell. This made it easier to see how related commands are grouped together. `Get-Help` gave me syntax, parameters, and examples I could try out directly.
+  - `Get-Alias` to connect familiar commands like `dir` to their actual PowerShell equivalents (`Get-ChildItem`), which made the transition from CMD to PowerShell more natural.
+- `Find-Module` and `Install-Module` let me explore how PowerShell can be extended for tasks like **Active Directory management or cloud automation** by downloading cmdlets from online repositories. Although the virtual machine I was working on didn't have internet access, I still learned that if I don’t know the exact name of a module, I can still search for it using partial names and wildcards.
+  - For example: `Find-Module -Name "PowerShell*"`. This filters the `Name` property and returns all modules that begin with PowerShell. Using the wildcard (*) is especially useful when I only remember part of the module’s name, since it helps me discover related or similarly named modules without needing the exact string.
 
+### Step-by-Step Walkthrough
 
+---
+
+**(Step 1) Launching PowerShell**
+I began by connecting to the target virtual machine via SSH and starting a PowerShell session. Once inside, I familiarized myself again with PowerShell’s structure and syntax.
+
+---
+
+**(Step 2) Discovering Commands and Help**
+I reviewed how to locate and understand available commands using `Get-Command`, filtering by command type (functions, cmdlets, etc.), and using `Get-Help` to view syntax and examples. This helped me refresh the habit of using built-in help rather than external documentation.
+
+---
+
+**(Step 3) Reviewing Aliases and Naming Patterns**
+By running `Get-Alias`, I was reminded that familiar legacy commands like `dir` or `cls` are mapped to PowerShell cmdlets such as `Get-ChildItem` and `Clear-Host`. Recognizing this mapping helps bridge my prior CMD experience to PowerShell.
+
+---
+
+**(Step 4) Exploring Modules**
+I practiced discovering and installing modules using `Find-Module` and `Install-Module`. Although the lab environment was isolated, I learned that PowerShell’s modular system allows extending capabilities for system administration, cloud, or Active Directory management.
+
+---
 
 ### Why This Matters
 This exercise helped me build the foundation for all future tasks. For example:  
+
 - `Get-Command` and `Get-Help` are my go-to references when I don’t remember exact syntax.  
 - Aliases like `dir` → `Get-ChildItem` show how PowerShell bridges the gap with older shells.  
 - Installing modules (`Install-Module`) demonstrates how PowerShell can be extended for tasks such as Active Directory management or forensic analysis.
@@ -47,14 +74,21 @@ This exercise helped me build the foundation for all future tasks. For example:
 ### Real-World Value
 Recruiters should note: I can confidently navigate PowerShell, discover the tools available, and extend its capabilities with modules. This is exactly what’s needed when moving between different environments and tools on the job.
 
+</details>
+
 ---
 
 ## Objective 2: Navigating the File System and Working with Files
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
 
 ### What I Did
 Here I explored the file system — listing directories, moving around, creating new files/folders, copying them, and even reading content. Instead of memorizing different commands like in CMD (`dir`, `cd`, `mkdir`), I worked with consistent PowerShell cmdlets.
 
 ### Commands I Used
+
 - `Get-ChildItem`
 - `Set-Location -Path`
 - `New-Item -ItemType Directory`
@@ -65,61 +99,96 @@ Here I explored the file system — listing directories, moving around, creating
 - `Get-Content`
 
 ### Why I Used These Commands
-- `Get-ChildItem` and `Set-Location` allowed me to navigate directories just like in CMD, but with more flexibility.
+
+- `Get-ChildItem` & `Set-Location` - allowed me to navigate directories just like in CMD, but with more flexibility.
   - I learned that similar to the `dir` command in Windows CMD or the `ls` command in Linux Bash, I learned that `Get-ChildItem` in PowerShell performs the same function by listing files and directories. When used with the `-Path` parameter, it can display the contents of a specific location, and if no path is provided, it defaults to showing the contents of the current working directory.
   - I used `Get-ChildItem -Path C:\Users` to test my learning and understand the syntax.
       - Running it with the explicit `-Path` parameter helped me confirm how PowerShell structures commands and how arguments are passed.  
       - This reinforced the `Verb-Noun` syntax and gave me practice applying what I learned beyond just using `Get-ChildItem` by itself.  
-- `New-Item` simplified both file and folder creation with one command.  
+- `New-Item` - simplified both file and folder creation with one command.  
   - I learned that this is the PowerShell way to handle what would normally be `mkdir` (make directory) or `echo > file.txt`/`touch file.txt` in Linux Bash, and `mkdir` or `copy nul file.txt` in CMD.  
-- `Remove-Item`, `Copy-Item`, and `Move-Item` gave me precise control for cleanup and reorganization.  
+- `Remove-Item`, `Copy-Item`, & `Move-Item` - gave me precise control for cleanup and reorganization.  
   - I learned that these are the PowerShell equivalents of `rm`, `cp`, and `mv` in Linux Bash, and `del`, `copy`, and `move` in CMD.  
-- `Get-Content` was essential for quickly reading text files like logs or configs during analysis.  
+- `Get-Content` - was essential for quickly reading text files like logs or configs during analysis.  
   - I learned that this is the PowerShell equivalent of using `cat` in Linux Bash, and `type` in CMD.  
 
 ### Why This Matters
-I got practice in performing file operations in a structured way:  
+
+Revisiting file operations strengthened my efficiency with core PowerShell cmdlets. Knowing these well means I can navigate, collect evidence, or triage endpoints faster during investigations. I got practice in performing file operations in a structured way:  
+
 - `New-Item` handles both files and folders, simplifying automation.  
 - `Remove-Item`, `Copy-Item`, and `Move-Item` replace multiple traditional commands.  
 - `Get-Content` is especially useful for reading text and log files — key in incident response and troubleshooting.
 
+### Step-by-Step Walkthrough
+
+---
+
+**(Step 1) Exploring Directories**
+I used `Get-ChildItem` to view contents of directories and Set-Location to navigate between them. It reminded me how PowerShell blends Windows and Unix-like patterns in a unified syntax.
+
+---
+
+**(Step 2) Creating Files and Folders**
+I practiced using `New-Item` to create both files and directories, learning that PowerShell simplifies what CMD or Bash would separate into multiple commands.
+
+---
+
+**(Step 3) Managing Files**
+I tested file manipulation through `Copy-Item`, `Move-Item`, and `Remove-Item`, observing their similarity to Linux cp, mv, and rm but with added object-oriented control.
+
+---
+
+**(Step 4) Reading File Contents**
+I used `Get-Content` to quickly review text file contents, similar to cat in Linux or type in CMD. This was particularly useful for examining logs and configuration files.
+
+---
+
 ### Real-World Value
 This skill translates to **log analysis, evidence collection, and forensic tasks**, where I need to quickly move through a file system, copy artifacts, and view contents without opening external editors.
+
+</details>
 
 ---
 
 ## Objective 3: Piping, Filtering, and Sorting Data
 
-### What I Did
+### Step-by-Step Walkthrough
 I practiced chaining commands together with pipes, sorting files by size, filtering by extension, and even searching text within files. This is where PowerShell’s object-oriented design really showed its strength.
+
 - I learned that piping lets me connect commands together so the output of one becomes the input of the next, building a chain of operations.  
-  - The pipe symbol `|` works in Windows and Linux shells, but in PowerShell it’s more powerful because it passes objects, not just text.  
-  - Since those objects include properties and methods, I can filter, sort, and interact with the data directly instead of only passing along raw text.  
+- The pipe symbol `|` works in Windows and Linux shells, but in PowerShell it’s more powerful because it passes objects, not just text.  
+- Since those objects include properties and methods, I can filter, sort, and interact with the data directly instead of only passing along raw text.  
+
+---
+
+**(Step 1) Sorting Objects by Size**
+
+I used `Get-ChildItem | Sort-Object Length` to sort files by size, identifying unusually large items that might be interesting during analysis.
+
+### Commands I Used
+- `Sort-Object` to sort the current working directory by size (`Length`). I figured thid could be good to quickly identify unusually large files.
+- For example, `Get-ChildItem | Sort-Object Length` gave me a list of file names in order of size. (Figure 2)
+
+The first command `Get-ChildItem -Path C:\Users` lists all directories under `C:\Users`. In the second command, I piped the results of `Get-ChildItem` into `Sort-Object Length` to sort the output by size, showing how PowerShell can pass objects through the pipeline for further processing.  
 
 <p align="left">
   <img src="images/powershell-endpoint-triage-basics.02.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
-  <em>Figure 2: Example of me using piping in PowerShell. The first command `Get-ChildItem -Path C:\Users` lists all directories under `C:\Users`. In the second command, I piped the results of `Get-ChildItem` into `Sort-Object Length` to sort the output by size, showing how PowerShell can pass objects through the pipeline for further processing.  
-</em>
+  <em>Figure 2</em>
 </p>
 
+**(Step 2) Filtering Specific File Types**
+
+Using `Where-Object -Property Extension -eq ".txt"`, I filtered only `.txt` files. Practicing with `-Property` and `-eq` helped me recall how object filtering works.
+
 ### Commands I Used
-- `Get-ChildItem | Sort-Object Length`
-- `Get-ChildItem | Where-Object -Property Extension -eq ".txt"`
-- `Get-ChildItem | Where-Object -Property Name -like "ship*"`
-- `Get-ChildItem | Select-Object Name, Length`
-- `Select-String -Path .\captain-hat.txt -Pattern "hat"`
-
-### Why I Used These Commands
-- I used `Sort-Object` to sort the current working directory by size (`Length`). I figured thid could be good to quickly identify unusually large files.
-    - For example, `Get-ChildItem | Sort-Object Length` gave me a list of file names in order of size. (Figure 2)
 - `Where-Object` let me narrow down results to specific file types or names.
-    - For example, `Get-ChildItem | Where-Object -Property Name -like "ship*"` helped me filter for files with names containing "ship".
-    - I also practiced filtering by extension, like `Get-ChildItem | Where-Object -Property Extension -eq ".txt"` which returned only .txt files from the directory I ran it in.
+- For example, `Get-ChildItem | Where-Object -Property Name -like "ship*"` helped me filter for files with names containing "ship".
 
- <p align="center">
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.03.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -127,10 +196,17 @@ I practiced chaining commands together with pipes, sorting files by size, filter
   <em>Figure 3</em>
 </p>
 
+---
+
+**(Step 3) Selecting Key Properties**
+
+I applied `Select-Object Name, Length` to output a simpler view of file details, focusing on the essential attributes.
+
+### Commands I Used
 - `Select-Object` was useful when I only needed a subset of properties, reducing noise.
-    - For example, `Get-ChildItem | Select-Object Name, Length` gave me a clean list of just file names (`Name`) and sizes (`Length`).
- 
- <p align="center">
+- For example, `Get-ChildItem | Select-Object Name, Length` gave me a clean list of just file names (`Name`) and sizes (`Length`).
+
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.04.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -138,10 +214,16 @@ I practiced chaining commands together with pipes, sorting files by size, filter
   <em>Figure 4</em>
 </p>
 
-- I used `Select-String` to looks for text patterns inside files, similar to how `grep` works in Unix/Linux or `findstr` works in Windows CMD was chosen to replicate log searches. I figured this could be good in helping me locate strings of interest (like suspicious indicators).
-    - For example, as part of the exercise, I got to run the command `Select-String -Path .\captain-hat.txt -Pattern "hat"` which searched the file `captain-hat.txt` for the text "hat". It returned the line in the file that contain the word "hat". By default, it seemed to have also showed the line number and highlighted the matched text.
- 
- <p align="center">
+---
+
+**(Step 4) Searching File Content**
+
+I reviewed how `Select-String` scans files for keywords, similar to grep. For instance: `Select-String -Path .\example.txt -Pattern "keyword"` returned matching lines along with their line numbers. I used `Select-String` to also look for text patterns inside files, similar to how `grep` works in Unix/Linux or `findstr` works in Windows CMD was chosen to replicate log searches. I figured this could be good in helping me locate strings of interest (like suspicious indicators).
+
+### Commands I Used
+- `Select-String -Path .\captain-hat.txt -Pattern "hat"` which searched the file `captain-hat.txt` for the text "hat". It returned the line in the file that contain the word "hat". By default, it seemed to have also showed the line number and highlighted the matched text.
+
+ <p align="left">
   <img src="images/powershell-endpoint-triage-basics.05.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
@@ -149,10 +231,20 @@ I practiced chaining commands together with pipes, sorting files by size, filter
   <em>Figure 5</em>
 </p>
 
-- I also learned about comparison operators (`-ne`, `-gt`, `-ge`, `-lt`, and `-le`) which let me filter objects based on numeric or conditional criteria, such as finding files greater than a certain size.  
+---
 
+**(Step 5) Practicing a Size-Based Filter**
 
-#### Challenge
+To challenge myself, I built a command to return only files over 50 bytes: `Get-ChildItem | Where-Object -Property Length -gt 50`. I also learned about comparison operators (`-ne`, `-gt`, `-ge`, `-lt`, and `-le`) which let me filter objects based on numeric or conditional criteria, such as finding files greater than a certain size.
+
+### Commands I Used
+- `Get-Children | Where-Object -Property Length -gt 50` to return only files over 50 bytes.
+  - `Get-ChildItem` → lists all files and directories in the current location (similar to dir in CMD or ls in Linux).
+  - `|` (pipe) → takes the output of Get-ChildItem and sends it into the next command for filtering.
+  - `Where-Object` → evaluates each item coming through the pipeline and only keeps those that meet a condition.
+  - `-Property Length` → specifies the property to evaluate, in this case the file size (in bytes).
+  - `-gt 50` → comparison operator meaning “greater than 100.” This ensures only items larger than 100 bytes are returned.
+
 At the end of this section, there was a hands-on challenge that asked me to retrieve only the items in the current directory with a size greater than 100. I solved it using the following command: `Get-Children | Where-Object -Property Length -gt 100`
 
  <p align="center">
