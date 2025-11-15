@@ -1,7 +1,7 @@
 
 # Lab01 – Linux Shells and Scripting
 
-## Section 1: Introduction to Linux Shells
+## Section 1: Introduction and Objectives
 
 <details>
 
