@@ -787,25 +787,91 @@ Thought Process:
     
 - `if [ "$i" -eq 1 ]` checks if the current loop counter is equal to `1`.
   - If true, it would:
-    - prints `Enter your Username:` to the screen (`echo`),
+    - print `Enter your Username:` to the screen (`echo`),
     - then waits for the user to type something and presses ENTER (`read username`), storing the input in the `username` variable.
-- `elif [ "$i" -eq 2 ]; then`
+      
+- `elif [ "$i" -eq 2 ];` checks if `i` is `2`, this `elif` (else if) branch runs.
+  - Same pattern, if true, it would:
+    - print `Enter your company name` to the screen (`echo`),
+    - then waits for the user to type something and presses ENTER (`read companyname`), storing the input in the `companyname` variable.
+   
+- `else` checks if `i` is `3`, and runs when neither the `if` or `elif` matches, so this `else` block runs
+  - Same pattern again, if true, it would:
+    - print `Enter your PIN` to the screen (`echo`)
+    - then waits for the user to type something and presses ENTER (`read pin`), storing the inpurt in the `pin` variable.
 
+<blockquote>
 I deliberately set up a small “locker access” scenario in Bash as a way to test myself on the scripting fundamentals I’ve been revisiting. I wanted something slightly more realistic than just echoing text, so I designed a script that asked for three separate pieces of information, `username`, `company name`, and `PIN`. Then, decided whether to grant or deny access.
 
 My goal was to see if I could tie together variables, loops, user input, and conditional logic in one flow, similar to how I used to structure small projects in Python during college. Back then, I worked with both iterative and recursive functions, so here I focused on the iterative side: using a loop to progressively gather input and then a single conditional block to evaluate everything at the end. 
 
 This was less about memorizing syntax and more about confirming that I still understand the underlying logic well enough to design a small “system” from scratch.
-
-
-
+</blockquote>
 
 <blockquote>
 While writing this, I noticed the loop was structured very similarly to iterative Python loops I wrote in college, where we iterated through a range of values and performed different logic within each iteration.
 This specific loop doesn’t use recursion (which I learned in Python as well), but the concept of controlling flow through repeated cycles is parallel to iterative function structures.
 </blockquote>
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-20.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 20</em>
+</p>
+
 ---
 
+**(Step 4)** Validating the User's Input
+
+After gathering all three values, the script needed to validate them using a compound conditional:
+
+```
+if [ "$username" = "Peter" ] && [ "$companyname" = "PeterAhnCompany" ] && [ "$pin" = "1234" ]; then
+    echo "Authentication Successful. You can now access your locker, John."
+else
+    echo "Authentication Denied!!"
+fi
+```
+
+Thought Process:
+
+- `if [ "$username" = "Peter" ] && [ "$companyname" = "PeterAhnCompany" ] && [ "$pin" = "1234" ];` verifies that all three variables match their expected values. The condition only passes if every comparison is true, not just one or two.
+  - If true, it would print `Authentication Successful. You can now access your locker, Peter` using the `echo` command.
+  - If not (`else`), it would print `Authentication Denied!!` using the `echo` command
+
+<blockquote>
+The validation logic instantly reminded me of Python’s `if x == value` and `y == value:` syntax. Bash uses square brackets and requires specific spacing, but the underlying conditional evaluation worked almost exactly the same. I recognized this structure as something similar to the “base case vs. recursive case” logic taught in Python recursion: a single exact match leads to one path, and any deviation leads to the alternative.
+</blockquote>
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-21.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 21</em>
+</p>
+
+---
+
+**(Step 5)** Running the Script
+
+Before running the script, I ensured it had the correct execution permissions:
+
+```
+chmod +x locker_script.sh
+```
+
+Then I executed it:
+
+```
+./locker_script.sh
+```
+
+The script asked for the `Username`, `Company Name`, and `PIN`. 
+
+
+
+---
 
 ### Findings / Analysis
 This script simulated simple authentication logic. It highlighted the importance of correct condition syntax and secure handling of input.
