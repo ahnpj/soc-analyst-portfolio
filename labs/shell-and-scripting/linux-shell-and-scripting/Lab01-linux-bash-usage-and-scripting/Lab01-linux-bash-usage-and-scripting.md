@@ -34,7 +34,7 @@ This connected well with what I learned while studying for the CompTIA Security+
 
 - Environment: Ubuntu 20.04.6 LTS (x86_64), Linux kernel 5.15.0-1068-aws on a remote virtual machine.
 - User: user (shell prompt shown).
-- Network: VM had a private IPv4 address on ens5 (10.201.72.1, 10.201.6.0, 10.201.19.118).
+- Network: VM had a private IPv4 address on ens5 (10.201.72.1, 10.201.6.0, 10.201.19.118, 10.11.90.211).
 
 <p align="left">
   <img src="images/linux-bash-usage-and-scripting-01.png?raw=true&v=2" 
@@ -99,6 +99,9 @@ I learned that the shell is essential for interacting with Linux on a deeper lev
 <details>
 
 <summary><b>(Click to expand)</b></summary>
+
+> **📌 Personal Learning Note:**  
+> I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
 
 ### Objective
 To learn how to perform basic navigation, view files, and execute commands within the Linux terminal.
@@ -184,23 +187,205 @@ I reinforced core navigation and file interaction commands in Linux. These are e
 
 <summary><b>(Click to expand)</b></summary>
 
+> **📌 Personal Learning Note:**  
+> I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
+
 ### Objective
-To learn about different shell types and how they influence command behavior and scripting style.
+To learn about different shell types and how they influence command behavior and scripting style. In this part of the lab I stepped back from hands-on exploitation and did more of a structured review.  
+The goal was to look at the different Linux shells available on the system, see which one I was actually using, and compare a few popular shells (Bash, Fish, and Zsh) in terms of features and usability.
+
+<blockquote>
+This part of the lab was mostly review, but it helped me organize what I already knew about Linux shells into something more systematic
+</blockquote>
+
+Even though this section was mostly “review,” I treated it like a small reconnaissance exercise on my own environment.
+
+By the end of this section I had:
+
+- Verified which shell my user account was currently using.
+- Enumerated all login shells available on the system.
+- Reviewed how to switch between shells temporarily and permanently.
+- Compared Bash, Fish, and Zsh from a day-to-day usability perspective:
+  - scripting support  
+  - tab completion  
+  - customization  
+  - user friendliness  
+  - syntax highlighting
 
 ### Step-by-Step Walkthrough
 
-I checked my current shell using `echo $SHELL`. Then, I viewed all installed shells using `cat /etc/shells`. I temporarily switched to Zsh to see how it behaves differently from Bash.
+---
 
-**Commands I used:**
-- `echo $SHELL` — identified the active shell.
-- `cat /etc/shells` — listed available shells.
-- Launched alternate shell using `zsh`.
+**(Step 1)** Checking my current shell
+
+I checked my current shell using `echo $SHELL`. To do so, I started by confirming which shell my session was actually running. In the terminal, I echoed the `$SHELL` environment variable. To do so, I ran the following command: `echo $SHELL`, which identified the active shell I was using.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-03.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 3</em>
+</p>
+
+The output showed: `/bin/bash`. So, as expected, my user was currently using Bash as the default login shell.
+
+---
+
+**(Step 2)** Listing all available shells
+
+I viewed all installed shells using `cat /etc/shells`. I temporarily switched to `Zsh` to see how it behaves differently from `Bash`. 
+
+To achieve this, I first needed to see what other shells were installed and allowed for login on this system. Linux stores this information in `/etc/shells`, so I ran the following command to display the available shells: `cat /etc/shells`.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-04.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 4</em>
+</p>
+
+---
+
+**(Step 3)** Switching shells in the current session
+
+<blockquote>
+For this review portion I did not actually change my default shell; instead I focused on understanding the mechanism and when it would be appropriate to use it (for example, if I decided to fully migrate from Bash to Zsh).
+</blockquote>
+
+Instead of immediately changing my default shell, I first tested them interactively. For example, to start a `zsh` session from within Bash, I could run `zsh`.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-05.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 5</em>
+</p>
+
+<p align="left">
+  <video width="1000" controls style="border: 2px solid #444; border-radius: 6px;">
+    <source src="images/linux-bash-usage-and-scripting-05.mp4" type="video/mp4">
+  </video>
+  <br>
+  <em>Figure 5</em>
+</p>
+
+After exiting the Z shell (zsh) setup menu, I manually switched my shell back. To do this, I simply typed `bash` and pressed [Enter]. This immediately returned me to the standard Bash prompt, confirming that I was now back in the Bash environment.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-06.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 6</em>
+</p>
+
+---
+
+**(Step 4)** Reviewing how to change the default shell
+
+I also reviewed how to permanently change the default shell for a user. The command pattern looks like this: `chsh -s /usr/bin/zsh`. 
+
+For this review portion I did not actually change my default shell; instead I focused on understanding the mechanism and when it would be appropriate to use it (for example, if I decided to fully migrate from Bash to Zsh).
+
+---
+
+**(Step 5)** Reviewing Bash (Bourne Again Shell)
+
+I shifted into a more conceptual comparison of shells, starting with Bash.
+
+Key points I reviewed about Bash:
+- It is the default shell on many Linux distributions.
+- It supports scripting, and most basic shell scripts in the wild are written for Bash or compatible shells.
+- Bash has history and tab completion, which make it easier to recall and complete commands.
+- It provides decent flexibility but not as much “out-of-the-box” user friendliness or visual niceties as newer shells.
+
+From a security and operations perspective, Bash is still important because a lot of automation, tooling, and older documentation assume Bash or sh compatibility.
+
+---
+
+**(Step 6)** Reviewing Fish (Friendly Interactive Shell)
+
+Next, I went over Fish (Friendly Interactive Shell). This was also a more conceptual comparison of shells, but now with Fish. 
+
+Highlights I noted:
+- Fish focuses heavily on user friendliness:
+  - Very clean, beginner-friendly prompt.
+  - Auto-suggestions based on history and completions.
+- It supports scripting, but its scripting syntax differs from POSIX/Bash, which can be a drawback for portability.
+- It offers:
+  - powerful tab completion,
+  - built-in syntax highlighting,
+  - and helpful prompts that flag errors as you type.
+
+The main trade-off I took away: Fish is great for interactive use, but not ideal for writing scripts that need to run everywhere.
+
+---
+
+**(Step 7)** Reviewing Zsh (Z Shell)
+
+Finally, I reviewed Zsh, which is kind of a hybrid between a traditional Unix shell and a more modern, highly customizable environment.
+
+Key points I reviewed:
+- Zsh is often described as a “modern shell” that blends features from other shells.
+- It supports advanced tab completion and powerful customization through frameworks and plugins (e.g., oh-my-zsh).
+- Like Fish, it offers:
+  - syntax highlighting,
+  - better auto-completion,
+  - and a lot of room for theming and prompt customization.
+- It remains quite compatible with Bash-style scripting, which makes it more attractive than Fish for people who want both scripting and a nice interactive experience.
+
+I came away with the impression that Zsh is a strong “daily-driver” candidate for power users, especially when combined with plugins.
+
+---
+
+**(Step 7)** Comparing Bash, Fish, and Zsh
+
+I did personal research and reviewed a comparison table for Bash, Fish, and Zsh across several categories. I summarized it for myself like this:
+
+**Scripting**
+- Bash: Widely used and highly compatible. Most scripts target Bash or POSIX sh.
+- Fish: Supports scripting but uses its own syntax; less portable.
+- Zsh: Very capable scripting support and largely compatible with existing shell scripts.
+
+**Tab Completion**
+- Bash: Basic completion; can be extended with extra configuration.
+- Fish: Very advanced completion with intelligent suggestions.
+- Zsh: Extremely powerful completion, especially with plugin frameworks.
+
+**Customization**
+- Bash: Customizable via .bashrc and other config files, but mostly manual.
+- Fish: Interactive tools make customization easier, especially for prompts.
+- Zsh: Extremely customizable; plugin managers and frameworks make it easy to build a very tailored shell.
+
+**User Friendliness**
+- Bash: Familiar and traditional; many users are comfortable with it.
+- Fish: Probably the most user-friendly out of the box.
+- Zsh: Can be very friendly, especially after some initial setup.
+
+**Syntax Highlighting**
+- Bash: Not built in; requires third-party tools or custom configuration.
+- Fish: Built-in syntax highlighting by default.
+- Zsh: Syntax highlighting is typically enabled via plugins, but works very well.
+
+This reinforced the idea that there’s no “one best shell”; it really depends on whether I care more about compatibility, interactivity, or customization.
+
+---
 
 ### Findings / Analysis
 Bash is widely used and is a stable, script-friendly option. Shells like Zsh and Fish offer more interactive features such as improved tab completion and syntax highlighting.
 
 ### What I Learned
 I learned that different shells can improve workflow depending on preference and environment. This helped me understand why administrators may choose one shell over another.
+
+Even though this part of the lab was mostly review, it helped me organize what I already knew about Linux shells into something more systematic:
+
+- I confirmed how to identify and enumerate shells on a Linux system using $SHELL and /etc/shells.
+- I saw how easy it is to test different shells interactively without changing system defaults.
+- I revisited the strengths and weaknesses of Bash, Fish, and Zsh, especially in terms of scripting vs. interactive use.
+- From a security/ops perspective, I’m reminded that:
+  - Bash remains a baseline skill because of its ubiquity in scripts and tooling.
+  - Fish and Zsh can dramatically improve productivity and reduce typing mistakes in day-to-day terminal work.
+
+If I were to change my default shell in the future, I’d likely experiment with Zsh plus a plugin framework, while still keeping Bash skills sharp for scripts and servers that only offer the standard tools.
 
 </details>
 
@@ -211,6 +396,9 @@ I learned that different shells can improve workflow depending on preference and
 <details>
 
 <summary><b>(Click to expand)</b></summary>
+
+> **📌 Personal Learning Note:**  
+> I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
 
 ### Objective
 To begin writing shell scripts and understand how variables, loops, and conditional statements support automation.
@@ -243,9 +431,13 @@ Understanding how to write scripts opens the door to automation. This is essenti
 
 ## Section 5: The Locker Script
 
+
 <details>
 
 <summary><b>(Click to expand)</b></summary>
+
+> **📌 Personal Learning Note:**  
+> I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
 
 ### Objective
 To build a script that validates user input using conditionals.
