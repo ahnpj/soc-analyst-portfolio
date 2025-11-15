@@ -671,7 +671,7 @@ This served as a strong refresher in shell scripting fundamentals. Although most
 
 ---
 
-## Section 5: The Locker Script (Challenging Myself)
+## Section 5: Creating My Own Locker Authentication Script
 
 
 <details>
