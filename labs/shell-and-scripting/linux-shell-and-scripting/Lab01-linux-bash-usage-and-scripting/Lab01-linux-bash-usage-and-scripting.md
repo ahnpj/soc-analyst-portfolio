@@ -398,33 +398,280 @@ If I were to change my default shell in the future, I’d likely experiment with
 ### Objective
 To begin writing shell scripts and understand how variables, loops, and conditional statements support automation.
 
+The objective of this lab was to review the fundamentals of Bash scripting by creating simple scripts that demonstrate variables, loops, conditional logic, and comments.  
+
+<blockquote>
+Although I previously studied scripting in college—primarily using Python, including work with iterative and recursive functions, this lab served as a refresher on how similar logic structures translate into Bash. The goal was not to build a complex automation pipeline, but to reinforce core scripting mechanics that will support future SOC automation, tooling, and forensic workflows.
+</blockquote>
+
+### Environment
+- Linux machine (VM)
+- Bash shell (`/bin/bash`)
+- Terminal access
+- `nano` text editor
+
 ### Step-by-Step Walkthrough
 
-I created my first shell script and included a shebang (`#!/bin/bash`) to define the interpreter. I practiced using variables, loops, and conditional logic. Before running the script, I applied execution permissions with `chmod +x`.
+---
 
-**Commands and structure I practiced:**
-- Creating a script: `nano script.sh`
-- Declaring variables and referencing them with `$var`
-- Writing loops like `for i in {1..10}; do ...; done`
-- Using conditionals:
+**(Step 1)** Creating the First Script File**
+
+In this step, I created my first Bash script using `nano`. This mirrored the same process I learned years ago when writing simple Python programs, except here the file used a `.sh` extension and required a shebang to define the interpreter. 
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-07.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 7</em>
+</p>
+
+**NOTE:** I learned that a shebang is the very first line of a script that tells the operating system which interpreter should be used to execute the file. It begins with the characters `#!` followed by the full path to the interpreter, such as `#!/bin/bash` for a Bash script or `#!/usr/bin/env python3` for a Python script. This line is important because, without it, the system won’t know which language to use unless you explicitly run the script by calling the interpreter manually. With a proper shebang, you can execute the script directly after giving it execution permissions, and the operating system will automatically invoke the correct interpreter. It also improves portability and readability since anyone opening the script can immediately see which language and interpreter it relies on.
+
+Inside the file, I added:
+
 ```
-if [ condition ]; then
-   ...
+#!/bin/bash
+echo "Hey, what's your name?"
+read name
+echo "Welcome, $name"
+```
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-08.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 8</em>
+</p>
+
+The shebang (#!/bin/bash) reminded me of how Python scripts use #!/usr/bin/env python3 to specify the interpreter—same concept, different ecosystem.
+
+---
+
+**(Step 2)** Saving & Adding Execution Permissions
+
+After writing the script, I saved it ([CTRL+X] > then [Y], then [ENTER]). Before running it, I needed to add execution permissions:
+
+```
+chmod +x first_script.sh
+```
+
+This step enforces the idea of execution-level control that doesn’t exist in Python by default but is crucial in Linux environments.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-09.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 9</em>
+</p>
+
+---
+
+**(Step 3)** Executing the Script
+
+Now that the script had execution rights, I ran it by running the following:
+
+```
+./first_script.sh
+```
+
+The script accepted user input, assigned it to a variable, and displayed a greeting, exactly the same flow I practiced in Python when handling raw input.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-10.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 10</em>
+</p>
+
+---
+
+**(Step 4)** Creating a Loop Script (Iterative Logic)
+
+Next, I created a script that used a loop (named the script file `loop_script.sh`). Because I studied iterative (`for`) loops in Python (`for i in range(1, 11):`), this felt very familiar even though the syntax looked different.
+
+Inside the file, I added:
+
+```
+#!/bin/bash
+for i in {1..10}
+do
+    echo $i
+done
+```
+
+The iterative logic mirrored Python perfectly: loop from 1 to 10, print each number. 
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-11.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 11</em>
+</p>
+
+After writing the script, I saved it ([CTRL+X] > then [Y], then [ENTER]), then I ran the script entering:
+
+```
+chmod +x loop_script.sh
+./loop_script.sh
+```
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-12.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 12</em>
+</p>
+
+---
+
+**(Step 5)** Creating a Conditional Script
+
+This section introduced conditional logic, again, something I covered in Python extensively (`if`/`elif`/`else`). I created another script and named it `conditional_script.sh` using the following command:
+
+```
+nano conditional_script.sh
+```
+
+Inside the file, I added:
+
+```
+#!/bin/bash
+echo "Please enter your name first:"
+read name
+
+if [ "$name" = "Peter Ahn" ]; then
+    echo "Welcome Peter Ahn! Here is the secret: THM_Script"
+else
+    echo "Sorry! You are not authorized to access the secret."
 fi
 ```
-- Making the script executable: `chmod +x script.sh`
+
+The structure reminded me of Python’s conditional branching, but using `fi` to close a condition felt very similar to closing blocks in recursive functions, an explicit end marker to prevent logic bleed.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-13.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 13</em>
+</p>
+
+I attempted to execute the script running `./conditional_script.sh`
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-14.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 14</em>
+</p>
+
+Using `./conditional_script.sh` only runs the file, it does not give it permission to run. If the script isn’t already executable, the command will fail. The purpose of `chmod +x` is to add the executable permission so the system can actually run it. After that, `./script.sh` works because the file is now allowed to execute.
+
+The script checks whether the entered name matches the authorized value (“Peter Ahn”), which is my name. If the condition is met, the script displays the secret and welcomes the user. If the condition fails, the script shows an unauthorized message instead. 
+
+The two screenshots in the lab are simply examples showing both possible outcomes. When running the script yourself, you will only see one outcome at a time—either the authorized message if the input matches, or the unauthorized message if it does not.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-15.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 15</em>
+</p>
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-16.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 16</em>
+</p>
+
+---
+
+**(Step 6)** Adding Comments for Script Clarity
+
+In this step, I rewrote the conditional script and added comments throughout the file (below). This is similar to how I commented Python functions—especially recursive logic—where comments were essential to explain call structure and exit conditions.
+
+```
+#!/bin/bash
+
+# Asking the user to enter a value.
+echo "Please enter your name first:"
+read name
+
+# Checking if the user's name matches our required name.
+if [ "$name" = "Stewart" ]; then
+
+    # Display the secret if the name is valid.
+    echo "Welcome Stewart! Here is the secret: THM_Script"
+
+else
+
+    # Message if the condition fails.
+    echo "Sorry! You are not authorized to access the secret."
+
+fi
+```
+
+Comments don't change execution, but they dramatically improve readability, just as they did in my Python coursework.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-17.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 17</em>
+</p>
+
+---
+
 
 ### Findings / Analysis
 Scripting allows repetitive tasks to be automated reliably. Conditional logic allows scripts to adapt based on input or system state.
 
+1. Bash Scripts Parallel Python Logic
+Even though syntactically different, the structure of programming logic was almost identical to what I practiced in Python:
+- Variables
+- Input handling
+- Iterative loops
+- Conditionals
+- Output formatting
+
+This reinforced the idea that foundational programming concepts carry over across languages.
+
+2. Execution Control Is Unique to Bash
+One major difference from Python was the need to:
+- set executable permissions (chmod +x)
+- explicitly reference the script path (./filename.sh)
+
+This is important operationally—especially in SOC automation—because permissions affect whether scripts run correctly during incident response or cron-based monitoring.
+
+3. Syntax Is Minimalistic but Strict
+Compared to Python’s whitespace-sensitive structure, Bash relies heavily on:
+- explicit terminators (fi, done)
+- spacing around brackets in conditionals ([ "$var" = "value" ])
+- careful quoting to avoid unexpected variable expansion
+
+Small mistakes break scripts quickly, which reminded me of debugging incorrect base cases in recursive Python functions.
+
+4. Good Commenting Is Essential
+Bash scripts quickly become unreadable without comments, especially when nested logic or loops are involved.
+
 ### What I Learned
-Understanding how to write scripts opens the door to automation. This is essential in system administration and incident response.
+
+I strengthened my understanding of how Bash handles variables, loops, input, and conditional logic. My previous Python background made it easier to understand the structure of Bash scripts, though the syntax differences require attention. I gained hands-on reinforcement of:
+- script creation
+- execution permissions
+- iterative logic
+- basic user interaction
+- conditional branching
+
+I was reminded of the importance of comments—just as essential in Bash as they were when writing iterative or recursive Python functions. Overall, this review section prepared me to begin writing more complex automation scripts for cybersecurity workflows.
+
+This served as a strong refresher in shell scripting fundamentals. Although most of the concepts were familiar from studying Python and algorithmic logic (recursive vs. iterative), applying them in a Linux environment gave me a deeper understanding of how Bash differs and where it excels, especially for systems-level automation.
 
 </details>
 
 ---
 
-## Section 5: The Locker Script
+## Section 5: The Locker Script (Challenging Myself)
 
 
 <details>
@@ -436,11 +683,129 @@ Understanding how to write scripts opens the door to automation. This is essenti
 > I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
 
 ### Objective
+
 To build a script that validates user input using conditionals.
 
-### Step-by-Step Walkthrough
+The objective of this task was to challenge myself by creating a small authentication program in Bash that would force me to apply multiple scripting fundamentals I’ve been reviewing variables, loops, user input handling, and conditional logic. 
+
+I designed this locker-access scenario intentionally so I could test whether I could collect several pieces of user information and validate them correctly using Bash. The idea was to simulate a simple authentication system that checks a username, company name, and PIN, giving me a realistic way to practice tying these scripting components together in one workflow.
+
+While working through this, I reflected often on my scripting background from college, where I studied Python extensively, learning both recursive and iterative functions. Many concepts I learned there—especially iterative loops and input validation—mapped directly onto this Bash workflow, even though the syntax and structure differed.
+
+### Environment
+
+- Linux machine (TryHackMe VM)
+- Bash shell (`/bin/bash`)
+- Terminal access
+- `nano` text editor
+
+# Step-by-Step Walkthrough
 
 I wrote a script that requested a username, company name, and PIN. The script compared input against required values. If all three matched, access was granted; otherwise, access was denied.
+
+---
+
+**(Step 1)** Understanding the Requirements
+
+Before writing any code, I reviewed the requirements of the locker authentication system:
+
+- **Username:** Peter
+- **Company:** PeterAhnCompany  
+- **PIN:** 1234  
+
+The script needed to:
+
+1. Ask the user for each value.
+2. Store the values in variables.
+3. Validate them.
+4. Display either "*Authentication Successful*" or "*Authentication Denied*".
+
+<blockquote>
+This immediately reminded me of input-handling assignments from Python class, where we built iterative prompts and validated user responses using conditionals.
+</blockquote>
+
+---
+
+**(Step 2)** Creating the Script File
+
+I created a new script using the `nano` text editor:
+
+`nano locker_script.sh`
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-18.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 18</em>
+</p>
+
+Inside the file, I added the shebang along with placeholder variables:
+
+```
+#!/bin/bash
+
+username=""
+companyname=""
+pin=""
+```
+
+The shebang works the same way it did when writing Python scripts (#!/usr/bin/env python3), telling the system which interpreter to use.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-19.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 19</em>
+</p>
+
+---
+
+**(Step 3)** Collecting User Input with a Loop
+
+I used a `for` loop to sequentially request the `username`, `company name`, and `PIN`:
+
+```
+for i in {1..3}; do
+    if [ "$i" -eq 1 ]; then
+        echo "Enter your Username:"
+        read username
+    elif [ "$i" -eq 2 ]; then
+        echo "Enter your Company name:"
+        read companyname
+    else
+        echo "Enter your PIN:"
+        read pin
+    fi
+done
+```
+
+Thought Process:
+
+- `for i in {1..3}; do` was to start the for loop, where `i` will take the values `1`, `2,` and `3` in sequence. Conceptually, this is like `for i in range(1, 4):` in Python.
+  - instead of writing three separate prompt blocks, I used one loop and decide what to ask based on the value of `i`.
+  - When `i` is `1`, this `if` branch runs.
+    
+- `if [ "$i" -eq 1 ]` checks if the current loop counter is equal to `1`.
+  - If true, it would:
+    - prints `Enter your Username:` to the screen (`echo`),
+    - then waits for the user to type something and presses ENTER (`read username`), storing the input in the `username` variable.
+- `elif [ "$i" -eq 2 ]; then`
+
+I deliberately set up a small “locker access” scenario in Bash as a way to test myself on the scripting fundamentals I’ve been revisiting. I wanted something slightly more realistic than just echoing text, so I designed a script that asked for three separate pieces of information, `username`, `company name`, and `PIN`. Then, decided whether to grant or deny access.
+
+My goal was to see if I could tie together variables, loops, user input, and conditional logic in one flow, similar to how I used to structure small projects in Python during college. Back then, I worked with both iterative and recursive functions, so here I focused on the iterative side: using a loop to progressively gather input and then a single conditional block to evaluate everything at the end. 
+
+This was less about memorizing syntax and more about confirming that I still understand the underlying logic well enough to design a small “system” from scratch.
+
+
+
+
+<blockquote>
+While writing this, I noticed the loop was structured very similarly to iterative Python loops I wrote in college, where we iterated through a range of values and performed different logic within each iteration.
+This specific loop doesn’t use recursion (which I learned in Python as well), but the concept of controlling flow through repeated cycles is parallel to iterative function structures.
+</blockquote>
+---
+
 
 ### Findings / Analysis
 This script simulated simple authentication logic. It highlighted the importance of correct condition syntax and secure handling of input.
