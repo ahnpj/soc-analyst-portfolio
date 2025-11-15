@@ -861,23 +861,99 @@ Before running the script, I ensured it had the correct execution permissions:
 chmod +x locker_script.sh
 ```
 
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-22.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 22</em>
+</p>
+
 Then I executed it:
 
 ```
 ./locker_script.sh
 ```
 
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-23.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 23</em>
+</p>
+
 The script asked for the `Username`, `Company Name`, and `PIN`. 
 
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-24.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 24</em>
+</p>
 
+I entered the correct details first:
+
+`Username` - I entered `Peter`
+`Company Name` - I entered `PeterAhnCompany`
+`PIN` - I entered `1234`
+
+It printed the message `Authentication Successful. You can now access your locker, Peter.` as expected.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-25.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 25</em>
+</p>
+
+I then entered incorrect details to test what would happen if the variables contained (at least) 1 wrong input that wasnt defined in the locker script since the script was defined to only print the authentication successfull message if all variables matched:
+
+`Username` - I entered `John`
+`Company Name` - I entered `PeterAhnCompany`
+`PIN` - I entered `1234`
+
+It printed the message `Authentication Denied!!` as expected.
+
+<p align="left">
+  <img src="images/linux-bash-usage-and-scripting-26.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 26</em>
+</p>
 
 ---
 
 ### Findings / Analysis
+
 This script simulated simple authentication logic. It highlighted the importance of correct condition syntax and secure handling of input.
+
+1. Bash Follows Similar Logical Structures to Python
+
+Even though Bash syntax is more rigid (spacing matters, brackets matter, etc.), the fundamental ideas—loops, variable assignment, conditionals—mirror the same patterns I practiced in Python during college.
+This made the script intuitive to follow.
+
+2. Loops in Bash Can Replace Multi-Line Prompts
+
+Instead of writing `read username`, `read companyname`, and `read pin`, the loop made the process cleaner and scalable. This reminded me of Python’s iterative functions where loops reduce repetition and prevent duplicated logic.
+
+
+3. Validation Logic Reinforces Input Security
+
+The conditional check ensures that:
+- Every field must match exactly.
+- Any incorrect value denies access.
+
+This is a simple example, but it reflects basic authentication concepts used in real-world systems.
+
+4. Bash Requires More Attention to Syntax
+
+Misplaced brackets or missing spaces can break a script. Python taught me structure through indentation; Bash teaches structure through spacing and delimiters.
 
 ### What I Learned
 This exercise strengthened my understanding of how simple security checks can be automated.
+
+This lab brought together several scripting fundamentals into one cohesive task. Writing the locker authentication script helped me recognize how transferable programming concepts are between languages—especially between Python (which I studied academically) and Bash (which is more common in Linux automation and SOC workflows).
+
+Overall, the exercise strengthened my confidence in writing Bash scripts that combine input handling, loops, and conditional logic to build practical functionality.
 
 </details>
 
