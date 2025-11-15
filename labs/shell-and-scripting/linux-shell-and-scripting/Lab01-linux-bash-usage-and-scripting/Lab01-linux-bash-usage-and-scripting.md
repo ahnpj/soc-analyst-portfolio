@@ -182,7 +182,7 @@ I reinforced core navigation and file interaction commands in Linux. These are e
 
 ---
 
-## Section 3: Types of Linux Shells
+## Section 3: Searching Available Linux Shells
 
 <details>
 
@@ -385,7 +385,7 @@ If I were to change my default shell in the future, I’d likely experiment with
 
 ---
 
-## Section 4: Shell Scripting and Components
+## Section 4: Writing My First Script
 
 <details>
 
@@ -414,7 +414,7 @@ Although I previously studied scripting in college—primarily using Python, inc
 
 ---
 
-**(Step 1)** Creating the First Script File**
+**(Step 1)** Creating the First Script File
 
 In this step, I created my first Bash script using `nano`. This mirrored the same process I learned years ago when writing simple Python programs, except here the file used a `.sh` extension and required a shebang to define the interpreter. 
 
