@@ -699,7 +699,7 @@ While working through this, I reflected often on my scripting background from co
 - Terminal access
 - `nano` text editor
 
-# Step-by-Step Walkthrough
+### Step-by-Step Walkthrough
 
 I wrote a script that requested a username, company name, and PIN. The script compared input against required values. If all three matched, access was granted; otherwise, access was denied.
 
