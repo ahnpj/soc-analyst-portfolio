@@ -99,6 +99,7 @@ I learned that the shell is essential for interacting with Linux on a deeper lev
 <details>
 
 <summary><b>(Click to expand)</b></summary>
+<br>
 
 > **📌 Personal Learning Note:**  
 > I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
@@ -186,6 +187,7 @@ I reinforced core navigation and file interaction commands in Linux. These are e
 <details>
 
 <summary><b>(Click to expand)</b></summary>
+<br>
 
 > **📌 Personal Learning Note:**  
 > I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
@@ -388,6 +390,7 @@ If I were to change my default shell in the future, I’d likely experiment with
 <details>
 
 <summary><b>(Click to expand)</b></summary>
+<br>
 
 > **📌 Personal Learning Note:**  
 > I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
@@ -427,6 +430,7 @@ Understanding how to write scripts opens the door to automation. This is essenti
 <details>
 
 <summary><b>(Click to expand)</b></summary>
+<br>
 
 > **📌 Personal Learning Note:**  
 > I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
@@ -453,6 +457,10 @@ This exercise strengthened my understanding of how simple security checks can be
 <details>
 
 <summary><b>(Click to expand)</b></summary>
+<br>
+
+> **📌 Personal Learning Note:**  
+> I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
 
 ### Objective
 To use scripting to search system logs for specific keywords.
