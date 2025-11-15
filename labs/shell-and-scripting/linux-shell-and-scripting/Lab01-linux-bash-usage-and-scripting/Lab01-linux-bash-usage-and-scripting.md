@@ -385,7 +385,7 @@ If I were to change my default shell in the future, I’d likely experiment with
 
 ---
 
-## Section 4: Writing My First Script
+## Section 4: Developing Scripts With Iterative and Conditional Logic
 
 <details>
 
@@ -414,7 +414,7 @@ Although I previously studied scripting in college—primarily using Python, inc
 
 ---
 
-**(Step 1)** Creating the First Script File
+**(Step 1)** Creating the First Basic Script File
 
 In this step, I created my first Bash script using `nano`. This mirrored the same process I learned years ago when writing simple Python programs, except here the file used a `.sh` extension and required a shebang to define the interpreter. 
 
