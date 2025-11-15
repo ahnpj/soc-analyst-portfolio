@@ -262,11 +262,9 @@ Instead of immediately changing my default shell, I first tested them interactiv
 </p>
 
 <p align="left">
-  <video width="1000" controls style="border: 2px solid #444; border-radius: 6px;">
-    <source src="images/linux-bash-usage-and-scripting-05.mp4" type="video/mp4">
-  </video>
-  <br>
-  <em>Figure 5</em>
+  <img src="images/linux-bash-usage-and-scripting-05.gif?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
 </p>
 
 After exiting the Z shell (zsh) setup menu, I manually switched my shell back. To do this, I simply typed `bash` and pressed [Enter]. This immediately returned me to the standard Bash prompt, confirming that I was now back in the Bash environment.
