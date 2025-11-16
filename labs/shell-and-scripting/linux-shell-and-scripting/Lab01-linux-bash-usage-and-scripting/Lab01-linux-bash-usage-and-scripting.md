@@ -401,7 +401,7 @@ To begin writing shell scripts and understand how variables, loops, and conditio
 The objective of this lab was to review the fundamentals of Bash scripting by creating simple scripts that demonstrate variables, loops, conditional logic, and comments.  
 
 <blockquote>
-Although I previously studied scripting in college—primarily using Python, including work with iterative and recursive functions, this lab served as a refresher on how similar logic structures translate into Bash. The goal was not to build a complex automation pipeline, but to reinforce core scripting mechanics that will support future SOC automation, tooling, and forensic workflows.
+Although I previously studied scripting in college, primarily using Python, including work with iterative and recursive functions, this lab served as a refresher on how similar logic structures translate into Bash. The goal was not to build a complex automation pipeline, but to reinforce core scripting mechanics that will support future SOC automation, tooling, and forensic workflows.
 </blockquote>
 
 ### Environment
@@ -568,7 +568,7 @@ Using `./conditional_script.sh` only runs the file, it does not give it permissi
 
 The script checks whether the entered name matches the authorized value (“Peter Ahn”), which is my name. If the condition is met, the script displays the secret and welcomes the user. If the condition fails, the script shows an unauthorized message instead. 
 
-The two screenshots in the lab are simply examples showing both possible outcomes. When running the script yourself, you will only see one outcome at a time—either the authorized message if the input matches, or the unauthorized message if it does not.
+The two screenshots in the lab are simply examples showing both possible outcomes. When running the script yourself, you will only see one outcome at a time, either the authorized message if the input matches, or the unauthorized message if it does not.
 
 <p align="left">
   <img src="images/linux-bash-usage-and-scripting-15.png?raw=true&v=2" 
@@ -588,7 +588,7 @@ The two screenshots in the lab are simply examples showing both possible outcome
 
 **(Step 6)** Adding Comments for Script Clarity
 
-In this step, I rewrote the conditional script and added comments throughout the file (below). This is similar to how I commented Python functions—especially recursive logic—where comments were essential to explain call structure and exit conditions.
+In this step, I rewrote the conditional script and added comments throughout the file (below). This is similar to how I commented Python functions, especially recursive logic, where comments were essential to explain call structure and exit conditions.
 
 ```
 #!/bin/bash
@@ -641,7 +641,7 @@ One major difference from Python was the need to:
 - set executable permissions (chmod +x)
 - explicitly reference the script path (./filename.sh)
 
-This is important operationally—especially in SOC automation—because permissions affect whether scripts run correctly during incident response or cron-based monitoring.
+This is important operationally, especially in SOC automation, because permissions affect whether scripts run correctly during incident response or cron-based monitoring.
 
 3. Syntax Is Minimalistic but Strict
 Compared to Python’s whitespace-sensitive structure, Bash relies heavily on:
@@ -663,7 +663,7 @@ I strengthened my understanding of how Bash handles variables, loops, input, and
 - basic user interaction
 - conditional branching
 
-I was reminded of the importance of comments—just as essential in Bash as they were when writing iterative or recursive Python functions. Overall, this review section prepared me to begin writing more complex automation scripts for cybersecurity workflows.
+I was reminded of the importance of comments, just as essential in Bash as they were when writing iterative or recursive Python functions. Overall, this review section prepared me to begin writing more complex automation scripts for cybersecurity workflows.
 
 This served as a strong refresher in shell scripting fundamentals. Although most of the concepts were familiar from studying Python and algorithmic logic (recursive vs. iterative), applying them in a Linux environment gave me a deeper understanding of how Bash differs and where it excels, especially for systems-level automation.
 
@@ -690,7 +690,7 @@ The objective of this task was to challenge myself by creating a small authentic
 
 I designed this locker-access scenario intentionally so I could test whether I could collect several pieces of user information and validate them correctly using Bash. The idea was to simulate a simple authentication system that checks a username, company name, and PIN, giving me a realistic way to practice tying these scripting components together in one workflow.
 
-While working through this, I reflected often on my scripting background from college, where I studied Python extensively, learning both recursive and iterative functions. Many concepts I learned there—especially iterative loops and input validation—mapped directly onto this Bash workflow, even though the syntax and structure differed.
+While working through this, I reflected often on my scripting background from college, where I studied Python extensively, learning both recursive and iterative functions. Many concepts I learned there, especially iterative loops and input validation, mapped directly onto this Bash workflow, even though the syntax and structure differed.
 
 ### Environment
 
@@ -928,7 +928,7 @@ This script simulated simple authentication logic. It highlighted the importance
 
 1. Bash Follows Similar Logical Structures to Python
 
-Even though Bash syntax is more rigid (spacing matters, brackets matter, etc.), the fundamental ideas—loops, variable assignment, conditionals—mirror the same patterns I practiced in Python during college.
+Even though Bash syntax is more rigid (spacing matters, brackets matter, etc.), the fundamental ideas such as loops, variable assignment, and conditionals, mirror the same patterns I practiced in Python during college.
 This made the script intuitive to follow.
 
 2. Loops in Bash Can Replace Multi-Line Prompts
@@ -951,7 +951,7 @@ Misplaced brackets or missing spaces can break a script. Python taught me struct
 ### What I Learned
 This exercise strengthened my understanding of how simple security checks can be automated.
 
-This lab brought together several scripting fundamentals into one cohesive task. Writing the locker authentication script helped me recognize how transferable programming concepts are between languages—especially between Python (which I studied academically) and Bash (which is more common in Linux automation and SOC workflows).
+This lab brought together several scripting fundamentals into one cohesive task. Writing the locker authentication script helped me recognize how transferable programming concepts are between languages, especially between Python (which I studied academically) and Bash (which is more common in Linux automation and SOC workflows).
 
 Overall, the exercise strengthened my confidence in writing Bash scripts that combine input handling, loops, and conditional logic to build practical functionality.
 
