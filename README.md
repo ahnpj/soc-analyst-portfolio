@@ -64,6 +64,19 @@ Currently includes:
 </details>
 
 
+<details>
+<summary><b>Scripting</b></summary>
+
+> <details>
+> <summary>Tcpdump</summary>
+>
+> - <a href="labs/shell-and-scripting/linux-shell-and-scripting/Lab01-linux-bash-usage-and-scripting/Lab01-linux-bash-usage-and-scripting.md">Lab01 – Linux Shells and Scripting</a><br/>
+>   <em>Level: Beginner</em> → Building Bash scripts that apply variables, user input, conditional logic, and iterative loops to automate decision-making and repetitive tasks in a Linux environment.
+>
+> </details>
+
+</details>
+
 
 <details>
 <summary><b>Endpoint Analysis & Investigation</b></summary>
