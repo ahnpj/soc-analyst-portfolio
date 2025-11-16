@@ -443,7 +443,7 @@ echo "Welcome, $name"
   <em>Figure 8</em>
 </p>
 
-The shebang (#!/bin/bash) reminded me of how Python scripts use #!/usr/bin/env python3 to specify the interpreter—same concept, different ecosystem.
+The shebang (#!/bin/bash) reminded me of how Python scripts use `#!/usr/bin/env python3` to specify the interpreter. This seems to be the same concept, just different ecosystem.
 
 ---
 
