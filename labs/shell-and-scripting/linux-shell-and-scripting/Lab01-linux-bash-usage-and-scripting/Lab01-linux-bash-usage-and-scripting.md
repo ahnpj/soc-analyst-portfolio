@@ -828,7 +828,7 @@ After gathering all three values, the script needed to validate them using a com
 
 ```
 if [ "$username" = "Peter" ] && [ "$companyname" = "PeterAhnCompany" ] && [ "$pin" = "1234" ]; then
-    echo "Authentication Successful. You can now access your locker, John."
+    echo "Authentication Successful. You can now access your locker, Peter."
 else
     echo "Authentication Denied!!"
 fi
