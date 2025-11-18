@@ -331,7 +331,7 @@ I came away with the impression that Zsh is a strong “daily-driver” candidat
 
 ---
 
-**(Step 7)** Comparing Bash, Fish, and Zsh
+**(Step 8)** Comparing Bash, Fish, and Zsh
 
 I did personal research and reviewed a comparison table for Bash, Fish, and Zsh across several categories. I summarized it for myself like this:
 
