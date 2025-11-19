@@ -914,9 +914,9 @@ It printed the message `Authentication Successful. You can now access your locke
 
 I then entered incorrect details to test what would happen if the variables contained (at least) 1 wrong input that wasnt defined in the locker script since the script was defined to only print the authentication successfull message if all variables matched:
 
-`Username` - I entered `John`
-`Zip Code` - I entered `10314`
-`PIN` - I entered `1234`
+- `Username` - I entered `John` (incorrect variable input)
+- `Zip Code` - I entered `10314`
+- `PIN` - I entered `1234`
 
 It printed the message `Authentication Denied!!` as expected.
 
