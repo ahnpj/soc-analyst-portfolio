@@ -899,9 +899,9 @@ The script asked for the `Username`, `Zip Code`, and `PIN`.
 
 I entered the correct details first:
 
-`Username` - I entered `Peter`
-`Zip Code` - I entered `10314`
-`PIN` - I entered `1234`
+- `Username` - I entered `Peter`
+- `Zip Code` - I entered `10314`
+- `PIN` - I entered `1234`
 
 It printed the message `Authentication Successful. You can now access your locker, Peter.` as expected.
 
