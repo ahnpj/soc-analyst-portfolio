@@ -34,7 +34,7 @@ This connected well with what I learned while studying for the CompTIA Security+
 
 - Environment: Ubuntu 20.04.6 LTS (x86_64), Linux kernel 5.15.0-1068-aws on a remote virtual machine.
 - User: user (shell prompt shown).
-- Network: VM had a private IPv4 address on ens5 (10.201.72.1, 10.201.6.0, 10.201.19.118, 10.11.90.211, 10.201.51.53).
+- Network: VM had a private IPv4 address on ens5 (10.201.72.1, 10.201.6.0, 10.201.19.118, 10.11.90.211, 10.201.51.53, 10.201.75.88).
 
 <p align="left">
   <img src="images/linux-bash-usage-and-scripting-01.png?raw=true&v=2" 
