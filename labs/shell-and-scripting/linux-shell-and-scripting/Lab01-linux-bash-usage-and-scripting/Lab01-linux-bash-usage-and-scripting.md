@@ -34,7 +34,7 @@ This connected well with what I learned while studying for the CompTIA Security+
 
 - Environment: Ubuntu 20.04.6 LTS (x86_64), Linux kernel 5.15.0-1068-aws on a remote virtual machine.
 - User: user (shell prompt shown).
-- Network: VM had a private IPv4 address on ens5 (10.201.72.1, 10.201.6.0, 10.201.19.118, 10.11.90.211).
+- Network: VM had a private IPv4 address on ens5 (10.201.72.1, 10.201.6.0, 10.201.19.118, 10.11.90.211, 10.201.51.53).
 
 <p align="left">
   <img src="images/linux-bash-usage-and-scripting-01.png?raw=true&v=2" 
@@ -416,7 +416,7 @@ Although I previously studied scripting in college, primarily using Python, incl
 
 **(Step 1)** Creating the First Basic Script File
 
-In this step, I created my first Bash script using `nano`. This mirrored the same process I learned years ago when writing simple Python programs, except here the file used a `.sh` extension and required a shebang to define the interpreter. 
+In this step, I created my first Bash script using `nano`. This mirrored the same process I learned years ago when writing simple Python programs, except here the file used a `.sh` extension and required a shebang to define the interpreter. I named this script `peters_script.sh`.
 
 <p align="left">
   <img src="images/linux-bash-usage-and-scripting-07.png?raw=true&v=2" 
@@ -431,9 +431,9 @@ Inside the file, I added:
 
 ```
 #!/bin/bash
-echo "Hey, what's your name?"
+echo "Please enter your name"
 read name
-echo "Welcome, $name"
+echo "Hi there, $name"
 ```
 
 <p align="left">
@@ -452,7 +452,7 @@ The shebang (#!/bin/bash) reminded me of how Python scripts use `#!/usr/bin/env 
 After writing the script, I saved it ([CTRL+X] > then [Y], then [ENTER]). Before running it, I needed to add execution permissions:
 
 ```
-chmod +x first_script.sh
+chmod +x peters_script.sh
 ```
 
 This step enforces the idea of execution-level control that doesn’t exist in Python by default but is crucial in Linux environments.
@@ -471,8 +471,10 @@ This step enforces the idea of execution-level control that doesn’t exist in P
 Now that the script had execution rights, I ran it by running the following:
 
 ```
-./first_script.sh
+./peters_script.sh
 ```
+
+To run my script, I used the `./` prefix. This explicitly told the shell to execute the file located in the current directory, because the current directory wasn’t included in the system’s PATH. Without `./`, the shell would look only in the directories listed in PATH, fail to find the script, and return a “command not found” error.
 
 The script accepted user input, assigned it to a variable, and displayed a greeting, exactly the same flow I practiced in Python when handling raw input.
 
@@ -487,7 +489,7 @@ The script accepted user input, assigned it to a variable, and displayed a greet
 
 **(Step 4)** Creating a Loop Script (Iterative Logic)
 
-Next, I created a script that used a loop (named the script file `loop_script.sh`). Because I studied iterative (`for`) loops in Python (`for i in range(1, 11):`), this felt very familiar even though the syntax looked different.
+Next, I created a script that used a loop (named the script file `peters_loop_script.sh`). Because I studied iterative (`for`) loops in Python (`for i in range(1, 11):`), this felt very familiar even though the syntax looked different.
 
 Inside the file, I added:
 
@@ -499,7 +501,7 @@ do
 done
 ```
 
-The iterative logic mirrored Python perfectly: loop from 1 to 10, print each number. 
+The iterative logic mirrored Python perfectly: looped from 1 to 10, print each number. 
 
 <p align="left">
   <img src="images/linux-bash-usage-and-scripting-11.png?raw=true&v=2" 
@@ -511,8 +513,8 @@ The iterative logic mirrored Python perfectly: loop from 1 to 10, print each num
 After writing the script, I saved it ([CTRL+X] > then [Y], then [ENTER]), then I ran the script entering:
 
 ```
-chmod +x loop_script.sh
-./loop_script.sh
+chmod +x peters_loop_script.sh
+./peters_loop_script.sh
 ```
 
 <p align="left">
@@ -526,23 +528,24 @@ chmod +x loop_script.sh
 
 **(Step 5)** Creating a Conditional Script
 
-This section introduced conditional logic, again, something I covered in Python extensively (`if`/`elif`/`else`). I created another script and named it `conditional_script.sh` using the following command:
+This section introduced conditional logic, again, something I covered in Python extensively (`if`/`elif`/`else`). I created another script and named it `peters_conditional_script.sh` using the following command:
 
 ```
-nano conditional_script.sh
+nano peters_conditional_script.sh
 ```
 
 Inside the file, I added:
 
 ```
 #!/bin/bash
-echo "Please enter your name first:"
+echo "First, please enter your name:"
 read name
 
 if [ "$name" = "Peter Ahn" ]; then
-    echo "Welcome Peter Ahn! Here is the secret: THM_Script"
+    echo "Welcome Peter Ahn! The secret password is 123.
+fiu"
 else
-    echo "Sorry! You are not authorized to access the secret."
+    echo "Sorry! You are not authorized to access the secret password!"
 fi
 ```
 
@@ -555,7 +558,11 @@ The structure reminded me of Python’s conditional branching, but using `fi` to
   <em>Figure 13</em>
 </p>
 
-I attempted to execute the script running `./conditional_script.sh`
+I executed the script running:
+
+```
+./peters_conditional_script.sh
+```
 
 <p align="left">
   <img src="images/linux-bash-usage-and-scripting-14.png?raw=true&v=2" 
@@ -564,9 +571,9 @@ I attempted to execute the script running `./conditional_script.sh`
   <em>Figure 14</em>
 </p>
 
-Using `./conditional_script.sh` only runs the file, it does not give it permission to run. If the script isn’t already executable, the command will fail. The purpose of `chmod +x` is to add the executable permission so the system can actually run it. After that, `./script.sh` works because the file is now allowed to execute.
+Using `./peters_conditional_script.sh` only runs the file, it does not give it permission to run. If the script isn’t already executable, the command will fail. The purpose of `chmod +x` is to add the executable permission so the system can actually run it. After that, `./script.sh` works because the file is now allowed to execute.
 
-The script checks whether the entered name matches the authorized value (“Peter Ahn”), which is my name. If the condition is met, the script displays the secret and welcomes the user. If the condition fails, the script shows an unauthorized message instead. 
+The script checks whether the entered name matches the authorized value (“Peter”), which is my name. If the condition is met, the script displays the secret and welcomes the user. If the condition fails, the script shows an unauthorized message instead. 
 
 The two screenshots in the lab are simply examples showing both possible outcomes. When running the script yourself, you will only see one outcome at a time, either the authorized message if the input matches, or the unauthorized message if it does not.
 
@@ -593,20 +600,20 @@ In this step, I rewrote the conditional script and added comments throughout the
 ```
 #!/bin/bash
 
-# Asking the user to enter a value.
+# Asking the user to enter their name.
 echo "Please enter your name first:"
 read name
 
-# Checking if the user's name matches our required name.
-if [ "$name" = "Stewart" ]; then
+# Checking if the user's name matches required name.
+if [ "$name" = "Peter" ]; then
 
     # Display the secret if the name is valid.
-    echo "Welcome Stewart! Here is the secret: THM_Script"
+    echo "Welcome Peter Ahn! The secret password is 123."
 
 else
 
-    # Message if the condition fails.
-    echo "Sorry! You are not authorized to access the secret."
+    # Message if the condition fails. Meaning user entered wrong name.
+    echo "Sorry! You are not authorized to access the secret password!"
 
 fi
 ```
@@ -694,7 +701,7 @@ While working through this, I reflected often on my scripting background from co
 
 ### Environment
 
-- Linux machine (TryHackMe VM)
+- Linux machine (VM)
 - Bash shell (`/bin/bash`)
 - Terminal access
 - `nano` text editor
