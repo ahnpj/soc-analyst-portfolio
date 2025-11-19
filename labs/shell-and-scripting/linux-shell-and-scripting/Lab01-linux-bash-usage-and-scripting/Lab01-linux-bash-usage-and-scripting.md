@@ -717,7 +717,7 @@ I wrote a script that requested a username, company name, and PIN. The script co
 Before writing any code, I reviewed the requirements of the locker authentication system:
 
 - **Username:** Peter
-- **Company:** PeterAhnCompany  
+- **Zip Code:** 10314 
 - **PIN:** 1234  
 
 The script needed to:
@@ -737,7 +737,7 @@ This immediately reminded me of input-handling assignments from Python class, wh
 
 I created a new script using the `nano` text editor:
 
-`nano locker_script.sh`
+`nano peters_locker_script.sh`
 
 <p align="left">
   <img src="images/linux-bash-usage-and-scripting-18.png?raw=true&v=2" 
@@ -752,7 +752,7 @@ Inside the file, I added the shebang along with placeholder variables:
 #!/bin/bash
 
 username=""
-companyname=""
+zipcode=""
 pin=""
 ```
 
@@ -769,7 +769,7 @@ The shebang works the same way it did when writing Python scripts (#!/usr/bin/en
 
 **(Step 3)** Collecting User Input with a Loop
 
-I used a `for` loop to sequentially request the `username`, `company name`, and `PIN`:
+I used a `for` loop to sequentially request the `username`, `zip code`, and `PIN`:
 
 ```
 for i in {1..3}; do
@@ -777,7 +777,7 @@ for i in {1..3}; do
         echo "Enter your Username:"
         read username
     elif [ "$i" -eq 2 ]; then
-        echo "Enter your Company name:"
+        echo "Enter your Zip Code:"
         read companyname
     else
         echo "Enter your PIN:"
@@ -865,7 +865,7 @@ The validation logic instantly reminded me of Python’s `if x == value` and `y 
 Before running the script, I ensured it had the correct execution permissions:
 
 ```
-chmod +x locker_script.sh
+chmod +x peters_locker_script.sh
 ```
 
 <p align="left">
@@ -878,7 +878,7 @@ chmod +x locker_script.sh
 Then I executed it:
 
 ```
-./locker_script.sh
+./peters_locker_script.sh
 ```
 
 <p align="left">
@@ -888,7 +888,7 @@ Then I executed it:
   <em>Figure 23</em>
 </p>
 
-The script asked for the `Username`, `Company Name`, and `PIN`. 
+The script asked for the `Username`, `Zip Code`, and `PIN`. 
 
 <p align="left">
   <img src="images/linux-bash-usage-and-scripting-24.png?raw=true&v=2" 
@@ -900,7 +900,7 @@ The script asked for the `Username`, `Company Name`, and `PIN`.
 I entered the correct details first:
 
 `Username` - I entered `Peter`
-`Company Name` - I entered `PeterAhnCompany`
+`Zip Code` - I entered `10314`
 `PIN` - I entered `1234`
 
 It printed the message `Authentication Successful. You can now access your locker, Peter.` as expected.
@@ -915,7 +915,7 @@ It printed the message `Authentication Successful. You can now access your locke
 I then entered incorrect details to test what would happen if the variables contained (at least) 1 wrong input that wasnt defined in the locker script since the script was defined to only print the authentication successfull message if all variables matched:
 
 `Username` - I entered `John`
-`Company Name` - I entered `PeterAhnCompany`
+`Zip Code` - I entered `10314`
 `PIN` - I entered `1234`
 
 It printed the message `Authentication Denied!!` as expected.
