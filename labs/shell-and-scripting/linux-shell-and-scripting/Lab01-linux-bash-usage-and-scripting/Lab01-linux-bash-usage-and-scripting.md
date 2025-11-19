@@ -257,7 +257,7 @@ For this review portion I did not actually change my default shell; instead I fo
 Instead of immediately changing my default shell, I first tested them interactively. For example, to start a `zsh` session from within Bash, I could run `zsh`.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-05.gif?raw=true&v=2" 
+  <img src="images/linux-bash-usage-and-scripting-05.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 5</em>
