@@ -1,7 +1,7 @@
 Lab04 – Splunk Backdoor and Registry Hunt
 ===========================================
 
-## Overview
+## Overview </br>
 
 <details>
 
@@ -15,7 +15,7 @@ Rather than blindly following a guided checklist, I tried to treat this like a m
 
 </details>
 
-## Objective
+## Objective </br>
 
 <details>
 
@@ -35,7 +35,7 @@ The main objective of this lab was to investigate a suspected Windows host compr
 
 </details>
 
-## Environment
+## Environment </br>
 
 <details>
 
@@ -68,7 +68,7 @@ My job in this lab was to reconstruct what happened using Splunk searches and an
 
 ---
 
-## Step-by-Step Walkthrough
+## Step-by-Step Walkthrough </br>
 
 <details>
 
@@ -208,7 +208,7 @@ The decoded PowerShell revealed a `Invoke-WebRequest` (or similar) call that con
 
 ---
 
-## Findings and Analysis
+## Findings and Analysis </br>
 
 <details>
 
@@ -227,7 +227,7 @@ Overall, the logs painted a classic small-scale intrusion story: account creatio
 
 </details>
 
-## What I Learned
+## What I Learned </br>
 
 <details>
 
