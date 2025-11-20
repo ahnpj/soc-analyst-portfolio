@@ -2,6 +2,9 @@
 Author: Peter Ahn  
 Environment: Google Cloud Shell (Browser-Based Linux VM)
 
+> **📌 Personal Learning Note:**  
+> Before starting this lab, I spent time independently researching how Python handles text processing, including reading files line-by-line, parsing structured and unstructured log formats, and using modules like re, csv, and json. I also reviewed general Python syntax and how to write my logic in a clean, step-by-step flow so I fully understood why each part of the script worked. This included brushing up on loops, conditionals, pattern matching, and how to structure small detection functions that resemble real SOC workflows. Taking the time to study these fundamentals helped reinforce my confidence, made the parsing feel more intentional, and ensured I wasn’t just copying commands but actually building clear, readable logic from the ground up.
+
 # Overview </br>
 
 <details>
