@@ -1,4 +1,4 @@
-Lab03 – Splunk Backdoor and Registry Hunt
+Lab04 – Splunk Backdoor and Registry Hunt
 ===========================================
 
 ## Overview
