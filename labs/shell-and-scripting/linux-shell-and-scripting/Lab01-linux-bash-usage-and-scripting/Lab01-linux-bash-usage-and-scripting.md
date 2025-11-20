@@ -966,36 +966,7 @@ Overall, the exercise strengthened my confidence in writing Bash scripts that co
 
 ---
 
-## Section 6: Practical Exercise
-
-<details>
-
-<summary><b>(Click to expand)</b></summary>
-<br>
-
-> **📌 Personal Learning Note:**  
-> I took time to independently review and refresh several Linux command-line fundamentals, including which commands to use for system enumeration, how to interpret their output, and the correct syntax for writing them. This helped reinforce consistent command usage, improved clarity in my workflow, and ensured that I fully understood what each command was doing rather than running them by memory alone.
-
-### Objective
-To use scripting to search system logs for specific keywords.
-
-### Step-by-Step Walkthrough
-
-I switched to root using `sudo su` and examined a script that parsed `.log` files under `/var/log`. I filled in missing values and ran the script to extract a hidden answer.
-
-### Findings / Analysis
-This exercise reinforced how scripts can automate system monitoring tasks.
-
-### What I Learned
-I learned how shell scripts apply directly to real-world administration and security workflows.
-
-<details>
-
-<summary><b>(Click to expand)</b></summary>
-
----
-
-## Section 7: Conclusion
+## Section 6: Conclusion
 
 <details>
 
