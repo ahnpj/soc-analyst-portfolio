@@ -1,11 +1,13 @@
 Lab04 – Splunk Backdoor and Registry Hunt
 ===========================================
 
-## Overview </br>
+## Overview & Objective </br>
 
 <details>
 
 <summary><b>(Click to expand)</b></summary>
+
+### Overview
 
 In this lab, I wanted to practice approaching a host-compromise investigation in Splunk the same way I would in a real SOC: start with a broad view of the data, form a hypothesis, and then pivot through different log sources (Security, Sysmon/registry, and PowerShell logs) until I could tell a coherent story about what happened.
 
@@ -13,13 +15,7 @@ The dataset contained Windows event logs already ingested into Splunk. I approac
 
 Rather than blindly following a guided checklist, I tried to treat this like a mini-investigation: start with simple searches, inspect patterns, then refine my searches as I uncovered more context about the attacker’s behavior.
 
-</details>
-
-## Objective </br>
-
-<details>
-
-<summary><b>(Click to expand)</b></summary>
+### Objective
 
 The main objective of this lab was to investigate a suspected Windows host compromise using Splunk and to:
 
@@ -39,7 +35,7 @@ The main objective of this lab was to investigate a suspected Windows host compr
 
 <details>
 
-<summary><b>(Click to expand)</b></summary>
+<summary><b>(Click to expand)</b></summary> </br>
 
 - **Platform:** Splunk Enterprise (web interface)
 - **Data Source:** Pre-ingested Windows event logs (Security, Sysmon/registry, and PowerShell logging)
@@ -52,7 +48,7 @@ The main objective of this lab was to investigate a suspected Windows host compr
 
 <details>
 
-<summary><b>(Click to expand)</b></summary>
+<summary><b>(Click to expand)</b></summary> </br>
 
 In this scenario, a Windows workstation is suspected of being compromised. The adversary appears to have:
 
@@ -68,7 +64,7 @@ My job in this lab was to reconstruct what happened using Splunk searches and an
 
 ---
 
-## Step-by-Step Walkthrough </br>
+## Step-by-Step Walkthrough
 
 <details>
 
@@ -212,7 +208,7 @@ The decoded PowerShell revealed a `Invoke-WebRequest` (or similar) call that con
 
 <details>
 
-<summary><b>(Click to expand)</b></summary>
+<summary><b>(Click to expand)</b></summary> </br>
 
 - A new local user account was created on one of the Windows hosts, acting as a backdoor account.
 - Registry keys tied to local accounts were modified to reflect the presence of this backdoor user, indicating that the attacker was making persistent changes on the host.
@@ -231,7 +227,7 @@ Overall, the logs painted a classic small-scale intrusion story: account creatio
 
 <details>
 
-<summary><b>(Click to expand)</b></summary>
+<summary><b>(Click to expand)</b></summary> </br>
 
 - **Event volume context matters.** Starting with a simple `stats count` over the index gave me a quick sense of scale and reassured me that my searches were running over the correct dataset.
 - **Backdoor accounts leave multiple traces.** Between Security events, command-line logs, and registry entries, a single malicious user account shows up in several places. Knowing how to pivot between them is key.
