@@ -2,8 +2,15 @@
 Author: Peter Ahn  
 Environment: Google Cloud Shell (Browser-Based Linux VM)
 
-## Overview
-I wanted to run hands-on log parsing labs in a live Linux environment without installing anything locally. Using Google Cloud Shell’s built‑in Linux VM, I created several logs (Apache, SSH auth logs, Windows EventLog CSV, and AWS CloudTrail JSON) and wrote Python scripts to parse each one.
+# Overview </br>
+
+<details>
+
+<summary><b>(Click to expand)</b></summary>
+
+I wanted to get some hands-on practice with real-world log parsing, so I used Google Cloud Shell’s Linux VM to build a set of small, focused Python exercises. These labs helped me explore how different logs behave: Apache access logs, SSH authentication logs, Windows Event logs (in CSV format), and even AWS CloudTrail logs in JSON. My goal was to build comfort reading raw log data, write simple scripts to analyze them, and understand the types of patterns a SOC analyst might look for.
+
+This report summarizes each lab, why I ran it, what I looked for, and what I learned.
 
 My goals:
 - Understand different log formats  
@@ -12,6 +19,8 @@ My goals:
 - Build clear, screenshot-friendly labs for my GitHub portfolio
 
 This report includes code, explanations, and what I learned from each lab.
+
+</details>
 
 ---
 
@@ -25,6 +34,9 @@ This report includes code, explanations, and what I learned from each lab.
 Simulate web attack enumeration (404 spikes, admin path scans) and write a Python parser to detect suspicious IPs.
 
 ## Creating the Apache Log
+
+I started with a small Apache web server log. My goal was to see how attackers probe web servers for weak points by hitting URLs like /wp-login.php or /phpmyadmin. To simulate this, I created my own short log file containing a mix of normal and suspicious requests.
+
 ```bash
 cat << 'EOF' > apache_access.log
 127.0.0.1 - - [20/Nov/2025:10:00:00 +0000] "GET /index.html HTTP/1.1" 200 512 "-" "Mozilla/5.0"
@@ -36,6 +48,15 @@ EOF
 ```
 
 ## Python Parser (parser_apache.py)
+
+Using Python, I wrote a script that:
+- Extracts all IP addresses using regex
+- Counts how many total requests each IP made
+- Tracks which IPs triggered 404 errors
+- Highlights IPs that repeatedly attempted invalid paths
+
+This gave me quick insight into how enumeration attempts look in logs. Even in a tiny dataset, the patterns stood out clearly—one attacker IP triggered multiple 404s across different admin paths, which is exactly the kind of behavior a SOC analyst flags for deeper review.
+
 ```python
 import re
 from collections import Counter
@@ -68,6 +89,9 @@ for ip, count in errors_404.items():
 ```
 
 ## Findings
+
+What I learned: Even simple regex-based parsing is enough to reveal attacker behavior. 404 spikes almost always indicate scanning or automated tools looking for known vulnerabilities.
+
 - IP **203.0.113.10** repeatedly attempted invalid admin paths.
 - Multiple 404 errors indicate enumeration/scanning behavior.
 - Regex-based extraction made parsing extremely simple.
@@ -89,6 +113,9 @@ Apache logs follow predictable patterns. Even small logs reveal attacker behavio
 Detect repeated failed SSH login attempts, which mimic brute-force attacks.
 
 ## Creating the Auth Log
+
+Next, I moved on to Linux auth logs (`auth.log`). To simulate this, I created my own short log file containing SSH login events, which are commonly brute-forced. I generated a few lines manually—some failed attempts against fake users (admin, root), and one legitimate login.
+
 ```bash
 cat << 'EOF' > auth.log
 Nov 20 10:10:01 server sshd[1001]: Failed password for invalid user admin from 203.0.113.50 port 54321 ssh2
@@ -99,6 +126,9 @@ EOF
 ```
 
 ## Python Parser (parser_auth.py)
+
+I wrote a Python script to parse only the failed logins and extract the source IP responsible.
+
 ```python
 import re
 from collections import Counter
@@ -120,11 +150,15 @@ for ip, count in Counter(fail_ips).most_common():
 ```
 
 ## Findings
+
+This quickly highlighted one IP making multiple failed attempts. Even though the dataset was small, the logic mirrors real brute-force detection: consistent login failures from the same IP over a short time window.
+
 - The attacker IP **203.0.113.50** attempted 3 logins across 2 fake users (admin & root).
 - Perfect small-scale example of SSH brute force.
 
 ## What I Learned
-Auth logs are verbose but uniform. Regex makes parsing attacker IPs straightforward.
+Auth logs are verbose but uniform. Regex makes parsing attacker IPs straightforward. SSH failures follow a very predictable format. Once you extract the IP addresses, it becomes trivial to identify malicious login patterns.
+
 
 </details>
 
@@ -140,6 +174,9 @@ Auth logs are verbose but uniform. Regex makes parsing attacker IPs straightforw
 Identify repeated Event ID **4625** (Failed Logon) across users and IPs.
 
 ## Creating the Windows Event CSV
+
+I wanted to simulate a typical SOC workflow where Windows Event Logs are exported into CSV for easier analysis. I created a small CSV file containing Event IDs, usernames, IP addresses, and statuses.
+
 ```bash
 cat << 'EOF' > windows_events.csv
 EventID,AccountName,IpAddress,Status
@@ -151,6 +188,12 @@ EOF
 ```
 
 ## Python Parser (parser_windows.py)
+
+I wrote a Python script that:
+- Loads the CSV
+- Filters only Event ID 4625 (failed logons)
+- Counts failures by username and source IP
+
 ```python
 import csv
 from collections import Counter
@@ -170,11 +213,14 @@ for (user, ip), count in fail_counts.most_common():
 ```
 
 ## Findings
+
+This showed me which accounts were repeatedly targeted. Even with synthetic data, the exercise helped reinforce how valuable Event ID filtering is. Windows logs are noisy, so focusing on specific events is crucial.
+
 - admin from **203.0.113.80** had multiple failures.
 - CSV-based logs are extremely easy to parse compared to raw EVTX.
 
 ## What I Learned
-Windows logs become manageable when exported to CSV and filtered by Event ID.
+Windows logs become manageable when exported to CSV and filtered by Event ID. CSV parsing is extremely simple in Python, and Windows log analysis becomes much easier when I focus on specific event types like 4625 or 4688.
 
 </details>
 
@@ -186,12 +232,13 @@ Windows logs become manageable when exported to CSV and filtered by Event ID.
 
 <summary><b>(Click to expand)</b></summary>
 
-
-
 ## Objective
-Parse AWS CloudTrail logs for suspicious IAM actions like policy changes or trail deletion.
+For the final lab, I explored AWS CloudTrail logs, which record IAM activity. I wanted to parse AWS CloudTrail logs for suspicious IAM actions like policy changes or trail deletion.
 
 ## Creating the CloudTrail JSON
+
+Instead of using real logs, I created a small JSON array with actions like AttachUserPolicy and DeleteTrail—both of which could indicate risky or unauthorized changes.
+
 ```bash
 cat << 'EOF' > cloudtrail.json
 [
@@ -215,6 +262,12 @@ EOF
 ```
 
 ## Python Parser (parser_cloudtrail.py)
+
+My parser:
+- Loaded the JSON file
+- Grouped actions by user
+- Flagged high-risk IAM actions
+
 ```python
 import json
 from collections import defaultdict
@@ -241,11 +294,14 @@ for e in events:
 ```
 
 ## Findings
+
+This made it immediately clear which users were performing suspicious operations. CloudTrail logs are verbose, but Python handles JSON cleanly, making it straightforward to surface risky behavior.
+
 - alice performed a privileged action: **AttachUserPolicy**
 - bob executed **DeleteTrail**, which is highly suspicious.
 
 ## What I Learned
-CloudTrail JSON parsing is simple in Python and quickly reveals dangerous IAM behavior.
+CloudTrail JSON parsing is simple in Python and quickly reveals dangerous IAM behavior. Even tiny CloudTrail datasets reflect security patterns. IAM actions like attaching new policies or deleting trails are high-signal indicators worth alerting on.
 
 </details>
 
@@ -257,6 +313,10 @@ CloudTrail JSON parsing is simple in Python and quickly reveals dangerous IAM be
 <details>
 
 <summary><b>(Click to expand)</b></summary>
+
+Running these labs inside Google Cloud Shell gave me a clean and controlled Linux environment without needing to install anything locally. Writing small, focused parsers helped me understand common log formats and build confidence handling raw data. These exercises represent foundational SOC skills—reading logs, spotting anomalies, and automating analysis.
+
+These labs also provide good content for my GitHub portfolio, showing both technical understanding and hands-on practice.
 
 Across all four labs, I practiced:
 - Parsing log formats (text, CSV, JSON)
