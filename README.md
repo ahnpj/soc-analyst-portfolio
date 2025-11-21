@@ -83,7 +83,7 @@ Currently includes:
 > <details>
 > <summary>Python Log Parsing & Security Analysis</summary>
 >
-> - <a href="labs/log-analysis/Lab01-python-log-parsing-and-security-analysis/Lab01-python-log-parsing-and-security-analysis.md">Lab01 – Python Log Parsing & Security Analysis</a><br/>
+> - <a href="labs/log-analysis-and-scripting/Lab01-python-log-parsing-and-security-analysis/Lab01-python-log-parsing-and-security-analysis.md">Lab01 – Python Log Parsing & Security Analysis</a><br/>
 >   <em>Level: Beginner</em> → This lab demonstrates how to use Python to parse and analyze Apache, SSH, Windows, and CloudTrail logs, extracting meaningful security insights from raw event data. It highlights how scripting can automate detection of suspicious behavior, failed logins, scanning activity, and risky cloud actions.
 >
 > </details>
