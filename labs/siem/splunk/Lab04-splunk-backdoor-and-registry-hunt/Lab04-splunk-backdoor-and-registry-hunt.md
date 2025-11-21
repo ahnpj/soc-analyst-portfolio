@@ -276,7 +276,7 @@ Once I confirmed how the backdoor account was created, I wanted to see whether t
 To double-check, I looked at the `EventID` field as well, since Windows uses specific IDs for login attempts, `4624` for successful logons and `4625` for failed ones. Neither of these appeared for the backdoor username. The absence of these event IDs confirmed what the `Category` field was already hinting that the new account was created successfully, but it was never used for any actual login attempt during the timeframe captured in the dataset.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-09.png?raw=true&v=2" 
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-10.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 10</em>
@@ -295,7 +295,21 @@ To identify the affected host, I searched for PowerShell-related logs:
 index=main PowerShell
 ```
 
-Only a single hostname consistently appeared in the results: **James.browne**.
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-11.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 11</em>
+</p>
+
+I checked the `Hostname` field and saw that only a single hostname consistently appeared in the results: **James.browne**.
+
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-12.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 12</em>
+</p>
 
 This made it clear that the malicious PowerShell activity originated entirely from that machine. That host instantly became the centerpiece of the remaining analysis.
 
@@ -303,11 +317,18 @@ This made it clear that the malicious PowerShell activity originated entirely fr
 
 ### Step 8 – Measuring the Extent of Malicious PowerShell Execution
 
-Once I identified the infected host, I wanted to measure how noisy the malicious PowerShell execution was. I focused on Event ID 4103, which logs PowerShell engine activity:
+Once I identified the infected host, I wanted to measure how noisy the malicious PowerShell execution was. I focused on `Event ID 4103`, which logs PowerShell engine activity:
 
 ```
 index=main EventID=4103
 ```
+
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-13.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 13</em>
+</p>
 
 Splunk returned **79 events**, all tied to the malicious encoded payload activity. This quantity suggested either repeated execution or a script that generated multiple engine events as it unpacked or processed its instructions.
 
