@@ -159,106 +159,184 @@ index=main EventID=4720
 
 Reviewing those events confirmed the new user account and helped answer the question of which username was introduced as the backdoor. On one of the infected hosts, the adversary was successful in creating a backdoor user, `A1berto`.
 
-### Step 3 – Trace Registry Modifications for the Backdoor User
+### Step 3 – Tracing Registry Modifications Connected to the Backdoor User
 
-Knowing the backdoor username, the next step was to see whether any registry keys were modified in connection with that account. Registry-based persistence is common, especially when attackers want their changes to survive reboots.
+After confirming that a suspicious backdoor user had been created, I wanted to know if anything on the system had changed to support persistence. Whenever a new local account is introduced during an intrusion, registry modifications are one of the first places I check. They often reflect when Windows records a new profile or when attackers intentionally tamper with account‐related keys.
 
-I searched for registry-related events that mentioned the backdoor username, or for events where the registry path contained references to user accounts:
+Because I already knew the username the attacker created (`A1berto`), I began looking for registry events tied to that name. I focused on `Registry Event ID 12` (object creation or deletion) since that tends to show new keys being written. A targeted search helped surface the relevant events:
 
-```spl
-index=main (Registry OR "regedit" OR "HKLM") backdoor_username_here
+```
+index=main Hostname="Micheal.Beaven" EventID=12 A1berto
 ```
 
-Depending on how the logs were normalized, there might be specific fields such as `Registry_Key_Path` or `TargetObject`. I focused on those fields to extract the full registry path.
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-05.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 5</em>
+</p>
 
-By reviewing the returned events, I identified a registry key path under `HKLM` that referenced the new backdoor account. This registry path was tied to local user account data and clearly showed that the system had been modified to record or support the backdoor user.
+<blockquote>
+I filtered by the hostname because the backdoor account was created on that specific machine. Using the hostname kept the registry search focused on the same system involved in the compromise and prevented unrelated registry events from other hosts from cluttering the results. This made it easier to spot the exact registry key tied to the newly created user.
+</blockquote>
 
-This answered the question about the full path of the registry key associated with the newly created account.
+As I sifted through the event details, the registry path stood out immediately. Windows keeps local user profile metadata under the SAM hive, and I found an entry specifically referencing the backdoor username:
 
-### Step 4 – Identify the Legitimate User Being Impersonated
+`HKLM\SAM\SAM\Domains\Account\Users\Names\A1berto`
 
-The next question was: which legitimate user did the attacker attempt to impersonate? This usually shows up in two places:
+Seeing this registry key confirmed that Windows had registered the newly created account. The timing aligned cleanly with the earlier command-line execution, reinforcing that this wasn’t accidental activity the attacker had successfully implanted a persistent local account onto the system.
 
-- The account that appears in logon attempts.
-- The account name appearing in context with suspicious commands.
+The `TargetObject` field in registry events represents the exact registry key or value that was created, modified, or deleted. In other words, Splunk uses this field to store the full registry path involved in the event. So when I was looking for the registry key tied to the backdoor account, `TargetObject` was the field that actually revealed:
 
-I searched for logon events related to the suspicious activity window. For example:
+Without `TargetObject`, the registry event would tell me that something changed, but not which key was impacted. That’s why TargetObject mattered, it’s the field that contains the full registry path, which is exactly what I needed to identify the persistence artifact linked to the attacker’s backdoor user.
 
-```spl
-index=main EventCode=4624 OR EventCode=4625
+---
+
+### Step 4 – Figuring Out Which Legitimate User the Attacker Tried to Mimic
+
+Now that I understood how the new user was introduced, I wanted to understand *who* the attacker was trying to blend in with. Attackers rarely operate solely under their new account; they often attempt to impersonate someone else to disguise their lateral movement.
+
+I did a broad sweep across all logs to see what usernames appeared around the same time:
+
+```
+index=main
 ```
 
-From there, I reviewed the `Account_Name` or equivalent field and looked at which accounts were repeatedly involved around the same time frame as the backdoor-related events. The pattern made it clear which user the attacker was trying to mimic — the legitimate account appeared alongside unauthorized activity, while the newly created account seemed to be used as a backdoor alternative.
+As I reviewed the `User` field patterns in the field sidebar, one thing immediately stood out: the legitimate username **Alberto**. The attacker created a backdoor user named **A1berto**. Same name, single character swapped.
 
-### Step 5 – Find the Command Used to Add the Backdoor User Remotely
+While not overly sophisticated, this type of username confusion is common in real-world compromises. It can easily trick an analyst who isn’t paying close attention, especially when sorting or grouping events alphabetically. This small detail revealed the adversary’s intent to masquerade as the legitimate user while performing unauthorized actions.
 
-To understand the attacker’s tooling, I wanted to know exactly how they created the backdoor account from a remote host. I focused on commands that combined remote execution utilities (for example, WMIC) with user-management operations.
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-06.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 6</em>
+</p>
 
-I used a search like:
+---
 
-```spl
-index=main ("wmic" OR "WMIC.exe") ("net user" OR "/add")
+### Step 5 – Understanding How the Backdoor User Was Created Remotely
+
+Next, I wanted to understand *how* the attacker executed the account creation. The earlier logs suggested remote manipulation rather than a local command, so I pivoted toward process-creation events that might reveal the exact tooling used.
+
+Since `Event ID 4688` captures process creation, I filtered on that:
+
+```
+index=main EventID=4688
 ```
 
-By reviewing the `CommandLine` field in the resulting events, I found a full command that:
+Within the returned events, one command-line entry (`CommandLine` field) tied everything together. The attacker executed a WMIC command from a remote host to run `net user /add` on the target machine:
 
-- Used WMIC to target a remote workstation.
-- Invoked `process call create` to run a `net user /add` command on that remote system.
-- Specified the new username and password.
-
-This command provided clear evidence of how the attacker was able to add the backdoor user from another machine, which is very relevant when documenting lateral movement or remote administration abuse.
-
-### Step 6 – Count Login Attempts from the Backdoor User
-
-To measure how “active” the backdoor account was during this dataset, I needed to see how many times it was used for logon attempts. I filtered Windows Security events for the new username:
-
-```spl
-index=main (EventCode=4624 OR EventCode=4625) Account_Name=backdoor_username_here
-| stats count
+```
+C:\windows\System32\Wbem\WMIC.exe /node:WORKSTATION6 process call create "net user /add A1berto paw0rd1"
 ```
 
-This query returns how many times the backdoor account appeared in successful or failed logon events. Even a small number of attempts can still be significant, but understanding the count helps describe the scope of the compromise in a report.
+This confirmed the attacker wasn’t physically or interactively on the host. Instead, they used `Wmic` (Windows Management Instrumentation Command-line), which is a built-in Windows command that lets administrators run system-level operations locally or remotely. It’s normally used for things like querying system info, starting processes, managing services, or controlling remote machines, all without needing RDP or interactive logins. It doesn’t require additional software, it blends in with legitimate admin activity, and it supports remote command execution.
 
-### Step 7 – Identify the Infected Host with Suspicious PowerShell
+it immediately told me two things:
 
-Next, I wanted to locate the host where malicious PowerShell commands were executed. Many investigations pivot to PowerShell because attackers often use it for fileless or “living off the land” activity.
+- The attacker was operating remotely, so they weren’t on the compromised host directly.
+- They were abusing a legitimate admin tool to create the backdoor user in a way that avoids detection and doesn’t rely on external malware.
 
-I started with a broad PowerShell search:
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-07.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 7</em>
+</p>
 
-```spl
-index=main ("powershell.exe" OR "PowerShell" OR "EncodedCommand")
+---
+
+### Step 6 – Checking Whether the Backdoor Account Was Ever Used
+
+After confirming the account was created remotely, I wanted to see whether the attacker attempted to authenticate using this new identity. 
+
+I searched for any authentication or logon events referencing the username:
+
+```
+index=main A1berto
 ```
 
-From there, I looked at fields such as `host`, `ComputerName`, or `Hostname` to see which system(s) were generating suspicious PowerShell activity. One host clearly stood out with commands that didn’t look like normal admin or maintenance work, which allowed me to identify the primary infected machine responsible for executing the malicious PowerShell.
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-08.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 8</em>
+</p>
 
-### Step 8 – Count the Malicious PowerShell Events
+Once I confirmed how the backdoor account was created, I wanted to see whether the attacker actually logged in with it. I started by filtering for events tied to the username and then looked at the `Category` field to get a quick sense of what types of actions were associated with it. If the account had been used interactively, I would expect to see something tied to `Logon/Logoff` or `Account Management`. Instead, nothing in the `Category` field indicated any authentication activity.
 
-To better quantify the activity, I counted the number of PowerShell events tied to the malicious behavior. This could involve filtering on certain command-line patterns, encoded commands, or specific event IDs associated with PowerShell logging (for example, PowerShell Operational logs).
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-09.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 9</em>
+</p>
 
-For example:
+To double-check, I looked at the `EventID` field as well, since Windows uses specific IDs for login attempts, `4624` for successful logons and `4625` for failed ones. Neither of these appeared for the backdoor username. The absence of these event IDs confirmed what the `Category` field was already hinting that the new account was created successfully, but it was never used for any actual login attempt during the timeframe captured in the dataset.
 
-```spl
-index=main ("powershell.exe" OR "EncodedCommand") host=infected_host_here
-| stats count
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-09.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 10</em>
+</p>
+
+This told me the account was likely staged for future access or intended as a fallback rather than used immediately.
+---
+
+### Step 7 – Identifying Which Host Ran the Suspicious PowerShell
+
+Next, I pivoted into PowerShell activity to understand how the attacker continued interacting with the environment. Attackers frequently use encoded PowerShell commands to download payloads or run scripts in memory.
+
+To identify the affected host, I searched for PowerShell-related logs:
+
+```
+index=main PowerShell
 ```
 
-The result showed how many events belonged to that particular malicious execution sequence. This is useful for the final report when describing how “noisy” or “quiet” the attacker was in the logs.
+Only a single hostname consistently appeared in the results: **James.browne**.
 
-### Step 9 – Extract the Full URL from the Encoded PowerShell Command
+This made it clear that the malicious PowerShell activity originated entirely from that machine. That host instantly became the centerpiece of the remaining analysis.
 
-Finally, I wanted to know exactly where the encoded PowerShell script was calling out to. Many PowerShell payloads use Base64-encoded commands with `-EncodedCommand` to hide their behavior at a quick glance.
+---
 
-I focused on events where the command line contained `-EncodedCommand`:
+### Step 8 – Measuring the Extent of Malicious PowerShell Execution
 
-```spl
-index=main "EncodedCommand" host=infected_host_here
+Once I identified the infected host, I wanted to measure how noisy the malicious PowerShell execution was. I focused on Event ID 4103, which logs PowerShell engine activity:
+
+```
+index=main EventID=4103
 ```
 
-After identifying the relevant event, I copied the encoded blob from the command line and decoded it outside of Splunk (for example, using a simple Base64 decode in a separate tool or script).
+Splunk returned **79 events**, all tied to the malicious encoded payload activity. This quantity suggested either repeated execution or a script that generated multiple engine events as it unpacked or processed its instructions.
 
-The decoded PowerShell revealed a `Invoke-WebRequest` (or similar) call that contacted a specific URL. This URL is the one I documented as the final answer, since it shows the remote resource the payload was trying to reach — likely a staging server, C2 endpoint, or malware hosting page.
+Understanding this volume helped me contextualize how active the malicious script was and how visible it would be to defenders with adequate logging enabled.
+
+---
+
+### Step 9 – Decoding the Encoded PowerShell Payload and Extracting the URL
+
+Finally, I wanted to uncover what the encoded script was trying to do. The presence of `-EncodedCommand` made it clear the attacker encoded their payload in Base64.
+
+I filtered specifically for encoded commands:
+
+```
+index=main PowerShell
+```
+
+Inside one of the events, I found the Base64 blob used by the attacker. I extracted it and decoded it using CyberChef’s **From Base64** and **Decode Text** operations.
+
+The decoded output revealed the full URL the script attempted to reach:
+
+**hxxp://10.10.10.5/news.php**
+
+Defanging the URL showed it was likely meant as an outbound callback or staging point — possibly a place to fetch additional payloads or send system data.
+
+With that, the PowerShell portion of the investigation came full circle: I understood which host executed the script, how many events it generated, and the exact remote endpoint it was trying to contact.
 
 </details>
+
 
 ---
 
