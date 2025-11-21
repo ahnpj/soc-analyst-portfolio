@@ -37,7 +37,7 @@ The main objective of this lab was to investigate a suspected Windows host compr
 
 <summary><b>(Click to expand)</b></summary> </br>
 
-After initializing the environment, I observed that it launched multiple virtual machines (VMs) that worked together throughout the investigation. The primary system I operated from was an AttackBox VM, which was assigned the internal IP `10.201.84.11`. This served as my main workstation for interacting with the environment, running queries, and accessing the logging interface.
+After initializing the environment, I observed that it launched multiple virtual machines (VMs) that worked together throughout the investigation. The primary system I operated from was an AttackBox VM, which was assigned the internal IP `10.201.84.11` and `10.201.85.188`. This served as my main workstation for interacting with the environment, running queries, and accessing the logging interface.
 
 I also identified that the Splunk server was hosted on a separate VM accessible at `10.201.83.141`. I entered this address in the browser to reach the Splunk web interface and begin reviewing the event data. The Windows VM responsible for generating the logs functioned as an isolated host in the background, forwarding its Windows event logs directly into the main index in Splunk. There was no requirement to access that VM directly.
 
