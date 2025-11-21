@@ -38,7 +38,7 @@ Simulate web attack enumeration (404 spikes, admin path scans) and write a Pytho
 
 ## Creating the Apache Log
 
-I started with a small Apache web server log. My goal was to see how attackers probe web servers for weak points by hitting URLs like /wp-login.php or /phpmyadmin. To simulate this, I created my own short log file containing a mix of normal and suspicious requests.
+I started with a small Apache web server log. My goal was to see how attackers probe web servers for weak points by hitting URLs like `/wp-login.php` or `/phpmyadmin`. To simulate this, I created my own short log file containing a mix of normal and suspicious requests.
 
 ```bash
 cat << 'EOF' > apache_access.log
@@ -49,6 +49,13 @@ cat << 'EOF' > apache_access.log
 198.51.100.5 - - [20/Nov/2025:10:02:00 +0000] "GET /login HTTP/1.1" 200 512 "-" "Mozilla/5.0"
 EOF
 ```
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-01.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 1</em>
+</p>
 
 ## Python Parser (parser_apache.py)
 
@@ -90,6 +97,40 @@ print("\nIPs with 404s (possible scanning):")
 for ip, count in errors_404.items():
     print(f"{ip}: {count} x 404")
 ```
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-02.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 2</em>
+</p>
+
+## Running the Python Parser (parser_apache.py)
+
+I ran the parser with the command: `python3 parser.apache.py`.
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-03.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 3</em>
+</p>
+
+The result:
+
+- IP **203.0.113.10** repeatedly attempted invalid admin paths.
+- Multiple 404 errors indicate enumeration/scanning behavior.
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-04.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 4</em>
+</p>
+
+<blockquote>
+When I tried running the script, the terminal said the file didn’t exist. After checking the directory, I realized the issue was a filename mismatch,  the actual file was named "parser.apache.py", but I was trying to run "parser_apache.py". Updating the command to use the correct filename resolved the error. This was a quick reminder to always verify paths and filenames when troubleshooting.
+</blockquote>
 
 ## Findings
 
