@@ -105,6 +105,19 @@ for ip, count in errors_404.items():
   <em>Figure 2</em>
 </p>
 
+**Thought Process Behind the Apache Log Parser**:
+
+- Importing modules (`import re`, `from collections import Counter`): I began by importing the re module because I knew I’d need a regular expression to reliably extract IP addresses from log lines. I also imported `Counter` since counting IP occurrences manually would be more work, and Counter provides a clean, built-in way to tally request frequency.
+- Defining the log file (`log_file = "apache_access.log"`): I explicitly set the file name up front so the script is easy to modify later and all file handling points to a single variable.
+- Creating the regex pattern (`ip_pattern = re.compile(r"(\d{1,3}\.){3}\d{1,3}")`): My next step was writing a regex to capture standard IPv4 addresses. I used a repeated group `(\d{1,3}\.){3}` followed by `\d{1,3}` to match the common format of four numerical octets separated by dots.
+- Preparing storage structures (`ips = [], errors_404 = {}`): I created an ips list to store every IP address I extract so I can count total requests later. I also created `errors_404` as a dictionary so I can associate each IP with how many 404 errors they caused—useful for spotting scanning behavior.
+- Reading the file and iterating line-by-line (`with open(log_file) as f:`): I opened the log file in a context manager to ensure safe and clean reading. Looping through the file line by line keeps memory usage low, which is ideal for large log files.
+- Finding and extracting an IP (`m = ip_pattern.search(line)`) - For each line, I used the compiled regex to search for an IP. If no IP was found, I skipped that line using continue. If found, I extracted the value using `m.group()` and appended it to the ips list.
+- Identifying 404 responses (`if " 404 " in line:`) - After grabbing the IP, I checked for `404` in the current log line. My reasoning was that repeated `404` responses from the same IP could indicate reconnaissance or path brute-forcing. When a `404` was found, I incremented the count for that IP in the `errors_404` dictionary.
+- Printing request counts (`Counter(ips).most_common()`): After processing the log, I used `Counter` to rank IPs by the volume of requests. Using `.most_common()` automatically sorts them in descending order, giving a clear picture of the most active clients.
+- Printing 404 summaries (`for ip, count in errors_404.items():`)
+Finally, I displayed which IPs generated the most 404s. This creates a simple but effective way to highlight potentially suspicious activity.
+
 ## Running the Python Parser (parser_apache.py)
 
 I ran the parser with the command: `python3 parser.apache.py`.
@@ -207,6 +220,24 @@ for ip, count in Counter(fail_ips).most_common():
   <em>Figure 6</em>
 </p>
 
+**Thought Process Behind the Auth Log Parser**:
+
+- Importing tools (`import re`, `from collections import Counter`): I started by importing two tools Python provides. One helps me find patterns in text (like IP addresses), and the other helps me count how many times something appears.
+  
+- Choosing the log file (`log_file = "auth.log"`): I set the script to read from the auth.log file, which is where Linux stores information about login attempts.
+  
+- Creating the pattern to detect failed logins: I wrote a pattern (`fail_pattern = re.compile(...)`) that looks for the phrase “Failed password” followed by an IP address. This lets the script automatically detect when someone tried and failed to log in.
+  
+- Preparing a list to store IPs (`fail_ips = []`): I made an empty list where I could collect all the IP addresses that failed to log in.
+
+- Reading the log file line by line: I opened the log file and looked at each line individually. This makes it easy to scan for failed logins without loading the whole file at once.
+  
+- Checking each line for a failed login attempt: For every line, I asked Python to look for the pattern. If it found one (meaning the line contained a failed login), I extracted the IP address and added it to the list.
+  
+- Counting failures (`Counter(fail_ips)`): After collecting all the IPs, I used the counting tool to figure out how many times each IP tried and failed to log in.
+  
+- Showing the results: Finally, I printed the results in order from most failures to least. This helps quickly spot which IP addresses might be attacking or probing the system.
+
 I ran the parser with the command: `python3 parser_auth.py`.
 
 <p align="left">
@@ -304,6 +335,25 @@ for (user, ip), count in fail_counts.most_common():
        width="1000"><br>
   <em>Figure 10</em>
 </p>
+
+**Thought Process Behind the Windows 4625 Failed Logon Parser**
+
+- Importing tools (`import csv`, `from collections import Counter`): I started by importing `csv` so the script can read rows from a CSV file easily, and `Counter` so I could count repeated items without writing extra code.
+
+- Setting up the counter (`fail_counts = Counter()`): I created a Counter object to keep track of how many failed logons each user/IP combination had.
+
+- Opening the CSV (`with open("windows_events.csv") as f:`): I opened the Windows event log CSV file. This file contains rows of Windows Event IDs, usernames, IP addresses, and status codes.
+
+- Using `DictReader` to read each row: I used `csv.DictReader(f)` so each row is read as a dictionary. This makes it easy to reference columns by name (like `row["EventID"]`).
+
+- Checking for failed logins (`if row["EventID"] == "4625":`): Event ID **4625** represents a failed Windows logon attempt. I filtered the rows so the script only analyzes failed logins and ignores successful ones.
+
+- Grouping failures by user and IP: I created a key made of the username and IP address: `(row["AccountName"], row["IpAddress"])`. This let me track how many times each user/IP pair failed to log in.
+
+- Updating the count (`fail_counts[key] += 1`): Every time the same user from the same IP failed again, the counter increased.
+
+- Printing the results: After processing the file, I printed each user/IP pair and the number of failed attempts. This creates a simple way to see which accounts or IPs might be suspicious or repeatedly failing authentication.
+
 
 I ran the parser with the command: `python3 parser_windows.py`.
 
@@ -428,6 +478,22 @@ for e in events:
        width="1000"><br>
   <em>Figure 14</em>
 </p>
+
+**Thought Process Behind the CloudTrail Log Parser**
+
+- Importing tools (`import json`, `from collections import defaultdict`): I imported `json` so the script can read CloudTrail logs stored in JSON format, and `defaultdict` so I can easily group actions by user without checking if keys already exist.
+
+- Loading the CloudTrail log file: I opened `cloudtrail.json` and used `json.load(f)` to turn the JSON file into a Python list of event records that I can loop through.
+
+- Preparing a structure to group actions by user (`actions_by_user = defaultdict(list)`): I created a dictionary where each username automatically starts with an empty list. This allows me to store every action each user performed.
+
+- Defining what I consider "risky" (`risky = {...}`): I created a small set of actions—like `AttachUserPolicy`, `DeleteTrail`, and `PutUserPolicy`—that could represent privilege escalation or tampering with logging.
+
+- Looping through every event: For each event in the CloudTrail data, I pulled the username from `userIdentity.userName`. If the field was missing, I used `"UNKNOWN"` as a safe fallback. Then I added the event’s action name (`eventName`) to that user’s list.
+
+- Printing normal user activity: After grouping everything, I printed each user along with a list of all the actions they performed. This gives a simple overview of account behavior.
+
+- Detecting risky actions: I looped through the events again and checked if the event’s action name was in my “risky” set. If it was, I printed which user performed the action and from which IP address. This highlights potentially suspicious activity without needing complex analysis.
 
 
 I ran the parser with the command: `python3 parser_cloudtrail.py`.
