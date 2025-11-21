@@ -359,12 +359,11 @@ Windows logs become manageable when exported to CSV and filtered by Event ID. CS
 ## Objective
 For the final lab, I explored AWS CloudTrail logs, which record IAM activity. I wanted to parse AWS CloudTrail logs for suspicious IAM actions like policy changes or trail deletion.
 
-## Creating the CloudTrail JSON
+## Creating the CloudTrail JSON (cloudtrail.json)
 
-Instead of using real logs, I created a small JSON array with actions like AttachUserPolicy and DeleteTrail—both of which could indicate risky or unauthorized changes.
+Instead of using real logs, I created a small JSON array with actions like `AttachUserPolicy` and `DeleteTrail`, both of which could indicate risky or unauthorized changes.
 
 ```bash
-cat << 'EOF' > cloudtrail.json
 [
   {
     "eventName": "AttachUserPolicy",
@@ -382,8 +381,14 @@ cat << 'EOF' > cloudtrail.json
     "sourceIPAddress": "198.51.100.200"
   }
 ]
-EOF
 ```
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-13.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 13</em>
+</p>
 
 ## Python Parser (parser_cloudtrail.py)
 
@@ -417,9 +422,42 @@ for e in events:
         print(f"{user} did {e['eventName']} from {e['sourceIPAddress']}")
 ```
 
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-14.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 14</em>
+</p>
+
+
+I ran the parser with the command: `python3 parser_cloudtrail.py`.
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-15.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 15</em>
+</p>
+
+The result:
+
+- alice performed a privileged action: **AttachUserPolicy**
+- bob executed **DeleteTrail**, which is highly suspicious.
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-16.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 16</em>
+</p>
+
+<blockquote>
+When I tried running the script, the terminal said the file didn’t exist. After checking the directory, I realized the issue was a filename mismatch, the actual file was named "parser.cloudtrail.py", but I was trying to run "parser_cloudtrail.py". Updating the command to use the correct filename resolved the error. This was a quick reminder to always verify paths and filenames when troubleshooting.
+</blockquote>
+
 ## Findings
 
-This made it immediately clear which users were performing suspicious operations. CloudTrail logs are verbose, but Python handles JSON cleanly, making it straightforward to surface risky behavior.
+The CloudTrail log analysis revealed a clear breakdown of user activity across the environment. The user alice performed two actions, `AttachUserPolicy` and `ListBuckets`, both originating from the same IP address (`203.0.113.90`), while bob executed a `DeleteTrail` action from a different external IP (`198.51.100.200`). When flagging potentially risky behavior, the parser highlighted that alice attaching a user policy and bob deleting a trail were notable events because both actions can impact security visibility and permissions. These findings show that the script successfully identified user-level activity and surfaced actions that could represent privilege changes or attempts to modify logging, making them important for further review.
 
 - alice performed a privileged action: **AttachUserPolicy**
 - bob executed **DeleteTrail**, which is highly suspicious.
