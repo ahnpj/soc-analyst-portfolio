@@ -3,34 +3,6 @@
 This repository contains a collection of hands-on cybersecurity labs I’ve built to practice **SIEM analysis, network traffic investigation, scanning/recon, and playbook documentation**.  
 Each lab is designed to **increase in complexity and depth as the lab number goes up**. For example, `Lab01` focuses on introductory concepts, while `Lab02` and higher require more advanced investigation, correlation, and analysis skills.
 
-<details>
-<summary><strong>📂 Repository Structure</strong></summary>
-
-```text
-labs/
-  siem/
-    siem-basics/
-      Lab01-suspicious-process-investigation/
-    splunk/
-      Lab01-splunk-vpn-log-analysis/
-      Lab02-splunk-data-manipulation/
-      Lab03-splunk-cyber-kill-chain-investigation/
-  end-point-triage/
-    powershell/
-      Lab01-powershell-endpoint-triage-basics
-    windows-cli
-      Lab01-windows-cli-endpoint-triage-basics
-  network-analysis/
-    tcpdump/
-      Lab01-tcpdump-packet-capture-and-filtering
-    wireshark/
-      Lab01-wireshark-packet-analysis-and-filtering
-  active-directory/
-    Lab01-active-directory-domain-structure
-  playbooks/
-```
-</details>
-
 ---
 
 
@@ -89,6 +61,32 @@ Currently includes:
 
 </details>
 
+<details>
+<summary><b>Shell Scripting</b></summary>
+
+> <details>
+> <summary>Linux and Scripting</summary>
+>
+> - <a href="labs/shell-and-scripting/linux-shell-and-scripting/Lab01-linux-bash-usage-and-scripting/Lab01-linux-bash-usage-and-scripting.md">Lab01 – Linux Shells and Scripting</a><br/>
+>   <em>Level: Beginner</em> → Building Bash scripts that apply variables, user input, conditional logic, and iterative loops to automate decision-making and repetitive tasks in a Linux environment.
+>
+> </details>
+
+</details>
+
+
+<details>
+<summary><b>Log Analysis & Scripting</b></summary>
+
+> <details>
+> <summary>Python Log Parsing & Security Analysis</summary>
+>
+> - <a href="labs/log-analysis/Lab01-python-log-parsing-and-security-analysis/Lab01-python-log-parsing-and-security-analysis.md">Lab01 – Python Log Parsing & Security Analysis</a><br/>
+>   <em>Level: Beginner</em> → This lab demonstrates how to use Python to parse and analyze Apache, SSH, Windows, and CloudTrail logs, extracting meaningful security insights from raw event data. It highlights how scripting can automate detection of suspicious behavior, failed logins, scanning activity, and risky cloud actions.
+>
+> </details>
+
+</details>
 
 
 <details>
@@ -111,6 +109,7 @@ Currently includes:
 > </details>
 
 </details>
+
 
 <details>
 <summary><b>Active Directory</b></summary>
