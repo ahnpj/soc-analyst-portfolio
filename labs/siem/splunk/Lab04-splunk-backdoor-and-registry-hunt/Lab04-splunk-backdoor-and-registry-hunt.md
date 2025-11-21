@@ -338,23 +338,70 @@ Understanding this volume helped me contextualize how active the malicious scrip
 
 ### Step 9 – Decoding the Encoded PowerShell Payload and Extracting the URL
 
-Finally, I wanted to uncover what the encoded script was trying to do. The presence of `-EncodedCommand` made it clear the attacker encoded their payload in Base64.
-
-I filtered specifically for encoded commands:
+After identifying `James.browne` as the host running suspicious PowerShell, I wanted to know exactly where the script was calling out to. I focused on PowerShell logging for that host and looked at events from the PowerShell channel (such as EventID 800 – pipeline execution details). 
 
 ```
 index=main PowerShell
 ```
 
-Inside one of the events, I found the Base64 blob used by the attacker. I extracted it and decoded it using CyberChef’s **From Base64** and **Decode Text** operations.
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-14.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 14</em>
+</p>
 
-The decoded output revealed the full URL the script attempted to reach:
+When I pulled up the PowerShell events for `James.browne`, one detail immediately caught my eye: the `HostApplication` field contained a very long, uninterrupted block of characters right after the `-enc` flag. PowerShell only uses `-enc` when it’s executing a Base64-encoded script, so seeing a huge encoded blob like that is a strong indicator that the attacker was hiding the real command. 
 
-**hxxp://10.10.10.5/news.php**
+These events showed the pipeline context and the parameter values passed into the script. In the Details section, I noticed several paths being used as input, including `/admin/get.php`, `/news.php`, and `/login/process.php`.
 
-Defanging the URL showed it was likely meant as an outbound callback or staging point — possibly a place to fetch additional payloads or send system data.
+To understand what the attacker’s PowerShell command was actually doing, I took the long Base64 string I copied earlier from the `-enc` portion of the PowerShell event and pasted it into CyberChef. 
 
-With that, the PowerShell portion of the investigation came full circle: I understood which host executed the script, how many events it generated, and the exact remote endpoint it was trying to contact.
+<blockquote>
+CyberChef is useful here because it lets me quickly decode encoded payloads without running anything on the host itself. Since attackers often hide their real commands inside Base64, this step lets me peel back the obfuscation safely.
+</blockquote>
+
+For my recipe, I used “From Base64” followed by “Decode text (UTF-16LE)”. PowerShell typically encodes its commands in UTF-16LE before Base64 encoding them, so this decoding chain matches the way PowerShell constructs its encoded payloads. Using anything else would result in unreadable output. Once the first layer decoded, I noticed something immediately: the output still wasn’t the final script. Instead, buried inside the decoded text was another large Base64 block (the part I highlighted in yellow). Attackers do this on purpose, double-encoding adds another layer of obfuscation and makes detection more difficult.
+
+During decoding, I noticed that the first layer of Base64 revealed several possible PHP file paths that the script could use (`/admin/get.php`, `/news.php`, `/login/process.php`). After decoding the second Base64 block, the script resolved to a specific one, `news.php`. So the “different php file” simply refered to the fact that the second layer revealed the actual file the attacker’s payload contacted.
+
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-15.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 15</em>
+</p>
+
+So I copied that second Base64 blob, cleared the input, and ran it through the same recipe again. This finally produced the fully decoded PowerShell payload, including the outbound web request the infected host was making.
+
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-16.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 16</em>
+</p>
+
+This decode immediately revealed the attacker’s callback destination, a plain-text URL pointing to `http://10.10.10.5`. Since earlier decoded script fragments already referenced specific PHP endpoints (such as `/admin/get.php`, `/news.php`, and `/login/process.php`), this step confirmed the actual host the infected machine was attempting to reach. 
+
+During the first layer of decoding, the PowerShell script showed several possible PHP file paths (`/admin/get.php`, `/news.php`, `/login/process.php`). These appeared as part of the script’s internal logic, not as final choices. Once I decoded the second Base64 layer, the actual payload that got executed, and the script clearly resolved to a single endpoint: `news.php`.
+
+This indicates that `news.php` is the specific file the attacker’s script chose to contact during execution, even though multiple paths existed in the earlier decoding stage.
+
+Once I fully decoded the attacker’s PowerShell script, I finally got the real URL it was trying to reach: `http://10.10.10.5/news.php`
+
+Before adding this to my notes, I wanted to make it safe to share. If I put a live malicious URL in a report, someone could accidentally click it. To avoid that, I used CyberChef’s Defang URL option. Defanging here to change the URL so it can’t be clicked or used directly, while still showing what it is. This way, the URL is harmless in documentation, but still readable if someone needs to re-create it for analysis later.
+ After running it through the defang recipe (escaping dots and the “http” part), the output became:
+
+`hxxp[://]10[.]10[.]10[.]5/news[.]php`
+
+This confirmed the final destination of the malicious PowerShell command.
+
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-17.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 17</em>
+</p>
 
 </details>
 
