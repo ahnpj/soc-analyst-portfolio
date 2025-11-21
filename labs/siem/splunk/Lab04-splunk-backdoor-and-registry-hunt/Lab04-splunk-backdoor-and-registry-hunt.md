@@ -37,7 +37,15 @@ The main objective of this lab was to investigate a suspected Windows host compr
 
 <summary><b>(Click to expand)</b></summary> </br>
 
-For this investigation, I deployed a temporary and provisioned virtual machine (VM) provided by the environment. Once it initialized, the VM was assigned the private IP address (`10.201.74.23`), which I used to connect from my analysis workstation. The IP address is ephemeral, meaning it changes each time the VM is stopped or redeployed. Because of that, I made sure to record the active IP before proceeding with the investigation. After the system fully booted, its Windows event logs were automatically ingested into the main index in Splunk. Using an isolated, short-lived VM provided a safe and controlled setup to review host activity, confirm log ingestion, and analyze potential anomalies without affecting any production systems.
+After initializing the environment, I observed that it launched multiple virtual machines (VMs) that worked together throughout the investigation. The primary system I operated from was an AttackBox VM, which was assigned the internal IP `10.201.84.11`. This served as my main workstation for interacting with the environment, running queries, and accessing the logging interface.
+
+I also identified that the Splunk server was hosted on a separate VM accessible at `10.201.83.141`. I entered this address in the browser to reach the Splunk web interface and begin reviewing the event data. The Windows VM responsible for generating the logs functioned as an isolated host in the background, forwarding its Windows event logs directly into the main index in Splunk. There was no requirement to access that VM directly.
+
+I noted that all of these internal IP addresses were ephemeral. Whenever the environment restarted or refreshed, each VM received a new internal address. Because of this behavior, I made sure to verify the active IPs before starting any log analysis to ensure I was connecting to the correct systems.
+
+<blockquote>
+When I first accessed the Splunk interface and ran a basic search against the "main" index, I noticed that event data was already present. This is expected based on how the environment is structured. The Windows VM operating in the background is configured to automatically forward its event logs into Splunk as soon as the environment becomes active. Because of that, the ingestion pipeline is already running by the time I begin my analysis, and the main index contains a baseline of system activity, service events, and any simulated malicious behavior that occurred on the host. This pre-ingested data allowed me to start reviewing events immediately without having to manually trigger log generation or configure forwarding on my own.
+</blockquote>
 
 - **Platform:** Splunk Enterprise (web interface)
 - **Data Source:** Pre-ingested Windows event logs (Security, Sysmon/registry, and PowerShell logging)
@@ -83,6 +91,22 @@ index=main
 
 This simple query returns a single row with a `count` field. That count tells me how many events I’m working with overall in this investigation. It also reassures me that events are actually present and that I’m querying the correct index.
 
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-01.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 1</em>
+</p>
+
+Alternatively, I could simply run `index=main` and check the event count displayed next to the Events label in the Events tab.
+
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-02.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 2</em>
+</p>
+
 ### Step 2 – Look for Evidence of a New User (Backdoor Account)
 
 Since I suspected that the attacker created a backdoor user, I looked for account-creation events and system commands related to `net user` or similar activity.
@@ -93,15 +117,47 @@ A simple starting point was to search for `net user` in command-line fields:
 index=main ("net user" OR "net user /add")
 ```
 
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-03.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 3</em>
+</p>
+
+**(Step 2-a)** 
+
 From here, I examined the raw events and noticed a suspicious command that added a new local user. The command clearly indicated the username used for the backdoor account and included a password, which is a strong indicator of malicious activity when done outside of standard provisioning workflows.
+
+This immediately returned several events from different logging sources. To understand the context of the execution, I focused on the raw event details rather than the extracted fields. Each event included a `CommandLine` field that contained the exact command executed on the host. Across all returned events, I consistently observed the following command: `net user /add Alberto paw0rd1`
+
+The presence of this command in multiple logs indicated that the system recorded the action through several telemetry channels. Specifically, I saw entries with `Event ID 1`, `Event ID 4688`, and `Event ID 800`, each capturing the process execution from a different perspective:
+
+- `Event ID 4688` (Windows Security – Process Creation): This event provided the most authoritative confirmation. It recorded the creation of a new process and included the full command line responsible for executing net.exe with the /add parameters. The inclusion of the username and password in clear text strongly suggested unauthorized activity.
+
+- `Event ID 1` (Sysmon Process Creation): This log reinforced the security event by capturing the same command execution with additional metadata, such as the parent process and hash information. Although the hash was not critical for this step, the repeated appearance of the same command across multiple sources added confidence to the finding.
+
+- `Event ID 800` (PowerShell or Script Execution Engine): While not directly tied to PowerShell script content, this event showed that the system also logged the activity at the script/engine level. It further confirmed that the system detected the process creation event through multiple behavioral channels.
+
+I also noted recurring Process IDs (PIDs) associated with these events. Although the PIDs differed between events, which is expected when multiple logs capture the same action, they each referenced the same underlying execution of `net.exe`. The repeated appearance of this command across logs and process IDs indicated that the attacker executed a standard Windows utility to create a new local account.
+
+Based on the combination of: the `/add` flag, the presence of a `cleartext password`, and the fact that no legitimate provisioning workflow should involve manual net user commands, I identified this as a backdoor account creation performed by the adversary. The repeated corroboration across multiple event channels provided a reliable chain of evidence confirming the malicious activity.
+
+**(Step 2-b)** 
 
 In addition to command-line logs, I could also pivot into Windows Security events (for example, account creation events such as Event ID 4720) using a search like:
 
 ```spl
-index=main EventCode=4720
+index=main EventID=4720
 ```
 
-Reviewing those events confirmed the new user account and helped answer the question of which username was introduced as the backdoor.
+<p align="left">
+  <img src="images/lab04-splunk-backdoor-and-registry-investigation-04.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="800"><br>
+  <em>Figure 4</em>
+</p>
+
+Reviewing those events confirmed the new user account and helped answer the question of which username was introduced as the backdoor. On one of the infected hosts, the adversary was successful in creating a backdoor user, `A1berto`.
 
 ### Step 3 – Trace Registry Modifications for the Backdoor User
 
