@@ -283,6 +283,7 @@ To double-check, I looked at the `EventID` field as well, since Windows uses spe
 </p>
 
 This told me the account was likely staged for future access or intended as a fallback rather than used immediately.
+
 ---
 
 ### Step 7 – Identifying Which Host Ran the Suspicious PowerShell
