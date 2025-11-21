@@ -63,15 +63,28 @@ Currently includes:
 
 </details>
 
-
 <details>
-<summary><b>Scripting</b></summary>
+<summary><b>Shell Scripting</b></summary>
 
 > <details>
 > <summary>Linux and Scripting</summary>
 >
 > - <a href="labs/shell-and-scripting/linux-shell-and-scripting/Lab01-linux-bash-usage-and-scripting/Lab01-linux-bash-usage-and-scripting.md">Lab01 – Linux Shells and Scripting</a><br/>
 >   <em>Level: Beginner</em> → Building Bash scripts that apply variables, user input, conditional logic, and iterative loops to automate decision-making and repetitive tasks in a Linux environment.
+>
+> </details>
+
+</details>
+
+
+<details>
+<summary><b>Log Analysis & Scripting</b></summary>
+
+> <details>
+> <summary>Python Log Parsing & Security Analysis</summary>
+>
+> - <a href="labs/log-analysis/Lab01-python-log-parsing-and-security-analysis/Lab01-python-log-parsing-and-security-analysis.md">Lab01 – Python Log Parsing & Security Analysis</a><br/>
+>   <em>Level: Beginner</em> → This lab demonstrates how to use Python to parse and analyze Apache, SSH, Windows, and CloudTrail logs, extracting meaningful security insights from raw event data. It highlights how scripting can automate detection of suspicious behavior, failed logins, scanning activity, and risky cloud actions.
 >
 > </details>
 
