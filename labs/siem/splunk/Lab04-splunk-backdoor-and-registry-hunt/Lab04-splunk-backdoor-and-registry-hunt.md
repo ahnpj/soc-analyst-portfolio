@@ -37,6 +37,8 @@ The main objective of this lab was to investigate a suspected Windows host compr
 
 <summary><b>(Click to expand)</b></summary> </br>
 
+For this investigation, I deployed a temporary and provisioned virtual machine (VM) provided by the environment. Once it initialized, the VM was assigned the private IP address (`10.201.74.23`), which I used to connect from my analysis workstation. The IP address is ephemeral, meaning it changes each time the VM is stopped or redeployed. Because of that, I made sure to record the active IP before proceeding with the investigation. After the system fully booted, its Windows event logs were automatically ingested into the main index in Splunk. Using an isolated, short-lived VM provided a safe and controlled setup to review host activity, confirm log ingestion, and analyze potential anomalies without affecting any production systems.
+
 - **Platform:** Splunk Enterprise (web interface)
 - **Data Source:** Pre-ingested Windows event logs (Security, Sysmon/registry, and PowerShell logging)
 - **Index Used:** `main`
