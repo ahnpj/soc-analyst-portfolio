@@ -156,7 +156,7 @@ Apache logs follow predictable patterns. Even small logs reveal attacker behavio
 ## Objective
 Detect repeated failed SSH login attempts, which mimic brute-force attacks.
 
-## Creating the Auth Log
+## Creating the Auth Log (auth.log)
 
 Next, I moved on to Linux auth logs (`auth.log`). To simulate this, I created my own short log file containing SSH login events, which are commonly brute-forced. I generated a few lines manually—some failed attempts against fake users (admin, root), and one legitimate login.
 
@@ -168,6 +168,13 @@ Nov 20 10:10:05 server sshd[1001]: Failed password for invalid user root from 20
 Nov 20 10:11:00 server sshd[1002]: Accepted password for peter from 198.51.100.77 port 50000 ssh2
 EOF
 ```
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-05.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 5</em>
+</p>
 
 ## Python Parser (parser_auth.py)
 
@@ -193,6 +200,34 @@ for ip, count in Counter(fail_ips).most_common():
     print(f"{ip}: {count} failed attempts")
 ```
 
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-06.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 6</em>
+</p>
+
+I ran the parser with the command: `python3 parser_auth.py`.
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-07.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 7</em>
+</p>
+
+The result:
+
+- The attacker IP **203.0.113.50** attempted 3 logins across 2 fake users (admin & root).
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-08.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 8</em>
+</p>
+
+
 ## Findings
 
 This quickly highlighted one IP making multiple failed attempts. Even though the dataset was small, the logic mirrors real brute-force detection: consistent login failures from the same IP over a short time window.
@@ -217,7 +252,7 @@ Auth logs are verbose but uniform. Regex makes parsing attacker IPs straightforw
 ## Objective
 Identify repeated Event ID **4625** (Failed Logon) across users and IPs.
 
-## Creating the Windows Event CSV
+## Creating the Windows Event CSV (windows_events.csv)
 
 I wanted to simulate a typical SOC workflow where Windows Event Logs are exported into CSV for easier analysis. I created a small CSV file containing Event IDs, usernames, IP addresses, and statuses.
 
@@ -230,6 +265,13 @@ EventID,AccountName,IpAddress,Status
 4624,peter,10.0.0.5,SUCCESS
 EOF
 ```
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-09.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 9</em>
+</p>
 
 ## Python Parser (parser_windows.py)
 
@@ -255,6 +297,44 @@ print("Windows 4625 failed logons:")
 for (user, ip), count in fail_counts.most_common():
     print(f"{user} from {ip}: {count} failures")
 ```
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-10.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 10</em>
+</p>
+
+I ran the parser with the command: `python3 parser_windows.py`.
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-11.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 11</em>
+</p>
+
+The result:
+
+When parsing the Windows event CSV, the script correctly filtered for failed authentication attempts by looking specifically for `Event ID 4625`, which represents failed logon events. As a result, only the accounts associated with failed logons appeared in the output: `admin` (with two failures from `203.0.113.80`) and `testuser` (one failure from `198.51.100.10`). The account `peter` did not appear because his entry corresponded to `Event ID 4624`, which indicates a successful authentication and therefore did not meet the fail-only filter. This confirmed that the script was accurately identifying and counting failed logon attempts while excluding normal or successful logons.
+
+- 1 admin account from **203.0.113.80** had multiple failures.
+- 1 testuser account from **198.51.100.10** had 2 failure.
+
+<p align="left">
+  <img src="images/lab01-python-log-parsing-and-security-analysis-12.png?raw=true&v=2" 
+       style="border: 2px solid #444; border-radius: 6px;" 
+       width="1000"><br>
+  <em>Figure 12</em>
+</p>
+
+<blockquote>
+When I first ran the Windows 4625 parser, the script threw a KeyError for "EventID", which made me stop and check the CSV more closely. I realized the file still contained the heredoc wrapper lines (cat << 'EOF' and EOF) at the top and bottom, which caused Python’s DictReader to treat the heredoc text as the actual header instead of the real CSV column names. Because of that, the "EventID" field didn’t exist from the script’s perspective, and the parser failed. 
+</blockquote>
+
+<blockquote>
+After removing those extra heredoc lines so that the file began directly with the correct header row (EventID,AccountName,IpAddress,Status), the script parsed the data correctly and produced the expected 4625 failed-logon results.
+</blockquote>
 
 ## Findings
 
