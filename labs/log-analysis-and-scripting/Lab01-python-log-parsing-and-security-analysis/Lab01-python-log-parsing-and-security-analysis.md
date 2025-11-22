@@ -58,7 +58,7 @@ EOF
 </p>
 
 <p align="left">
-  <a href="images/lab01-python-log-parsing-and-security-analysis-01.png" target="_blank">
+  <a href="https://raw.githubusercontent.com/yourname/yourrepo/branch/images/lab01-python-log-parsing-and-security-analysis-01.png" target="_blank">
     <img src="images/lab01-python-log-parsing-and-security-analysis-01.png?raw=true&v=2" 
          style="border: 2px solid #444; border-radius: 6px;" 
          width="1000">
