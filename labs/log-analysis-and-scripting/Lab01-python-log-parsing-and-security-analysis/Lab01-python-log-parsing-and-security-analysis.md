@@ -51,7 +51,7 @@ EOF
 ```
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-01.png" 
+  <img src="images/lab01-python-log-parsing-and-security-analysis-01.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 1</em>
