@@ -57,16 +57,6 @@ EOF
   <em>Figure 1</em>
 </p>
 
-
-<p align="left">
-  <a href="images/lab01-python-log-parsing-and-security-analysis-01.png?raw=true&v=2" target="_blank">
-    <img src="images/lab01-python-log-parsing-and-security-analysis-01.png?raw=true&v=2"
-         style="border: 2px solid #444; border-radius: 6px;"
-         width="1000">
-  </a><br>
-  <em>Figure 1</em>
-</p>
-
 ## Python Parser (parser_apache.py)
 
 Using Python, I wrote a script that:
