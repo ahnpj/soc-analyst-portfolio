@@ -28,7 +28,7 @@ THM{CLI_POWER}
 ```
 
 <p align="left">
-  <img src="images/windows-cli-endpoint-triage-basics-flag-discovery.png" 
+  <img src="images/windows-cli-endpoint-triage-flag-discovery.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -48,14 +48,14 @@ tasklist /FI "imagename eq sshd.exe"
 
 This confirmed multiple instances of **sshd.exe** (example PIDs seen: `1612`, `3108`, `540`).  
 <p align="left">
-  <img src="images/windows-cli-endpoint-triage-basics-tasklist-help.png" 
+  <img src="images/windows-cli-endpoint-triage-tasklist-help.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
   <em>Figure 2</em>
 </p>
 <p align="left">
-  <img src="images/windows-cli-endpoint-triage-basics-tasklist-sshd.png" 
+  <img src="images/windows-cli-endpoint-triage-tasklist-sshd.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -85,14 +85,14 @@ netstat -abon
 - Additional services listening (e.g., `RpcSs` on `135`, `TermService` on `3389`), each with their associated PID
 
 <p align="left">
-  <img src="images/windows-cli-endpoint-triage-basics-netstat-abon.png" 
+  <img src="images/windows-cli-endpoint-triage-netstat-abon.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
   <em>Figure 4</em>
 </p>
 <p align="left">
-  <img src="images/windows-cli-endpoint-triage-basics-netstat-listening.png" 
+  <img src="images/windows-cli-endpoint-triage-netstat-listening.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
