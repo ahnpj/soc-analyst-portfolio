@@ -1,20 +1,20 @@
 # 🛡️ SOC Analyst Portfolio
 
-Welcome to my SOC Analyst Portfolio!
-<br></br>
-This repo is where I collect the hands-on work I’ve been doing to build practical blue team skills. My focus is on learning how to think and work like a Security Operations Center (SOC) analyst — investigating alerts, analyzing logs, and documenting clear playbooks.
+Welcome to the part of my GitHub where I’m learning to think and work like a SOC analyst. This isn’t a polished “final product” space—it's where I break things apart, follow strange log trails, make mistakes, fix them, and slowly build real investigative intuition.
 
-This is a **work in progress** — I’m continuing to add more labs and examples as I go. 
+This repository is basically my running log of learning how to work like a SOC analyst. Everything here is hands-on: real logs, real analysis, real mistakes, and real improvements. I’m using this space to train myself to slow down, follow the evidence, and understand not just what happened in an environment, but why it happened.
 
-<blockquote>
-What you see here will grow over time, with each lab building in complexity and depth (Lab01 = fundamentals, Lab02+ = more advanced scenarios).
-</blockquote>
+**You’ll notice the labs are numbered. That’s on purpose.**
+
+The numbering isn’t random or just the order I uploaded them. It’s the order I intended to learn things. Lab01 starts with the simplest investigations—clean, controlled situations that helped me get comfortable with SIEM searches, event IDs, and basic log patterns. As the numbers go up, the scenarios get heavier: more noise, more steps, more pivot points, more things that can be interpreted incorrectly if you’re not paying attention.
+
+In other words, the further you go down the list, the more you’re seeing me handle multi-stage activity, stack different log sources together, build timelines, and write stronger investigation workflows. The sequence is the learning path.
 
 ---
 
 ## What’s Inside
 
-<h3>Labs → (labs/)</h3> Hands-on labs where I dig into SIEM data, practice log analysis, and build investigation workflows. 
+<h3>Labs → (labs/)</h3> Hands-on labs where I dig into SIEM data, practice log analysis, and build investigation workflows. Each lab is me working through an investigation from the ground up. I walk through the setup, the odd behavior that caught my attention, the questions I asked, what I thought was happening, where I was wrong, what I found, and how I validated it. Some are simple, some are messy, and some required a lot of backtracking—but they all build on each other.
 Currently includes:
 <br/><br/>
 
