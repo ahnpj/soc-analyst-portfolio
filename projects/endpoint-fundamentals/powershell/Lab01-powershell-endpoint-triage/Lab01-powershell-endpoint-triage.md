@@ -14,7 +14,7 @@ This lab report documents my hands-on work with PowerShell. Each section demonst
 I started by connecting to the target lab machine via SSH and launching PowerShell. Once inside, I explored how PowerShell structures its commands with the `Verb-Noun` format. I then practiced discovering available commands and getting help on their usage.
 
 <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.01.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.01.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -177,7 +177,7 @@ I used `Get-ChildItem | Sort-Object Length` to sort files by size, identifying u
 The first command `Get-ChildItem -Path C:\Users` lists all directories under `C:\Users`. In the second command, I piped the results of `Get-ChildItem` into `Sort-Object Length` to sort the output by size, showing how PowerShell can pass objects through the pipeline for further processing.  
 
 <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.02.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.02.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -193,7 +193,7 @@ Using `Where-Object -Property Extension -eq ".txt"`, I filtered only `.txt` file
 - For example, `Get-ChildItem | Where-Object -Property Name -like "ship*"` helped me filter for files with names containing "ship".
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.03.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.03.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -211,7 +211,7 @@ I applied `Select-Object Name, Length` to output a simpler view of file details,
 - For example, `Get-ChildItem | Select-Object Name, Length` gave me a clean list of just file names (`Name`) and sizes (`Length`).
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.04.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.04.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -228,7 +228,7 @@ I reviewed how `Select-String` scans files for keywords, similar to grep. For in
 - `Select-String -Path .\captain-hat.txt -Pattern "hat"` which searched the file `captain-hat.txt` for the text "hat". It returned the line in the file that contain the word "hat". By default, it seemed to have also showed the line number and highlighted the matched text.
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.05.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.05.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -252,7 +252,7 @@ To challenge myself, I built a command to return only files over 50 bytes: `Get-
 At the end of this section, there was a hands-on challenge that asked me to retrieve only the items in the current directory with a size greater than 100. I solved it using the following command: `Get-Children | Where-Object -Property Length -gt 100`
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.06.edited.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.06.edited.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -266,7 +266,7 @@ At the end of this section, there was a hands-on challenge that asked me to retr
 - `-gt 100` → comparison operator meaning “greater than 100.” This ensures only items larger than 100 bytes are returned.
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.07.edited.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.07.edited.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -325,7 +325,7 @@ I used `Get-NetIPConfiguration` and` Get-NetIPAddress` to confirm the network se
 At the end of this section there was a hands-on challenge to find a “secret” file in the user `p1r4t3`’s home folder.
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.11.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.11.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -337,7 +337,7 @@ At the end of this section there was a hands-on challenge to find a “secret”
 **(Step 4-a)** I started by changing directories to `C:\Users` with `Set-Location` to locate the user `p1r4te`.  
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.08.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.08.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -349,7 +349,7 @@ At the end of this section there was a hands-on challenge to find a “secret”
 **(Step 4-b)** I listed the contents with `Get-ChildItem` and discovered a directory called `hidden-treasure-chest`. Then, I changed into that directory using `Set-Location`, ran `Get-ChildItem` again, and saw a `.txt` file named `big-treasure.txt`.
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.09.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.09.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -361,7 +361,7 @@ At the end of this section there was a hands-on challenge to find a “secret”
 **(Step 4-c)** Finally, I opened the file with `Get-Content big-treasure.txt` and retrieved the answer to the lab challenge.
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.10.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.10.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -373,7 +373,7 @@ At the end of this section there was a hands-on challenge to find a “secret”
 **(Step 4-d)** Woohoo!
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.12.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.12.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -425,7 +425,7 @@ In this part of the lab, I was presented with the following questions:
 **Question 1** In the previous task, you found a marvellous treasure carefully hidden in the target machine. What is the hash of the file that contains it?**
 
 <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.13.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.13.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -434,7 +434,7 @@ In this part of the lab, I was presented with the following questions:
 **Question 2** What property retrieved by default by `Get-NetTCPConnection` contains information about the process that has started the connection?
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.15.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.15.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -443,7 +443,7 @@ In this part of the lab, I was presented with the following questions:
 **Question 3** It's time for another small challenge. Some vital service has been installed on this pirate ship to guarantee that the captain can always navigate safely. But something isn't working as expected, and the captain wonders why. Investigating, they find out the truth, at last: the service has been tampered with! The shady lad from before has modified the service DisplayName to reflect his very own motto, the same that he put in his user description. With this information and the PowerShell knowledge built so far, the task was to find the service name.
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.16.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.16.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -460,14 +460,14 @@ I ran the follow commands in order:
   - `Get-FileHash big-treasure.txt` to obtain the hash value of the file `big-treasure.txt`
 
 <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.14.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.14.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
   <em>Figure 16</em>
 
 <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.13.answer.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.13.answer.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -480,7 +480,7 @@ I ran the follow commands in order:
 The question asked which property retrieved by default by `Get-NetTCPConnection` contains information about the process that has started the connection.  
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.15.png" 
+  <img src="imagesLab01-powershell-endpoint-triage.15.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -491,7 +491,7 @@ From my reading and review of the cmdlet documentation, I learned that the prope
 I did not need to discover this by running the command in the lab; instead, I was able to answer it directly from the reading material that explained how the cmdlet works and which properties it returns by default.
  
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.15.answer.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.15.answer.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -510,7 +510,7 @@ This matched the shady user’s motto from his account description. The service 
 **`p1r4t3-s-compass`**  
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.17.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.17.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -519,7 +519,7 @@ This matched the shady user’s motto from his account description. The service 
 This confirmed that the service had been tampered with, and the correct service name was `p1r4t3-s-compass`.
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.16.answer.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.16.answer.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -575,7 +575,7 @@ I wrapped up by practicing PowerShell scripting, focusing on how to automate rep
 At the end of this section, there was a hands-on challenge that asked me to execute the **Get-Service** command on a remote computer named *RoyalFortune*.
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.18.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.18.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -584,7 +584,7 @@ At the end of this section, there was a hands-on challenge that asked me to exec
 In this exercise, I used the **Invoke-Command** cmdlet to execute the **Get-Service** command on a remote computer named *RoyalFortune*. The full command I ran was: `Invoke-Command -ComputerName RoyalFortune -ScriptBlock { Get-Service }`
 
  <p align="left">
-  <img src="images/powershell-endpoint-triage-basics.18.answer.png" 
+  <img src="images/Lab01-powershell-endpoint-triage.18.answer.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
