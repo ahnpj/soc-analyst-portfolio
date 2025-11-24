@@ -6,7 +6,9 @@ This repo is where I collect the hands-on work I’ve been doing to build practi
 
 This is a **work in progress** — I’m continuing to add more labs and examples as I go. 
 
-**Note:** What you see here will grow over time, with each lab building in complexity and depth (Lab01 = fundamentals, Lab02+ = more advanced scenarios).
+<blockquote>
+What you see here will grow over time, with each lab building in complexity and depth (Lab01 = fundamentals, Lab02+ = more advanced scenarios).
+</blockquote>
 
 ---
 
