@@ -6,7 +6,7 @@ The SIEM flagged a suspicious process execution (`customminer.exe`), requiring c
 The lab concluded by validating whether the detection was a **true positive** or **false positive**, mirroring incident investigation.
 
 <p align="left">
-  <img src="images/lab01-siem-foundational-figure.01-alert.png" 
+  <img src="images/siem-foundational-figure.01-alert.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -43,7 +43,7 @@ The lab concluded by validating whether the detection was a **true positive** or
 - **Classification:** **True Positive** – confirmed malicious crypto miner execution  
 
 <p align="left">
-  <img src="images/lab01-siem-foundational-figure.02-event-log.png" 
+  <img src="images/siem-foundational-figure.02-event-log.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
@@ -61,7 +61,7 @@ The alert was triggered based on a predefined SIEM correlation rule.
 This rule monitors **process creation events** (`EventID 4688`) from `WindowsEventLogs` where the process name contains mining-related keywords (`miner` or `crypt`).  
 
 <p align="left">
-  <img src="images/lab01-siem-foundational-figure.03-rule.png" 
+  <img src="images/siem-foundational-figure.03-rule.png" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -79,3 +79,4 @@ This rule monitors **process creation events** (`EventID 4688`) from `WindowsEve
 
 ## Level
 **Beginner / Foundational** – This lab was designed to practice SIEM fundamentals and build confidence before progressing into advanced log correlation, custom detection rules, and threat hunting scenarios.
+
