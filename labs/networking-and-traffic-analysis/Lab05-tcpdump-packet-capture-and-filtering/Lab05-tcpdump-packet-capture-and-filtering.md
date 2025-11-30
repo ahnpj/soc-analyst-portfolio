@@ -1,7 +1,5 @@
 # Lab 5 - Tcpdump Packet Capture and Filtering
 
----
-
 ## Introduction / Overview / Objective
 
 <details>
@@ -756,4 +754,5 @@ Overall, this lab strengthened my ability to use Tcpdump as a practical analysis
 </details>
 
 ---
+
 
