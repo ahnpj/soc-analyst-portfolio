@@ -1,4 +1,4 @@
-# Windows CMD Basics — File Discovery, Network & Process Investigation
+# Lab 2 - Windows CLI EndPoint Triage (File Discovery, Network & Process Investigation)
 
 ## Objective
 Practice core Windows CLI skills used in host triage:
@@ -156,3 +156,4 @@ In addition to the commands I demonstrated in this lab (`tasklist`, `taskkill`, 
 
 ### Why This Matters
 While these commands weren’t the focus of this lab, being aware of them strengthens my ability to perform **holistic endpoint triage**. They complement the discovery and remediation steps I practiced with `tasklist` and `netstat`, and show readiness to expand my toolkit for more advanced SOC workflows.
+
