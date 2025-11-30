@@ -37,7 +37,7 @@ This connected well with what I learned while studying for the CompTIA Security+
 - Network: VM had a private IPv4 address on ens5 (10.201.72.1, 10.201.6.0, 10.201.19.118, 10.11.90.211, 10.201.51.53, 10.201.75.88).
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-01.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-01.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 1</em>
@@ -75,7 +75,7 @@ This review helped clarify how the pieces fit together:
     - `sudo apt update && apt list --upgradable` — checked package update status (banner indicated many updates).
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-02.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-02.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 2</em>
@@ -223,7 +223,7 @@ By the end of this section I had:
 I checked my current shell using `echo $SHELL`. To do so, I started by confirming which shell my session was actually running. In the terminal, I echoed the `$SHELL` environment variable. To do so, I ran the following command: `echo $SHELL`, which identified the active shell I was using.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-03.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-03.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 3</em>
@@ -240,7 +240,7 @@ I viewed all installed shells using `cat /etc/shells`. I temporarily switched to
 To achieve this, I first needed to see what other shells were installed and allowed for login on this system. Linux stores this information in `/etc/shells`, so I ran the following command to display the available shells: `cat /etc/shells`.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-04.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-04.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 4</em>
@@ -257,7 +257,7 @@ For this review portion I did not actually change my default shell; instead I fo
 Instead of immediately changing my default shell, I first tested them interactively. For example, to start a `zsh` session from within Bash, I could run `zsh`.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-05.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-05.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 5</em>
@@ -266,7 +266,7 @@ Instead of immediately changing my default shell, I first tested them interactiv
 After exiting the Z shell (zsh) setup menu, I manually switched my shell back. To do this, I simply typed `bash` and pressed [Enter]. This immediately returned me to the standard Bash prompt, confirming that I was now back in the Bash environment.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-06.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-06.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 6</em>
@@ -419,7 +419,7 @@ Although I previously studied scripting in college, primarily using Python, incl
 In this step, I created my first Bash script using `nano`. This mirrored the same process I learned years ago when writing simple Python programs, except here the file used a `.sh` extension and required a shebang to define the interpreter. I named this script `peters_script.sh`.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-07.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-07.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 7</em>
@@ -437,7 +437,7 @@ echo "Hi there, $name"
 ```
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-08.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-08.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 8</em>
@@ -458,7 +458,7 @@ chmod +x peters_script.sh
 This step enforces the idea of execution-level control that doesn’t exist in Python by default but is crucial in Linux environments.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-09.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-09.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 9</em>
@@ -479,7 +479,7 @@ To run my script, I used the `./` prefix. This explicitly told the shell to exec
 The script accepted user input, assigned it to a variable, and displayed a greeting, exactly the same flow I practiced in Python when handling raw input.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-10.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-10.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 10</em>
@@ -504,7 +504,7 @@ done
 The iterative logic mirrored Python perfectly: looped from 1 to 10, print each number. 
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-11.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-11.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 11</em>
@@ -518,7 +518,7 @@ chmod +x peters_loop_script.sh
 ```
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-12.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-12.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 12</em>
@@ -552,7 +552,7 @@ fi
 The structure reminded me of Python’s conditional branching, but using `fi` to close a condition felt very similar to closing blocks in recursive functions, an explicit end marker to prevent logic bleed.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-13.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-13.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 13</em>
@@ -565,7 +565,7 @@ I executed the script running:
 ```
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-14.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-14.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 14</em>
@@ -578,14 +578,14 @@ The script checks whether the entered name matches the authorized value (“Pete
 The two screenshots in the lab are simply examples showing both possible outcomes. When running the script yourself, you will only see one outcome at a time, either the authorized message if the input matches, or the unauthorized message if it does not.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-15.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-15.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 15</em>
 </p>
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-16.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-16.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 16</em>
@@ -621,7 +621,7 @@ fi
 Comments don't change execution, but they dramatically improve readability, just as they did in my Python coursework.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-17.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-17.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 17</em>
@@ -740,7 +740,7 @@ I created a new script using the `nano` text editor:
 `nano peters_locker_script.sh`
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-18.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-18.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 18</em>
@@ -759,7 +759,7 @@ pin=""
 The shebang works the same way it did when writing Python scripts (#!/usr/bin/env python3), telling the system which interpreter to use.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-19.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-19.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 19</em>
@@ -821,7 +821,7 @@ This specific loop doesn’t use recursion (which I learned in Python as well), 
 </blockquote>
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-20.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-20.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 20</em>
@@ -852,7 +852,7 @@ The validation logic instantly reminded me of Python’s `if x == value` and `y 
 </blockquote>
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-21.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-21.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 21</em>
@@ -869,7 +869,7 @@ chmod +x peters_locker_script.sh
 ```
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-22.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-22.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 22</em>
@@ -882,7 +882,7 @@ Then I executed it:
 ```
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-23.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-23.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 23</em>
@@ -891,7 +891,7 @@ Then I executed it:
 The script asked for the `Username`, `Zip Code`, and `PIN`. 
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-24.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-24.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 24</em>
@@ -906,7 +906,7 @@ I entered the correct details first:
 It printed the message `Authentication Successful. You can now access your locker, Peter.` as expected.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-25.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-25.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 25</em>
@@ -921,7 +921,7 @@ I then entered incorrect details to test what would happen if the variables cont
 It printed the message `Authentication Denied!!` as expected.
 
 <p align="left">
-  <img src="images/linux-bash-usage-and-scripting-26.png?raw=true&v=2" 
+  <img src="images/lab01-linux-shell-and-scripting-basics-26.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 26</em>
@@ -975,3 +975,4 @@ Overall, the exercise strengthened my confidence in writing Bash scripts that co
 I built confidence navigating the Linux shell and writing scripts to automate system tasks. These skills align directly with system administration and security operations tasks, especially those covered in Security+.
 
 </details>
+
