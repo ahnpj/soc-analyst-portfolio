@@ -1,4 +1,4 @@
-# Python Log Parsing Mini-Lab Report
+# Lab 7 - Python Log Parsing And Security Analysis
 Author: Peter Ahn  
 Environment: Google Cloud Shell (Browser-Based Linux VM)
 
@@ -555,4 +555,5 @@ Across all four labs, I practiced:
 These labs replicate real SOC analyst workflows and give me strong beginner-friendly material for my GitHub portfolio.
 
 </details>
+
 
