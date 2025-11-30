@@ -1,4 +1,4 @@
-# PowerShell Lab Report (Objectives 1–6)
+# Lab 3 - PowerShell Endpoint Triage (Objectives 1–6)
 
 This lab report documents my hands-on work with PowerShell. Each section demonstrates not only the commands I used but also why I used them, how they can be applied in real-world security or administrative contexts, and what insights they provided. The goal is to showcase practical skills and understanding of how PowerShell can be leveraged effectively.
 
@@ -606,4 +606,5 @@ This demonstrates I can **scale operations across environments**. Recruiters sho
 Across Objectives 1–6, I moved from learning the basics of PowerShell to applying it for **file management, data filtering, system analysis, and scripting automation**. These exercises show that I can use PowerShell not just as a command-line tool, but as a versatile platform for **system administration, security monitoring, and incident response**.
 
 </details>
+
 
