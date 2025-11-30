@@ -1,4 +1,4 @@
-# Splunk Data Processing and Manipulation Lab (Basics)
+# Lab 10 - Splunk Data Processing and Parsing (Basics)
 
 ## Task 1 - Introduction
 
@@ -658,4 +658,5 @@ I learned the **end-to-end workflow of Splunk parsing**:
 
 ## Reflection
 This lab gave me practical experience with Splunk configuration files, regex-based parsing, masking sensitive data, and extracting custom fields. These skills are directly relevant to real-world SOC analyst responsibilities, including compliance, incident investigation, and monitoring.  
+
 
