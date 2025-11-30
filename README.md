@@ -1,22 +1,26 @@
-# 🛡️ SOC Analyst Portfolio
+# Cybersecurity & IT Operations Portfolio
 
-Welcome to the part of my GitHub where I’m learning to think and work like a SOC analyst. This isn’t a polished “final product” space—it's where I break things apart, follow strange log trails, make mistakes, fix them, and slowly build real investigative intuition.
+Welcome to the part of my GitHub where I’m teaching myself how to work across cybersecurity and IT operations. Nothing here is meant to look perfect. It’s basically where I learn by doing — breaking things, fixing them, chasing weird logs, and slowly figuring out how real investigations and day-to-day IT work actually feel.
 
-This repository is basically my running log of learning how to work like a SOC analyst. Everything here is hands-on: real logs, real analysis, real mistakes, and real improvements. I’m using this space to train myself to slow down, follow the evidence, and understand not just what happened in an environment, but why it happened.
+This repo is my running record of that process. I’m practicing everything from SIEM searches and log analysis to scripting, network traffic reviews, and basic system administration tasks. Some labs go smoothly, some definitely don’t, but that’s the whole point — I want to understand how things really behave, not just how they’re “supposed” to work.
 
-**You’ll notice the labs are numbered. That’s on purpose.**
+You’ll notice the labs are numbered. That’s intentional.
+They follow the order I wanted to learn things:
 
-The numbering isn’t random or just the order I uploaded them. It’s the order I intended to learn things. Lab01 starts with the simplest investigations—clean, controlled situations that helped me get comfortable with SIEM searches, event IDs, and basic log patterns. As the numbers go up, the scenarios get heavier: more noise, more steps, more pivot points, more things that can be interpreted incorrectly if you’re not paying attention.
+Early labs = fundamentals
 
-In other words, the further you go down the list, the more you’re seeing me handle multi-stage activity, stack different log sources together, build timelines, and write stronger investigation workflows. The sequence is the learning path.
+Later labs = more noise, more steps, more pivot points, more places to get things wrong
+
+As the numbers go up, the investigations start to feel more real: multi-stage activity, correlating different log sources, piecing timelines together, tuning searches, checking assumptions, and actually explaining what happened instead of just guessing.
 
 ---
 
 ## What’s Inside
 
-<h3>Labs → (labs/)</h3> Hands-on labs where I dig into SIEM data, practice log analysis, and build investigation workflows. Each lab is me working through an investigation from the ground up. I walk through the setup, the odd behavior that caught my attention, the questions I asked, what I thought was happening, where I was wrong, what I found, and how I validated it. Some are simple, some are messy, and some required a lot of backtracking—but they all build on each other.
-Currently includes:
+<h3>Labs → (labs/)</h3> Hands-on labs covering cybersecurity, IT ops, scripting, and investigation-style problem solving. Each one walks through what I saw, what I thought it meant, what actually happened, and how I figured it out. Some are quick. Some took forever. All of them taught me something.
 <br/><br/>
+
+Currently includes:
 
 <details>
 <summary><b>SIEM</b></summary>
@@ -208,13 +212,19 @@ Currently includes:
 
 ---
 
-## Skills Demonstrated
+## Skills I'm Practicing
 
 - Reading and analyzing SIEM logs (Splunk, general SIEM concepts)  
 - Identifying suspicious or abnormal activity  
 - Writing structured investigation notes and playbooks  
 - Documenting technical work clearly for others to follow  
-- Building up complexity across labs (introductory → intermediate → advanced)  
+- Building up complexity across labs (introductory → intermediate → advanced)
+- Documenting investigations like an analyst
+- Basic Bash & PowerShell scripting
+- Running packet captures and reading network traffic
+- Windows & Linux triage
+- Building playbooks and repeatable processes
+- Steadily increasing complexity across labs
 
 ---
 
@@ -230,6 +240,6 @@ This repo will continue to grow as I add more content, including:
 
 ## Note
 
-All work here is practice and simulation — no real company data is included.
+This repo exists so I can learn, stay consistent, and get better at security and IT operational work over time.
 <br></br>
-I’m using this repo to document my learning journey and showcase how I approach **SOC analyst tasks step by step**. Feedback and suggestions are always welcome!
+Feedback is always welcome.
