@@ -58,7 +58,7 @@ Currently includes:
 > <details>
 > <summary>Active Directory</summary>
 >
-> - <a href="labs/identity-and-access-management/Lab04-identity-and-access-management/Lab04-identity-and-access-management.md">Lab04 – Active Directory Domain Structure and Administration</a><br/>
+> - <a href="labs/identity-and-access-management/Lab04-active-directory-identity-and-access-management/Lab04-active-directory-identity-and-access-management.md">Lab04 – Active Directory Domain Structure and Administration</a><br/>
 >   Explored how real enterprise AD environments are structured, including users, OUs, groups, and authentication flows. I created accounts, adjusted permissions, and experimented with Group Policy. This lab helped connect theoretical AD concepts to real hands-on configuration.
 >
 > </details>
