@@ -1,5 +1,5 @@
 
-# Lab01 – Linux Shells and Scripting
+# Lab 1 – Linux Shells and Scripting
 
 ## Section 1: Introduction and Objectives
 
@@ -975,4 +975,5 @@ Overall, the exercise strengthened my confidence in writing Bash scripts that co
 I built confidence navigating the Linux shell and writing scripts to automate system tasks. These skills align directly with system administration and security operations tasks, especially those covered in Security+.
 
 </details>
+
 
