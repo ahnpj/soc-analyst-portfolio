@@ -31,7 +31,7 @@ I assumed the role of a SOC analyst working at a fictional company, where my tas
 At the end of this portion of the lab, a question asked me to determine how many Python scripts were present in the ~/Downloads/scripts directory. Since I already knew the target location, I navigated directly to it by running: `cd Downloads/scripts`.
 
 <p align="left">
-  <img src="images/lab02-splunk-data-manipulation-figure01.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure01.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="500"><br>
@@ -41,7 +41,7 @@ At the end of this portion of the lab, a question asked me to determine how many
 After entering the directory, I used the `ls` command to list its contents. The output showed three items: `authentication_logs`, `purchase-details`, and `vpnlogs`. None of these files had the typical `.py` extension, which is what I usually expect Python scripts to have. But the question asked how many scripts there were at this directory path, so I concluded that there were three Python scripts in this directory.
 
 <p align="left">
-  <img src="images/lab02-splunk-data-manipulation-figure02.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure02.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="500"><br>
@@ -273,7 +273,7 @@ Here is a quick table I created to loosely defines some common stanzas and provi
 At the end of this task (task 4) of the lab, I was presented with a few questions that quizzed me on stanzas and configuration files.
 
 <p align="left">
-  <img src="images/lab02-splunk-data-manipulation-figure03.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure03.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="900"><br>
@@ -320,7 +320,7 @@ I changed into the Splunk installation directory with `cd /opt/splunk` (this is 
   - **(3a)** After reaching the Splunk instance via FireFox, I clicked the gear icon next to **Apps** which landed me to a page where there was a table of applications where I could manage them.
 
 <p align="center">
-  <img src="images/lab02-splunk-data-manipulation-figure04.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure04.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -331,7 +331,7 @@ I changed into the Splunk installation directory with `cd /opt/splunk` (this is 
   - **(3b)** Then, I clicked the **[Create app]** button on the top right.
 
 <p align="center">
-  <img src="images/lab02-splunk-data-manipulation-figure05.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure05.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -342,7 +342,7 @@ I changed into the Splunk installation directory with `cd /opt/splunk` (this is 
   - **(3c)** I was redirected to a page where I can add details for my Splunk app. I named the app and folder name **DataApp**, located at `$SPLUNK_HOME/etc/apps/`. I gave it version **1.0.0** as is the first version of this sample app. Lastly, I filled in the remaining details like my name for the **Author**, and a quick **Description**.
 
 <p align="center">
-  <img src="images/lab02-splunk-data-manipulation-figure06.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure06.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -353,7 +353,7 @@ I changed into the Splunk installation directory with `cd /opt/splunk` (this is 
   - **(3d)** I was brought back to the Apps page where you manage all Splunk apps, and saw the app that I've just created: **DataApp**.
 
 <p align="center">
-  <img src="images/lab02-splunk-data-manipulation-figure07.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure07.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -364,7 +364,7 @@ I changed into the Splunk installation directory with `cd /opt/splunk` (this is 
   - **(3e)** I clicked **[Launch App]** under the **Actions** column, which evidently showed that no activity has been logged. **I went ahead and wrote a Python Script for sample logs in step 4.**
     
 <p align="center">
-  <img src="images/lab02-splunk-data-manipulation-figure08.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure08.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -375,7 +375,7 @@ I changed into the Splunk installation directory with `cd /opt/splunk` (this is 
   - **(3f)** Before moving to the next step, I stepped back into the Linux terminal (bash shell) and entered the following commands to locate the newly created sample app **from step 3(e)**:
 
 <p align="center">
-  <img src="images/lab02-splunk-data-manipulation-figure09.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure09.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -390,7 +390,7 @@ I changed into the Splunk installation directory with `cd /opt/splunk` (this is 
    print("This is a sample log...")
    ```
 <p align="center">
-  <img src="images/lab02-splunk-data-manipulation-figure10.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure10.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -401,7 +401,7 @@ I changed into the Splunk installation directory with `cd /opt/splunk` (this is 
    - **(4b)** Saved as `samplelogs.py` in `/bin`. Then ran the script to test.
 
 <p align="center">
-  <img src="images/lab02-splunk-data-manipulation-figure11.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure11.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -414,7 +414,7 @@ In this part of the lab, I created an `inputs.conf` file. The reason for doing t
   - **(5a)** At this stage of the lab, I needed to make changes to the sample `inputs.conf` file located in Splunk’s default directory. To get there, I first navigated back to the main Splunk directory so I had a clean starting point. From there, I ran `cd /opt/splunk/etc/system/default` to move into the `default` configuration folder and used `ls` to confirm that the inputs.conf file was there. Once I saw it, I opened it with `nano inputs.conf` to begin editing.
 
 <p align="center">
-  <img src="images/lab02-splunk-data-manipulation-figure12.png?raw=true&v=2" 
+  <img src="images/lab10-splunk-data-manipulation-figure12.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="600"><br>
@@ -658,3 +658,4 @@ I learned the **end-to-end workflow of Splunk parsing**:
 
 ## Reflection
 This lab gave me practical experience with Splunk configuration files, regex-based parsing, masking sensitive data, and extracting custom fields. These skills are directly relevant to real-world SOC analyst responsibilities, including compliance, incident investigation, and monitoring.  
+
