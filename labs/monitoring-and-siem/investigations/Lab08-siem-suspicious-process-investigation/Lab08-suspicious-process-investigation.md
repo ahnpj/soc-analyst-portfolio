@@ -1,4 +1,4 @@
-# Lab 01 – SIEM Basics: Suspicious Process Investigation
+# Lab 8 – Suspicious Process Investigation
 
 ## Overview
 In this foundational SIEM lab, I practiced investigating an automatically triggered alert inside a security dashboard.  
@@ -79,4 +79,5 @@ This rule monitors **process creation events** (`EventID 4688`) from `WindowsEve
 
 ## Level
 **Beginner / Foundational** – This lab was designed to practice SIEM fundamentals and build confidence before progressing into advanced log correlation, custom detection rules, and threat hunting scenarios.
+
 
