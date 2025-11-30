@@ -1,4 +1,4 @@
-# Active Directory Domain Structure and Administration
+# Lab 4 - Active Directory Domain Structure and Administration
 
 ## 1. Introduction / Overview / Objective
 
@@ -953,3 +953,4 @@ I gained practical experience working with AD infrastructure and now understand 
 This lab strengthened my practical understanding of enterprise identity infrastructure and system administration workflows.
 
 </details>
+
