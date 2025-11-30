@@ -23,113 +23,112 @@ As the numbers go up, the investigations start to feel more real: multi-stage ac
 Currently includes:
 
 <details>
-<summary><b>SIEM</b></summary>
+<summary><b>Systems & Endpoints</b></summary>
 
 > <details>
-> <summary>SIEM Basics</summary>
+> <summary>Linux</summary>
 >
-> - <a href="labs/siem/siem-basics/Lab01-intro-to-siem/Lab01-suspicious-process-investigation.md">Lab01 – Suspicious Process Investigation</a><br/>
->   <em>Level: Beginner</em> → Investigating abnormal process activity in logs, understanding correlation rules.
+> - <a href="labs/systems-and-endpoints/Lab01-linux-shell-and-scripting-basics/Lab01-linux-shell-and-scripting-basics.md">Lab01 – Linux Shell and Scripting</a><br/>
+>   A hands-on introduction to core Linux commands, navigation, and automation. I wrote small Bash scripts using variables, loops, and conditionals to automate repetitive tasks. This lab strengthened my command-line comfort and problem-solving mindset. Building Bash scripts that apply variables, user input, conditional logic, and iterative loops to automate decision-making and repetitive tasks in a Linux environment.
+>
+> </details>
+
+> <details>
+> <summary>Windows CMD/CLI</summary>
+>
+> - <a href="labs/systems-and-endpoints/Lab02-windows-cli-endpoint-triage-basics/Lab02-windows-cli-endpoint-triage-basics.md">Lab02 – Windows CMD - File Discovery, Network & Process Investigation</a><br/>
+>   Used Windows command-line tools to investigate system behavior, look up running processes, review basic host information, and spot suspicious activity. This lab helped me understand what normal endpoint behavior looks like and how to manually triage a Windows machine.
+> </details>
+
+> <details>
+> <summary>PowerShell</summary>
+>
+> - <a href="labs/systems-and-endpoints/Lab03-powershell-endpoint-triage/Lab03-powershell-endpoint-triage-basics.md">Lab03 – PowerShell Endpoint Triage</a><br/>
+>   Collected and filtered system data using PowerShell, focusing on processes, services, and event logs. I practiced identifying patterns that could indicate malicious activity. This lab sharpened my ability to use PowerShell for real investigation workflows.
+> </details>
+
+
+</details>
+
+
+
+<details>
+<summary><b>Identity and Access Management</b></summary>
+
+> <details>
+> <summary>Tcpdump</summary>
+>
+> - <a href="labs/identity-and-access-management/Lab04-active-directory-domain-structure-and-administration/Lab04-active-directory-domain-structure-and-administration.md">Lab04 – Active Directory Domain Structure and Administration</a><br/>
+>   Explored how real enterprise AD environments are structured, including users, OUs, groups, and authentication flows. I created accounts, adjusted permissions, and experimented with Group Policy. This lab helped connect theoretical AD concepts to real hands-on configuration.
+>
+> </details>
+
+
+</details>
+
+<details>
+<summary><b>Networking and Traffic Analysis</b></summary>
+
+> <details>
+> <summary>tcpdump</summary>
+>
+> - <a href="labs/networking-and-traffic-analysis/Lab05-tcpdump-traffic-capture-and-filtering/Lab05-tcpdump-traffic-capture-and-filtering.md">Lab05 – Tcpdump Packet Capture and Filtering</a><br/>
+>   Captured live network traffic using tcpdump and analyzed packet details through filters. I learned how to isolate meaningful traffic from noise and understand key packet fields. This lab built a foundation for packet-level monitoring and troubleshooting.
+>
+> </details>
+
+> <details>
+> <summary>WireShark</summary>
+>
+> - <a href="labs/networking-and-traffic-analysis/Lab06-wireshark-packet-inspection-and-filtering/Lab06-wireshark-packet-inspection-and-filtering.md">Lab06 – Wireshark Packet Analysis and Filtering</a><br/>
+>   Used Wireshark to inspect packets visually, apply powerful filters, and interpret network behavior. I practiced recognizing normal patterns vs. anomalies. This lab improved my ability to analyze network data beyond the command line.
+>
+> </details>
+
+</details>
+
+
+<details>
+<summary><b>Log Analysis & Automation</b></summary>
+
+> <details>
+> <summary>Python Log Parsing & Security Analysis</summary>
+>
+> - <a href="labs/log-analysis-and-automation/Lab07-python-log-parsing-and-security-analysis/Lab07-python-log-parsing-and-security-analysis.md">Lab07 – Python Log Parsing & Security Analysis</a><br/>
+>   Wrote Python scripts to parse and analyze logs from Apache, SSH, Windows, and AWS CloudTrail. Automated detection of failed logins, scanning activity, and other suspicious patterns. This lab showed how scripting can speed up investigations and reduce human error.
+>
+> </details>
+
+</details>
+
+
+<details>
+<summary><b>Monitoring and SIEM</b></summary>
+
+> <details>
+> <summary>Investigations</summary>
+>
+> - <a href="labs/monitoring-and-siem/investigations/Lab08-siem-suspicious-process-investigation/Lab08-siem-suspicious-process-investigation.md">Lab08 – Suspicious Process Investigation</a><br/>
+>   Performed a basic SIEM investigation into unusual process activity. Followed breadcrumbs across event logs to identify what happened and why it looked suspicious. This lab established my workflow for triage and hypothesis-driven analysis.
 >
 > </details>
 
 > <details>
 > <summary>Splunk</summary>
 >
-> - <a href="labs/siem/splunk/Lab01-splunk-vpn-log-analysis/Lab01-splunk-vpn-log-analysis-basics.md">Lab01 – Splunk VPN Log Analysis</a><br/>
->   <em>Level: Beginner</em> → Detecting unusual VPN login activity, analyzing login patterns by user and source country, and identifying suspicious travel or account compromise.
-> - <a href="labs/siem/splunk/Lab02-splunk-data-manipulation/Lab02-splunk-data-manipulation-basics.md">Lab02 – Splunk Data Manipulation</a><br/>
->   <em>Level: Beginner</em> → Understanding how Splunk processes, parses, and manipulates machine-generated data using configuration files (inputs.conf, props.conf, transforms.conf) to ensure accurate field extraction and reliable analysis for security investigations.
->- <a href="labs/siem/splunk/Lab03-splunk-cyber-kill-chain-investigation/Lab03-splunk-cyber-kill-chain-investigation.md">Lab03 – Splunk Cyber Kill Chain Investigation</a><br/>
->   <em>Level: Intermediate</em> → Performing a complete investigation of a simulated web server defacement incident by tracing attacker activity through each phase of the Cyber Kill Chain. This includes identifying reconnaissance behavior, analyzing exploit attempts, verifying malware installation, and uncovering command-and-control (C2) communication using Splunk queries and network log data. The lab emphasizes the analytical workflow of a SOC analyst — from detecting the initial compromise to mapping adversary TTPs against frameworks like MITRE ATT&CK and NIST SP 800-61. Learners will gain hands-on experience correlating IDS alerts, HTTP traffic, and DNS records to produce actionable intelligence and document incident findings in a professional, report-ready format.
->- <a href="labs/siem/splunk/Lab04-splunk-backdoor-and-registry-hunt/Lab04-splunk-backdoor-and-registry-hunt.md">Lab04 – Splunk Backdoor and Registry Hunt</a><br/>
->   <em>Level: Advanced</em> → This lab walks through a full investigation of malicious activity using Splunk, including identifying backdoor account creation, registry modifications, remote WMIC abuse, and encoded PowerShell payloads. I traced attacker actions across multiple event sources (Security, Sysmon, and PowerShell logs), used host-based filtering to pinpoint suspicious activity, and decoded multi-layer Base64 payloads to uncover the final callback URL. The lab demonstrates how to think like an analyst: pivoting between events, validating assumptions, decoding obfuscated commands, and connecting evidence across hosts to reconstruct the adversary’s behavior.
+> - <a href="labs/monitoring-and-siem/splunk/Lab09-splunk-vpn-log-analysis-basics/Lab09-splunk-vpn-log-analysis-basics.md">Lab09 – Splunk VPN Log Analysis Basics</a><br/>
+>   Used Splunk to analyze VPN authentication logs and identify risky login patterns. Looked at user behavior, location anomalies, and signs of potential account compromise. A solid introduction to real-world access monitoring in Splunk.
+>
+> - <a href="labs/monitoring-and-siem/splunk/Lab10-splunk-data-processing-and-parsing-basics/Lab10-splunk-data-processing-and-parsing-basics.md">Lab10 – Splunk Data Processing & Parsing Basics</a><br/>
+>   Learned how Splunk ingests and transforms data using inputs.conf, props.conf, and transforms.conf. Worked with field extractions and parsing rules to improve log quality. This lab made Splunk feel less like a “black box” and more like a system I can configure intelligently.
+>
+> - <a href="labs/monitoring-and-siem/splunk/Lab11-splunk-cyber-kill-chain-investigation/Lab11-splunk-cyber-kill-chain-investigation.md">Lab11 – Splunk Cyber Kill Chain Investigation</a><br/>
+>   Conducted a full investigation of a simulated web-server compromise by mapping activity across every phase of the Cyber Kill Chain. Correlated IDS alerts, web logs, and DNS data to reconstruct attacker behavior. This lab built my ability to handle multi-stage intrusions using Splunk.
+>
+> - <a href="labs/monitoring-and-siem/splunk/Lab12-splunk-backdoor-and-registry-investigation/Lab12-splunk-backdoor-and-registry-investigation.md">Lab12 – Splunk Backdoor and Registry Investigation</a><br/>
+>   Investigated a complex intrusion involving backdoor account creation, suspicious registry modifications, WMIC abuse, and encoded PowerShell payloads. Decoded and traced attacker actions across multiple log sources. This was one of my most advanced labs and reflects real SOC-level investigation depth.
 > </details>
 
-</details>
-
-
-
-<details>
-<summary><b>Network Analysis</b></summary>
-
-> <details>
-> <summary>Tcpdump</summary>
->
-> - <a href="labs/network-analysis/tcpdump/Lab01-tcpdump-packet-capture-and-filtering/Lab01-tcpdump-packet-capture-and-filtering.md">Lab01 – Tcpdump Packet Capture and Filtering</a><br/>
->   <em>Level: Beginner</em> → Capturing and analyzing network traffic using tcpdump to understand packet structures, apply filters, and identify key fields for basic network troubleshooting and security monitoring.
->
-> </details>
-
-> <details>
-> <summary>Wireshark</summary>
->
-> - <a href="labs/network-analysis/wireshark/Lab01-wireshark-packet-analysis-and-filtering/Lab01-wireshark-packet-analysis-and-filtering.md">Lab01 – Wireshark Packet Analysis and Filtering</a><br/>
->   <em>Level: Beginner</em> → Captured and analyzed network traffic using Wireshark to examine packet structures, apply filters, and identify key fields useful for basic network troubleshooting and security monitoring.
->
-> </details>
-
-</details>
-
-<details>
-<summary><b>Shell Scripting</b></summary>
-
-> <details>
-> <summary>Linux and Scripting</summary>
->
-> - <a href="labs/shell-and-scripting/linux-shell-and-scripting/Lab01-linux-bash-usage-and-scripting/Lab01-linux-bash-usage-and-scripting.md">Lab01 – Linux Shells and Scripting</a><br/>
->   <em>Level: Beginner</em> → Building Bash scripts that apply variables, user input, conditional logic, and iterative loops to automate decision-making and repetitive tasks in a Linux environment.
->
-> </details>
-
-</details>
-
-
-<details>
-<summary><b>Log Analysis & Scripting</b></summary>
-
-> <details>
-> <summary>Python Log Parsing & Security Analysis</summary>
->
-> - <a href="labs/log-analysis-and-scripting/Lab01-python-log-parsing-and-security-analysis/Lab01-python-log-parsing-and-security-analysis.md">Lab01 – Python Log Parsing & Security Analysis</a><br/>
->   <em>Level: Beginner</em> → This lab demonstrates how to use Python to parse and analyze Apache, SSH, Windows, and CloudTrail logs, extracting meaningful security insights from raw event data. It highlights how scripting can automate detection of suspicious behavior, failed logins, scanning activity, and risky cloud actions.
->
-> </details>
-
-</details>
-
-
-<details>
-<summary><b>Endpoint Analysis & Investigation</b></summary>
-
-> <details>
-> <summary>Windows CMD/CLI</summary>
->
-> - <a href="labs/endpoint-triage/windows-cli/Lab01-windows-cli-endpoint-triage-basics/Lab01-windows-cli-endpoint-triage-basics.md">Lab01 – Windows CMD/CLI Basics</a><br/>
->   <em>Level: Beginner</em> → Using Windows command-line tools to investigate processes, review system information, and identify suspicious activity.
->
-> </details>
-
-> <details>
-> <summary>PowerShell</summary>
->
-> - <a href="labs/endpoint-triage/powershell/Lab01-powershell-endpoint-triage-basics/Lab01-powershell-endpoint-triage-basics.md">Lab01 – PowerShell Basics</a><br/>
->   <em>Level: Beginner</em> → Leveraging PowerShell commands to collect endpoint data, filter logs, and detect potential anomalies in process execution.
->
-> </details>
-
-</details>
-
-
-<details>
-<summary><b>Active Directory</b></summary>
-
-> <details>
-> <summary>Active Directory Labs</summary>
->
-> - <a href="labs/active-directory/Lab01-active-directory-domain-structure/Lab01-active-directory-domain-structure.md">Lab01 – Active Directory Domain Structure and Administration</a><br/>
->   <em>Level: Beginner</em> → Practicing managing users, computers, and permissions through OUs and Group Policy, and I got hands-on experience with how Kerberos and NTLM authentication actually work behind the scenes. I also learned how larger networks use trees, forests, and trust relationships to stay organized and secure. Overall, it helped connect what I studied for Security+ to real Active Directory implementation.
-> </details>
 
 </details>
 
