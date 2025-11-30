@@ -1,4 +1,4 @@
-Lab04 – Splunk Backdoor and Registry Hunt
+Lab04 – Splunk Backdoor and Registry Investigation
 ===========================================
 
 ## Overview & Objective </br>
@@ -92,7 +92,7 @@ index=main
 This simple query returns a single row with a `count` field. That count tells me how many events I’m working with overall in this investigation. It also reassures me that events are actually present and that I’m querying the correct index.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-01.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-01.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 1</em>
@@ -101,7 +101,7 @@ This simple query returns a single row with a `count` field. That count tells me
 Alternatively, I could simply run `index=main` and check the event count displayed next to the Events label in the Events tab.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-02.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-02.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 2</em>
@@ -118,7 +118,7 @@ index=main ("net user" OR "net user /add")
 ```
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-03.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-03.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 3</em>
@@ -151,7 +151,7 @@ index=main EventID=4720
 ```
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-04.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-04.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 4</em>
@@ -170,7 +170,7 @@ index=main Hostname="Micheal.Beaven" EventID=12 A1berto
 ```
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-05.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-05.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 5</em>
@@ -207,7 +207,7 @@ As I reviewed the `User` field patterns in the field sidebar, one thing immediat
 While not overly sophisticated, this type of username confusion is common in real-world compromises. It can easily trick an analyst who isn’t paying close attention, especially when sorting or grouping events alphabetically. This small detail revealed the adversary’s intent to masquerade as the legitimate user while performing unauthorized actions.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-06.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-06.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 6</em>
@@ -239,7 +239,7 @@ it immediately told me two things:
 - They were abusing a legitimate admin tool to create the backdoor user in a way that avoids detection and doesn’t rely on external malware.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-07.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-07.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 7</em>
@@ -258,7 +258,7 @@ index=main A1berto
 ```
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-08.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-08.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 8</em>
@@ -267,7 +267,7 @@ index=main A1berto
 Once I confirmed how the backdoor account was created, I wanted to see whether the attacker actually logged in with it. I started by filtering for events tied to the username and then looked at the `Category` field to get a quick sense of what types of actions were associated with it. If the account had been used interactively, I would expect to see something tied to `Logon/Logoff` or `Account Management`. Instead, nothing in the `Category` field indicated any authentication activity.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-09.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-09.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 9</em>
@@ -276,7 +276,7 @@ Once I confirmed how the backdoor account was created, I wanted to see whether t
 To double-check, I looked at the `EventID` field as well, since Windows uses specific IDs for login attempts, `4624` for successful logons and `4625` for failed ones. Neither of these appeared for the backdoor username. The absence of these event IDs confirmed what the `Category` field was already hinting that the new account was created successfully, but it was never used for any actual login attempt during the timeframe captured in the dataset.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-10.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-10.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 10</em>
@@ -297,7 +297,7 @@ index=main PowerShell
 ```
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-11.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-11.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 11</em>
@@ -306,7 +306,7 @@ index=main PowerShell
 I checked the `Hostname` field and saw that only a single hostname consistently appeared in the results: **James.browne**.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-12.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-12.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 12</em>
@@ -325,7 +325,7 @@ index=main EventID=4103
 ```
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-13.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-13.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 13</em>
@@ -346,7 +346,7 @@ index=main PowerShell
 ```
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-14.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-14.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 14</em>
@@ -367,7 +367,7 @@ For my recipe, I used “From Base64” followed by “Decode text (UTF-16LE)”
 During decoding, I noticed that the first layer of Base64 revealed several possible PHP file paths that the script could use (`/admin/get.php`, `/news.php`, `/login/process.php`). After decoding the second Base64 block, the script resolved to a specific one, `news.php`. So the “different php file” simply refered to the fact that the second layer revealed the actual file the attacker’s payload contacted.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-15.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-15.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 15</em>
@@ -376,7 +376,7 @@ During decoding, I noticed that the first layer of Base64 revealed several possi
 So I copied that second Base64 blob, cleared the input, and ran it through the same recipe again. This finally produced the fully decoded PowerShell payload, including the outbound web request the infected host was making.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-16.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-16.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 16</em>
@@ -398,7 +398,7 @@ Before adding this to my notes, I wanted to make it safe to share. If I put a li
 This confirmed the final destination of the malicious PowerShell command.
 
 <p align="left">
-  <img src="images/lab04-splunk-backdoor-and-registry-investigation-17.png?raw=true&v=2" 
+  <img src="images/lab12-splunk-backdoor-and-registry-investigation-17.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="800"><br>
   <em>Figure 17</em>
@@ -445,3 +445,4 @@ Overall, the logs painted a classic small-scale intrusion story: account creatio
 This lab was a good reminder that Splunk isn’t just about writing searches; it’s about telling a narrative. By the end, I could clearly explain what the attacker did, how they did it, and which artifacts would be useful for detections and future hunts.
 
 </details>
+
