@@ -1,4 +1,4 @@
-# Lab 01 – Splunk VPN Log Analysis (Basics)
+# Lab 9 – Splunk VPN Log Analysis (Basics)
 
 ## Overview
 This lab analyzes VPN logs in Splunk to surface behaviors a SOC analyst cares about: remote access volume, who is most active, where connections originate, and whether there are stability or misuse indicators.  
@@ -203,4 +203,5 @@ index="main"
 - **Filtering fields** like `UserName`, `Source_ip`, `Source_Country`, and `action` allow analysts to pinpoint anomalies.
 
 These foundational queries are starting points for SOC investigations and can be adapted to different detection use cases, such as brute force detection, suspicious geolocation, HTTPS traffic analysis, and baseline outcome tracking.
+
 
