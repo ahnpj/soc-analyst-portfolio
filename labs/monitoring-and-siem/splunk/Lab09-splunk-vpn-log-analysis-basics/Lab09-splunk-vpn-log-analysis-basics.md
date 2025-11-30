@@ -36,7 +36,7 @@ index="main"
 | sort - count
 ```
 <p align="left">
-  <img src="images/lab01-splunk-figure.01.png?raw=true&v=2" 
+  <img src="images/lab09-splunk-figure.01.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
@@ -72,7 +72,7 @@ index="main" action=failed
 ```
 
 <p align="left">
-  <img src="images/lab01-splunk-figure.02.png?raw=true&v=2" 
+  <img src="images/lab09-splunk-figure.02.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
@@ -107,7 +107,7 @@ index="main" Source_Country="United States"
 | sort - count
 ```
 <p align="left">
-  <img src="images/lab01-splunk-figure.03.png?raw=true&v=2" 
+  <img src="images/lab09-splunk-figure.03.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
@@ -141,7 +141,7 @@ index="main" action=teardown protocol=tcp (port=443 OR dest_port=443)
 | sort - count
 ```
 <p align="left">
-  <img src="images/lab01-splunk-figure.04.png?raw=true&v=2" 
+  <img src="images/lab09-splunk-figure.04.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
@@ -175,7 +175,7 @@ index="main"
 | sort - count
 ```
 <p align="left">
-  <img src="images/lab01-splunk-figure.05.png?raw=true&v=2" 
+  <img src="images/lab09-splunk-figure.05.png?raw=true&v=2" 
        alt="SIEM alert" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
@@ -203,3 +203,4 @@ index="main"
 - **Filtering fields** like `UserName`, `Source_ip`, `Source_Country`, and `action` allow analysts to pinpoint anomalies.
 
 These foundational queries are starting points for SOC investigations and can be adapted to different detection use cases, such as brute force detection, suspicious geolocation, HTTPS traffic analysis, and baseline outcome tracking.
+
