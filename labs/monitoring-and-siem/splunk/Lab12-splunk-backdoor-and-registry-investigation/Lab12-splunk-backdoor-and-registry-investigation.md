@@ -1,4 +1,4 @@
-Lab12 – Splunk Backdoor and Registry Investigation
+Lab 12 – Splunk Backdoor and Registry Investigation
 ===========================================
 
 ## Overview & Objective </br>
@@ -445,5 +445,6 @@ Overall, the logs painted a classic small-scale intrusion story: account creatio
 This lab was a good reminder that Splunk isn’t just about writing searches; it’s about telling a narrative. By the end, I could clearly explain what the attacker did, how they did it, and which artifacts would be useful for detections and future hunts.
 
 </details>
+
 
 
