@@ -51,7 +51,7 @@ EOF
 ```
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-01.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-01.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 1</em>
@@ -99,7 +99,7 @@ for ip, count in errors_404.items():
 ```
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-02.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-02.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 2</em>
@@ -123,7 +123,7 @@ Finally, I displayed which IPs generated the most 404s. This creates a simple bu
 I ran the parser with the command: `python3 parser.apache.py`.
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-03.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-03.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 3</em>
@@ -135,7 +135,7 @@ The result:
 - Multiple 404 errors indicate enumeration/scanning behavior.
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-04.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-04.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 4</em>
@@ -183,7 +183,7 @@ EOF
 ```
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-05.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-05.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 5</em>
@@ -214,7 +214,7 @@ for ip, count in Counter(fail_ips).most_common():
 ```
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-06.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-06.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 6</em>
@@ -241,7 +241,7 @@ for ip, count in Counter(fail_ips).most_common():
 I ran the parser with the command: `python3 parser_auth.py`.
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-07.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-07.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 7</em>
@@ -252,7 +252,7 @@ The result:
 - The attacker IP **203.0.113.50** attempted 3 logins across 2 fake users (admin & root).
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-08.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-08.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 8</em>
@@ -298,7 +298,7 @@ EOF
 ```
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-09.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-09.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 9</em>
@@ -330,7 +330,7 @@ for (user, ip), count in fail_counts.most_common():
 ```
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-10.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-10.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 10</em>
@@ -358,7 +358,7 @@ for (user, ip), count in fail_counts.most_common():
 I ran the parser with the command: `python3 parser_windows.py`.
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-11.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-11.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 11</em>
@@ -372,7 +372,7 @@ When parsing the Windows event CSV, the script correctly filtered for failed aut
 - 1 testuser account from **198.51.100.10** had 2 failure.
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-12.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-12.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 12</em>
@@ -434,7 +434,7 @@ Instead of using real logs, I created a small JSON array with actions like `Atta
 ```
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-13.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-13.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 13</em>
@@ -473,7 +473,7 @@ for e in events:
 ```
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-14.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-14.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 14</em>
@@ -499,7 +499,7 @@ for e in events:
 I ran the parser with the command: `python3 parser_cloudtrail.py`.
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-15.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-15.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 15</em>
@@ -511,7 +511,7 @@ The result:
 - bob executed **DeleteTrail**, which is highly suspicious.
 
 <p align="left">
-  <img src="images/lab01-python-log-parsing-and-security-analysis-16.png?raw=true&v=2" 
+  <img src="images/python-log-parsing-and-security-analysis-16.png?raw=true&v=2" 
        style="border: 2px solid #444; border-radius: 6px;" 
        width="1000"><br>
   <em>Figure 16</em>
@@ -555,3 +555,4 @@ Across all four labs, I practiced:
 These labs replicate real SOC analyst workflows and give me strong beginner-friendly material for my GitHub portfolio.
 
 </details>
+
