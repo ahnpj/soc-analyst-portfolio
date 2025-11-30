@@ -43,7 +43,7 @@ Currently includes:
 > <details>
 > <summary>PowerShell</summary>
 >
-> - <a href="labs/systems-and-endpoints/Lab03-powershell-endpoint-triage/Lab03-powershell-endpoint-triage-basics.md">Lab03 – PowerShell Endpoint Triage</a><br/>
+> - <a href="labs/systems-and-endpoints/Lab03-powershell-endpoint-triage-basics/Lab03-powershell-endpoint-triage-basics.md">Lab03 – PowerShell Endpoint Triage</a><br/>
 >   Collected and filtered system data using PowerShell, focusing on processes, services, and event logs. I practiced identifying patterns that could indicate malicious activity. This lab sharpened my ability to use PowerShell for real investigation workflows.
 > </details>
 
@@ -56,9 +56,9 @@ Currently includes:
 <summary><b>Identity and Access Management</b></summary>
 
 > <details>
-> <summary>Tcpdump</summary>
+> <summary>Active Directory</summary>
 >
-> - <a href="labs/identity-and-access-management/Lab04-active-directory-domain-structure-and-administration/Lab04-active-directory-domain-structure-and-administration.md">Lab04 – Active Directory Domain Structure and Administration</a><br/>
+> - <a href="labs/identity-and-access-management/Lab04-identity-and-access-management/Lab04-identity-and-access-management.md">Lab04 – Active Directory Domain Structure and Administration</a><br/>
 >   Explored how real enterprise AD environments are structured, including users, OUs, groups, and authentication flows. I created accounts, adjusted permissions, and experimented with Group Policy. This lab helped connect theoretical AD concepts to real hands-on configuration.
 >
 > </details>
@@ -72,7 +72,7 @@ Currently includes:
 > <details>
 > <summary>tcpdump</summary>
 >
-> - <a href="labs/networking-and-traffic-analysis/Lab05-tcpdump-traffic-capture-and-filtering/Lab05-tcpdump-traffic-capture-and-filtering.md">Lab05 – Tcpdump Packet Capture and Filtering</a><br/>
+> - <a href="labs/networking-and-traffic-analysis/Lab05-tcpdump-packet-capture-and-filtering/Lab05-tcpdump-packet-capture-and-filtering.md">Lab05 – Tcpdump Packet Capture and Filtering</a><br/>
 >   Captured live network traffic using tcpdump and analyzed packet details through filters. I learned how to isolate meaningful traffic from noise and understand key packet fields. This lab built a foundation for packet-level monitoring and troubleshooting.
 >
 > </details>
@@ -80,7 +80,7 @@ Currently includes:
 > <details>
 > <summary>WireShark</summary>
 >
-> - <a href="labs/networking-and-traffic-analysis/Lab06-wireshark-packet-inspection-and-filtering/Lab06-wireshark-packet-inspection-and-filtering.md">Lab06 – Wireshark Packet Analysis and Filtering</a><br/>
+> - <a href="labs/networking-and-traffic-analysis/Lab06-wireshark-packet-analysis-and-filtering/Lab06-wireshark-packet-analysis-and-filtering.md">Lab06 – Wireshark Packet Analysis and Filtering</a><br/>
 >   Used Wireshark to inspect packets visually, apply powerful filters, and interpret network behavior. I practiced recognizing normal patterns vs. anomalies. This lab improved my ability to analyze network data beyond the command line.
 >
 > </details>
@@ -108,7 +108,7 @@ Currently includes:
 > <details>
 > <summary>Investigations</summary>
 >
-> - <a href="labs/monitoring-and-siem/investigations/Lab08-siem-suspicious-process-investigation/Lab08-siem-suspicious-process-investigation.md">Lab08 – Suspicious Process Investigation</a><br/>
+> - <a href="labs/monitoring-and-siem/investigations/Lab08-siem-suspicious-process-investigation/Lab08-suspicious-process-investigation.md">Lab08 – Suspicious Process Investigation</a><br/>
 >   Performed a basic SIEM investigation into unusual process activity. Followed breadcrumbs across event logs to identify what happened and why it looked suspicious. This lab established my workflow for triage and hypothesis-driven analysis.
 >
 > </details>
