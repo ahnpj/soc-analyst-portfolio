@@ -1,3 +1,7 @@
+# Lab 6 - WireShark Packet Analysis and Filtering
+
+---
+
 ---
 
 ## Introduction / Overview / Objective
@@ -1003,3 +1007,4 @@ Overall, this lab strengthened my foundational understanding of network analysis
 </details>
 
 ---
+
