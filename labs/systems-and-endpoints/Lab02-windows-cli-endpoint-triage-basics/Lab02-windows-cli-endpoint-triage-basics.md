@@ -144,16 +144,15 @@ In addition to the commands I demonstrated in this lab (`tasklist`, `taskkill`, 
 
 - **`chkdsk`**  
   Checks the file system and disk volumes for errors and bad sectors.  
-  🔎 *Scenario use:* If during investigation I suspect data corruption from malware or sudden crashes, I could run `chkdsk` to validate disk health and rule out hardware or file system integrity issues before deeper forensics.
+  If during investigation I suspect data corruption from malware or sudden crashes, I could run `chkdsk` to validate disk health and rule out hardware or file system integrity issues before deeper forensics.
 
 - **`driverquery`**  
   Displays a list of installed device drivers.  
-  🔎 *Scenario use:* Useful when investigating persistence or suspicious kernel-level activity. An attacker might install a rogue driver to maintain access. Running `driverquery` lets me quickly review and confirm whether only legitimate drivers are loaded.
+  Useful when investigating persistence or suspicious kernel-level activity. An attacker might install a rogue driver to maintain access. Running `driverquery` lets me quickly review and confirm whether only legitimate drivers are loaded.
 
 - **`sfc /scannow`**  
   Scans system files for corruption and repairs them if possible.  
-  🔎 *Scenario use:* After identifying suspicious behavior or unexpected crashes, I could use this to check for modified or corrupted system files. This helps ensure the endpoint remains stable after containment and recovery.
+  After identifying suspicious behavior or unexpected crashes, I could use this to check for modified or corrupted system files. This helps ensure the endpoint remains stable after containment and recovery.
 
 ### Why This Matters
 While these commands weren’t the focus of this lab, being aware of them strengthens my ability to perform **holistic endpoint triage**. They complement the discovery and remediation steps I practiced with `tasklist` and `netstat`, and show readiness to expand my toolkit for more advanced SOC workflows.
-
